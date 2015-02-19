@@ -40,6 +40,8 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                     cl_id = Convert.ToInt32(item["cl_id"]),
                     cl_username = item["cl_username"].ToString(),
                     cl_password = item["cl_password"].ToString(),
+                    cl_nombre = item["cl_nombre"].ToString(),
+                    cl_apellidos = item["cl_apellidos"].ToString(),
                 });
             }
             return clientes;
@@ -68,6 +70,8 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                     cl_id = Convert.ToInt32(item["cl_id"]),
                     cl_username = item["cl_username"].ToString(),
                     cl_password = item["cl_password"].ToString(),
+                    cl_nombre = item["cl_nombre"].ToString(),
+                    cl_apellidos = item["cl_apellidos"].ToString(),
                 });
             }
             return clientes;
@@ -75,14 +79,14 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         #endregion
 
         #region guardarClinte
-        public void guardarClinte(string cl_username, string cl_password)
+        public void guardarClinte(string cl_username, string cl_password,string cl_nombre,string cl_apellidos)
         {
             cl_username = cl_username.ToLower();
             cl_password = cl_password.ToLower();
             cl_password = encriptacion(cl_password);
 
             var sql = new StringBuilder();
-            sql.AppendLine("insert into clientes(cl_username,cl_password) values (@cl_username,@cl_password)");
+            sql.AppendLine("insert into clientes(cl_username,cl_password,cl_nombre,cl_apellidos) values (@cl_username,@cl_password,@cl_nombre,@cl_apellidos)");
             var parametros = new List<NpgsqlParameter>
             {
                 new NpgsqlParameter{
@@ -94,6 +98,16 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                     ParameterName ="cl_password",
                     NpgsqlDbType=NpgsqlDbType.Varchar,
                     NpgsqlValue=cl_password
+                },
+                 new NpgsqlParameter{
+                    ParameterName ="cl_nombre",
+                    NpgsqlDbType=NpgsqlDbType.Varchar,
+                    NpgsqlValue=cl_nombre
+                },
+                 new NpgsqlParameter{
+                    ParameterName ="cl_apellidos",
+                    NpgsqlDbType=NpgsqlDbType.Varchar,
+                    NpgsqlValue=cl_apellidos
                 }
             };
             AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(), parametros);

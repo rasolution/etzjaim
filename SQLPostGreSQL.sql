@@ -65,9 +65,11 @@ GRANT ALL ON TABLE productos TO public;
 
   CREATE TABLE clientes
 (
-  cl_id integer NOT NULL,
+  cl_id serial NOT NULL,
   cl_username character varying(255),
-  cl_passworrd character varying(255),
+  cl_password character varying(255),
+  cl_nombre character varying(255),
+  cl_apellidos character varying(255),
   CONSTRAINT pk_client PRIMARY KEY (cl_id)
 )
 WITH (

@@ -12,5 +12,9 @@ namespace WebService.Estructuras
         public string cl_username { set; get; }
 
         public string cl_password { set; get; }
+
+        public string cl_nombre { set; get; }
+
+        public string cl_apellidos { set; get; }
     }
 }
