@@ -1,0 +1,28 @@
+﻿@model List<AdminWeb.Models.AdminModel>
+@{
+    ViewBag.Title = "index";
+    
+}
+
+<h2>Admins</h2>
+<h3>@ViewBag.Message</h3>
+@Html.ActionLink("Crear Nuevo","Create")
+<table class="table">
+    <tr>
+        <td><strong>ID</strong></td>
+        <td><strong>Username</strong></td>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Admin_id</td>
+            <td>@item.Admin_username</td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Admin_id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Admin_id })  |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Admin_id }) 
+            </td>
+        </tr>
+    }
+</table>
+

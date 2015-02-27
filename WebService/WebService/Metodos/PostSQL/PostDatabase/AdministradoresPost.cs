@@ -108,11 +108,11 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         #endregion
 
         #region cargarAdmin
-        public List<Administrador> cargarAdmin(int admin_id)
+        public Administrador cargarAdmin(int admin_id)
         {
             var sql = new StringBuilder();
             sql.AppendLine("select * from administradores where admin_id=@admin_id");
-            List<Administrador> Administradores = new List<Administrador>();
+            Administrador Administrador = new Administrador();
             var parametros = new List<NpgsqlParameter>
             {
                 new NpgsqlParameter{
@@ -124,14 +124,11 @@ namespace WebService.Metodos.PostSQL.PostDatabase
             var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(),parametros);
             foreach (DataRow item in odatos.Tables[0].Rows)
             {
-                Administradores.Add(new Administrador()
-                {
-                    admin_id = Convert.ToInt32(item["admin_id"]),
-                    admin_username = item["admin_username"].ToString(),
-                    admin_password = item["admin_password"].ToString(),
-                });
+                Administrador.admin_id = Convert.ToInt32(item["admin_id"]);
+                Administrador.admin_username = item["admin_username"].ToString();
+                Administrador.admin_password = item["admin_password"].ToString();
             }
-            return Administradores;
+            return Administrador;
         }
         #endregion
 

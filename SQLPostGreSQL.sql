@@ -127,8 +127,10 @@ CREATE TABLE conversaciones
   conv_id serial NOT NULL,
   cl_id integer,
   admin_id integer,
-  conv_spam integer,
-  conv_estado integer,
+  conv_spam_cliente integer,
+  conv_estado_cliente integer,
+  conv_spam_admin integer,
+  conv_estado_admin integer,
   CONSTRAINT pk_conver PRIMARY KEY (conv_id),
   CONSTRAINT fk_admin FOREIGN KEY (admin_id)
       REFERENCES administradores (admin_id) MATCH SIMPLE
@@ -144,7 +146,6 @@ ALTER TABLE conversaciones
   OWNER TO etzjaim;
 GRANT ALL ON TABLE conversaciones TO etzjaim;
 GRANT ALL ON TABLE conversaciones TO public;
-
 
 CREATE TABLE mensajes
 (

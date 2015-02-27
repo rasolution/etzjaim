@@ -49,11 +49,11 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         #endregion
 
         #region cargarCliente
-        public List<Cliente> cargarCliente(int cl_id)
+        public Cliente cargarCliente(int cl_id)
         {
             var sql = new StringBuilder();
             sql.AppendLine("select * from clientes where cl_id=@cl_id");
-            List<Cliente> clientes = new List<Cliente>();
+            Cliente cliente = new Cliente();
             var parametros = new List<NpgsqlParameter>
             {
                 new NpgsqlParameter{
@@ -65,16 +65,13 @@ namespace WebService.Metodos.PostSQL.PostDatabase
             var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(), parametros);
             foreach (DataRow item in odatos.Tables[0].Rows)
             {
-                clientes.Add(new Cliente()
-                {
-                    cl_id = Convert.ToInt32(item["cl_id"]),
-                    cl_username = item["cl_username"].ToString(),
-                    cl_password = item["cl_password"].ToString(),
-                    cl_nombre = item["cl_nombre"].ToString(),
-                    cl_apellidos = item["cl_apellidos"].ToString(),
-                });
+                cliente.cl_id = Convert.ToInt32(item["cl_id"]);
+                cliente.cl_username = item["cl_username"].ToString();
+                cliente.cl_password = item["cl_password"].ToString();
+                cliente.cl_nombre = item["cl_nombre"].ToString();
+                cliente.cl_apellidos = item["cl_apellidos"].ToString();
             }
-            return clientes;
+            return cliente;
         }
         #endregion
 

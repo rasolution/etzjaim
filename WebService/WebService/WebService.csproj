@@ -41,7 +41,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Mono.Security">
-      <HintPath>..\packages\Mono.Security.3.2.3.0\lib\net45\Mono.Security.dll</HintPath>
+      <HintPath>..\packages\Npgsql.2.2.4.3\lib\net45\Mono.Security.dll</HintPath>
     </Reference>
     <Reference Include="Npgsql">
       <HintPath>..\packages\Npgsql.2.2.4.3\lib\net45\Npgsql.dll</HintPath>
@@ -79,8 +79,15 @@
     <Compile Include="Conexion\SQLServer\ConexionSQL.cs" />
     <Compile Include="Conexion\SQLServer\IMetodosConexion.cs" />
     <Compile Include="Estructuras\Administrador.cs" />
+    <Compile Include="Estructuras\Cita.cs" />
+    <Compile Include="Estructuras\Cita_cliente.cs" />
     <Compile Include="Estructuras\Cliente.cs" />
+    <Compile Include="Estructuras\Conversacion.cs" />
+    <Compile Include="Estructuras\Conversaciones_Cliente_Admin.cs" />
+    <Compile Include="Estructuras\Mensajes.cs" />
+    <Compile Include="Estructuras\Producto.cs" />
     <Compile Include="Estructuras\Respuesta.cs" />
+    <Compile Include="Metodos\ConvertirImagenes.cs" />
     <Compile Include="Metodos\PostSQL\PostDatabase\AdministradoresPost.cs" />
     <Compile Include="Metodos\PostSQL\PostDatabase\AlarmasPost.cs" />
     <Compile Include="Metodos\PostSQL\PostDatabase\CitasPost.cs" />

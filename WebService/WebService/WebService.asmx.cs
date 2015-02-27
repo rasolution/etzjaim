@@ -44,7 +44,7 @@ namespace WebService
         #region guardarAdmin
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public void admin_Guardar(string username, string password)
+        public string admin_Guardar(string username, string password)
         {
             AdministradoresPost post = new AdministradoresPost();
             string result = "";
@@ -65,17 +65,15 @@ namespace WebService
                 }
             }
             response.response = result;
-            JavaScriptSerializer js = new JavaScriptSerializer();
-            Context.Response.Clear();
-            Context.Response.ContentType = "application/json";
-            Context.Response.Write(js.Serialize(response));
+            JavaScriptSerializer js = new JavaScriptSerializer();       
+            return js.Serialize(response);
         }
         #endregion
 
         #region eliminarAdmin
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public void admin_Eliminar(int admin_id)
+        public string admin_Eliminar(int admin_id)
         {
             string result="";
             AdministradoresPost post = new AdministradoresPost();
@@ -90,46 +88,40 @@ namespace WebService
             }
             response.response = result;
             JavaScriptSerializer js = new JavaScriptSerializer();
-            Context.Response.Clear();
-            Context.Response.ContentType = "application/json";
-            Context.Response.Write(js.Serialize(response));
+            return js.Serialize(response);
         }
         #endregion
 
         #region cargarAdmins
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public void admin_CargarTodos()
+        public string admin_CargarTodos()
         {
             AdministradoresPost post = new AdministradoresPost();
             List<Administrador> admins = new List<Administrador>();
             admins = post.cargarAdministrativos();
             JavaScriptSerializer js = new JavaScriptSerializer();
-            Context.Response.Clear();
-            Context.Response.ContentType = "application/json";
-            Context.Response.Write(js.Serialize(admins));
+            return js.Serialize(admins);
         }
         #endregion
 
         #region cargarAdmin
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public void admin_Cargar(int admin_id)
+        public string admin_Cargar(int admin_id)
         {
             AdministradoresPost post = new AdministradoresPost();
-            List<Administrador> admin = new List<Administrador>();
+            Administrador admin = new Administrador();
             admin = post.cargarAdmin(admin_id);
             JavaScriptSerializer js = new JavaScriptSerializer();
-            Context.Response.Clear();
-            Context.Response.ContentType = "application/json";
-            Context.Response.Write(js.Serialize(admin));
+            return js.Serialize(admin);
         }
         #endregion 
 
         #region cambiarContraseña
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public  void admin_cambiarContraseña(string username, string password)
+        public  string admin_cambiarContraseña(string username, string password)
         {
             string result="";
             AdministradoresPost post = new AdministradoresPost();
@@ -144,16 +136,14 @@ namespace WebService
             }
             response.response = result;
             JavaScriptSerializer js = new JavaScriptSerializer();
-            Context.Response.Clear();
-            Context.Response.ContentType = "application/json";
-            Context.Response.Write(js.Serialize(response));
+            return js.Serialize(response);
         }
         #endregion
 
         #region LoginAdmin
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public void admin_Login(string admin_username, string admin_password)
+        public string admin_Login(string admin_username, string admin_password)
         {
             string result = "no";
             AdministradoresPost post = new AdministradoresPost();
@@ -163,9 +153,7 @@ namespace WebService
             }
             response.response = result;
             JavaScriptSerializer js = new JavaScriptSerializer();
-            Context.Response.Clear();
-            Context.Response.ContentType = "application/json";
-            Context.Response.Write(js.Serialize(response));
+            return js.Serialize(response);
         }
         #endregion
         #endregion
@@ -175,7 +163,7 @@ namespace WebService
         #region guardarCliente
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public void cliente_Guardar(string cl_username, string cl_password, string cl_nombre, string cl_apellidos)
+        public string cliente_Guardar(string cl_username, string cl_password, string cl_nombre, string cl_apellidos)
         {
             ClientesPost post = new ClientesPost();
             string result;
@@ -197,16 +185,14 @@ namespace WebService
             }
             response.response = result;
             JavaScriptSerializer js = new JavaScriptSerializer();
-            Context.Response.Clear();
-            Context.Response.ContentType = "application/json";
-            Context.Response.Write(js.Serialize(response));
+            return js.Serialize(response);
         }
         #endregion
 
         #region eliminarCliente
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public void cliente_Elminar(int cl_id)
+        public string cliente_Elminar(int cl_id)
         {
             ClientesPost post = new ClientesPost();
             string result = "";
@@ -221,37 +207,32 @@ namespace WebService
             }
             response.response = result;
             JavaScriptSerializer js = new JavaScriptSerializer();
-            Context.Response.Clear();
-            Context.Response.ContentType = "application/json";
-            Context.Response.Write(js.Serialize(response));
+            return js.Serialize(response);
         }
         #endregion
 
         #region cargarClientes
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public void cliente_CargarTodos()
+        public string cliente_CargarTodos()
         {
             ClientesPost post = new ClientesPost();
             List<Cliente> clientes = post.cargarClientes();
             JavaScriptSerializer js = new JavaScriptSerializer();
-            Context.Response.Clear();
-            Context.Response.ContentType = "application/json";
-            Context.Response.Write(js.Serialize(clientes));
+           
+            return js.Serialize(clientes);
         }
         #endregion
 
         #region cargarCliente
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public void cliente_Cargar(int cl_id)
+        public string cliente_Cargar(int cl_id)
         {
             ClientesPost post = new ClientesPost();
-            List<Cliente> clientes = post.cargarCliente(cl_id);
+            Cliente cliente = post.cargarCliente(cl_id);
             JavaScriptSerializer js = new JavaScriptSerializer();
-            Context.Response.Clear();
-            Context.Response.ContentType = "application/json";
-            Context.Response.Write(js.Serialize(clientes));
+            return js.Serialize(cliente);
         }
         
         #endregion
@@ -259,7 +240,7 @@ namespace WebService
         #region cambiarContraseñaCliente
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public void cliente_cambiarContraseña(string cl_username, string cl_password)
+        public string cliente_cambiarContraseña(string cl_username, string cl_password)
         {
             ClientesPost post = new ClientesPost();
             string result = "";
@@ -274,16 +255,14 @@ namespace WebService
             }
             response.response = result;
             JavaScriptSerializer js = new JavaScriptSerializer();
-            Context.Response.Clear();
-            Context.Response.ContentType = "application/json";
-            Context.Response.Write(js.Serialize(response));
+            return js.Serialize(response);
         }
         #endregion
 
         #region LoginCliente
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public void cliente_Login(string cl_username, string cl_password)
+        public string cliente_Login(string cl_username, string cl_password)
         {
             ClientesPost post = new ClientesPost();
             string result = "no";
@@ -293,14 +272,105 @@ namespace WebService
             }
             response.response = result;
             JavaScriptSerializer js = new JavaScriptSerializer();
-            Context.Response.Clear();
-            Context.Response.ContentType = "application/json";
-            Context.Response.Write(js.Serialize(response));
+            return js.Serialize(response);
 
         }
         #endregion
 
         #endregion
+
+        #region MetodosProductos
+
+        #region guardarProducto
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        public string product_guardarProducto(string pro_nombre, int pro_precio, int pro_estado, byte[] pro_foto)
+        {
+            string result="";
+            ProductosPost post = new ProductosPost();
+            post.guardarProducto(pro_nombre, pro_precio, pro_estado, pro_foto);
+            if (post.IsError)
+            {
+                result = "A ocurrido un error "+post.ErrorDescripcion;
+            }
+            else
+            {
+                result = "Se ha guardado con exito";
+            }
+            response.response = result;
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(response);
+        }
+        #endregion
+
+        #region eliminarProducto
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        public string product_eliminarCliente(int pro_id)
+        {
+            string result;
+            ProductosPost post = new ProductosPost();
+            post.eliminarProducto(pro_id);
+            if (post.IsError) { 
+                result = "A ocurrido un error " + post.ErrorDescripcion; 
+            }
+            else { 
+                result = "Se ha borrado con exito"; 
+            }
+            response.response = result;
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(response);
+        }
+        #endregion
+
+        #region editarProducto
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        public string product_editarProducto(int pro_id, string pro_nombre, int pro_precio, int pro_estado, byte[] pro_foto)
+        {
+            string result = "";
+            ProductosPost post = new ProductosPost();
+            post.editarProducto(pro_id, pro_nombre, pro_precio, pro_estado, pro_foto);
+            if (post.IsError)
+            {
+                result = "A ocurrido un error " + post.ErrorDescripcion;
+            }
+            else
+            {
+                result = "Edición correcta";
+            }
+            response.response = result;
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(response);
+        }
+        #endregion
+
+        #region cargarProductos
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        public string product_cargarProductos()
+        {
+            ProductosPost post = new ProductosPost();
+            List<Producto> Productos = post.cargarProductos();
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(Productos);
+        }
+        #endregion
+
+        #region cargarProducto
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        public string product_cargarProducto(int pro_id)
+        {
+            ProductosPost post = new ProductosPost();
+            Producto Producto = post.cargarProducto(pro_id);
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(Producto);
+        }
+        #endregion
+
+        #endregion
+
 
     }
 }
