@@ -430,5 +430,69 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         }
         #endregion
 
+
+
+        #region cargarConversacion
+        public Conversacion cargarConversacion(int conv_id)
+        {
+            Conversacion conversacion = new Conversacion();
+            StringBuilder sql = new StringBuilder();
+            string consulta = "select * from conversaciones where conv_id=@conv_id ";
+            sql.AppendLine(consulta);
+            var parametros = new List<NpgsqlParameter>
+            {
+                new NpgsqlParameter{
+                    ParameterName="conv_id",
+                    NpgsqlDbType=NpgsqlDbType.Integer,
+                    NpgsqlValue=conv_id
+                },
+               
+            };
+            var datos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(), parametros);
+            foreach (DataRow item in datos.Tables[0].Rows)
+            {
+                
+                conversacion.conv_id = Convert.ToInt32(item["conv_id"]);
+                conversacion.cl_id = Convert.ToInt32(item["cl_id"]);
+                conversacion.admin_id = Convert.ToInt32(item["admin_id"]);
+            }
+            return conversacion;
+        }
+        #endregion
+
+        #region verificarConversacion
+        public Conversacion verificarConversacion(int admin_id, int cl_id)
+        {
+            Conversacion conversacion = new Conversacion();
+            StringBuilder sql = new StringBuilder();
+            sql.AppendLine("select * from conversaciones where admin_id=@admin_id and cl_id=@cl_id");
+            var parametros = new List<NpgsqlParameter>{
+                    new NpgsqlParameter{
+                        ParameterName="admin_id",
+                        NpgsqlDbType=NpgsqlDbType.Integer,
+                        NpgsqlValue=admin_id,
+                    },
+                    new NpgsqlParameter{
+                        ParameterName="cl_id",
+                        NpgsqlDbType=NpgsqlDbType.Integer,
+                        NpgsqlValue=cl_id,
+                    },
+                };
+
+            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(), parametros);
+            if (odatos == null)
+            {
+                conversacion = null;
+            }
+            else
+            {
+                foreach (DataRow item in odatos.Tables[0].Rows)
+                {
+                    conversacion.conv_id = Convert.ToInt32(item["conv_id"]);
+                }
+            }
+            return conversacion;
+        }
+        #endregion
     }
 }

@@ -17,7 +17,7 @@ namespace WebService
     /// <summary>
     /// Descripción breve de WebService
     /// </summary>
-    
+
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
     // Para permitir que se llame a este servicio web desde un script, usando ASP.NET AJAX, quite la marca de comentario de la línea siguiente. 
@@ -65,7 +65,7 @@ namespace WebService
                 }
             }
             response.response = result;
-            JavaScriptSerializer js = new JavaScriptSerializer();       
+            JavaScriptSerializer js = new JavaScriptSerializer();
             return js.Serialize(response);
         }
         #endregion
@@ -75,7 +75,7 @@ namespace WebService
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
         public string admin_Eliminar(int admin_id)
         {
-            string result="";
+            string result = "";
             AdministradoresPost post = new AdministradoresPost();
             post.eliminarAdministrador(admin_id);
             if (post.IsError)
@@ -116,19 +116,19 @@ namespace WebService
             JavaScriptSerializer js = new JavaScriptSerializer();
             return js.Serialize(admin);
         }
-        #endregion 
+        #endregion
 
         #region cambiarContraseña
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public  string admin_cambiarContraseña(string username, string password)
+        public string admin_cambiarContraseña(string username, string password)
         {
-            string result="";
+            string result = "";
             AdministradoresPost post = new AdministradoresPost();
             post.cambiarContraseña(username, password);
             if (post.IsError)
             {
-                result = "A ocurrido un error "+post.ErrorDescripcion;
+                result = "A ocurrido un error " + post.ErrorDescripcion;
             }
             else
             {
@@ -147,7 +147,7 @@ namespace WebService
         {
             string result = "no";
             AdministradoresPost post = new AdministradoresPost();
-            if(post.LoginAdmin(admin_username,admin_password))
+            if (post.LoginAdmin(admin_username, admin_password))
             {
                 result = "yes";
             }
@@ -219,7 +219,7 @@ namespace WebService
             ClientesPost post = new ClientesPost();
             List<Cliente> clientes = post.cargarClientes();
             JavaScriptSerializer js = new JavaScriptSerializer();
-           
+
             return js.Serialize(clientes);
         }
         #endregion
@@ -234,7 +234,7 @@ namespace WebService
             JavaScriptSerializer js = new JavaScriptSerializer();
             return js.Serialize(cliente);
         }
-        
+
         #endregion
 
         #region cambiarContraseñaCliente
@@ -286,12 +286,12 @@ namespace WebService
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
         public string product_guardarProducto(string pro_nombre, int pro_precio, int pro_estado, byte[] pro_foto)
         {
-            string result="";
+            string result = "";
             ProductosPost post = new ProductosPost();
             post.guardarProducto(pro_nombre, pro_precio, pro_estado, pro_foto);
             if (post.IsError)
             {
-                result = "A ocurrido un error "+post.ErrorDescripcion;
+                result = "A ocurrido un error " + post.ErrorDescripcion;
             }
             else
             {
@@ -311,11 +311,13 @@ namespace WebService
             string result;
             ProductosPost post = new ProductosPost();
             post.eliminarProducto(pro_id);
-            if (post.IsError) { 
-                result = "A ocurrido un error " + post.ErrorDescripcion; 
+            if (post.IsError)
+            {
+                result = "A ocurrido un error " + post.ErrorDescripcion;
             }
-            else { 
-                result = "Se ha borrado con exito"; 
+            else
+            {
+                result = "Se ha borrado con exito";
             }
             response.response = result;
             JavaScriptSerializer js = new JavaScriptSerializer();
@@ -371,6 +373,161 @@ namespace WebService
 
         #endregion
 
+        #region MetodosCitas
 
+        #region solicitarCita
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        public string cita_solicitarCita(int cl_id, DateTime cita_fecha)
+        {
+            string result = "";
+            CitasPost post = new CitasPost();
+            if (post.verficiarCita_Fecha(cita_fecha))
+            {
+                result = "Ya hay una fecha aprovada para esa fecha y hora";
+            }
+            else
+            {
+                post.guardarCita(cl_id, cita_fecha);
+                if (post.Is_error)
+                {
+                    result = "A ocurrido un error " + post.Error_Descripcion;
+                }
+                else
+                {
+                    result = "La cita ha sido pedida con exito, se le verificara si se aprobara";
+                }
+            }
+            response.response = result;
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(response);
+        }
+        #endregion
+
+        #region aprobarCita
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        public string cita_aprobarCita(int cita_id, int cl_id)
+        {
+
+            string result = "";
+            CitasPost post = new CitasPost();
+            if (post.verificarCita(cita_id))
+            {
+                result = "Ya se ha aprobado una cita para esa fecha y hora";
+            }
+            else
+            {
+                post.aprobarCita(cita_id);
+                if (post.Is_error)
+                {
+                    result = "A ocurrido un error " + post.Error_Descripcion;
+                }
+                else
+                {
+                    string message = "Querido cliente le informamos que su cita ha sido aprobada";
+                    result = "Se ha aprovado la cita se le informara al cliente";
+                    ConversacionesPost convpost = new ConversacionesPost();
+                    Conversacion conversacion = convpost.verificarConversacion(1, cl_id);
+                    if (conversacion.conv_id == 0)
+                    {
+                        convpost.crearConversacion(cl_id, 1);
+                    }
+                    conversacion = convpost.verificarConversacion(1, cl_id);
+                    MensajesPost mespost = new MensajesPost();
+                    mespost.guardarMensaje(conversacion.conv_id, message);
+                }
+            }
+            response.response = result;
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(response);
+        }
+        #endregion
+
+        #region rechazarCita
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        public string cita_recharCita(int cita_id, int cl_id)
+        {
+            string result = "";
+            CitasPost post = new CitasPost();
+            post.borrarCita(cita_id);
+            if (post.Is_error)
+            {
+                result = "A ocurrido un error " + post.Error_Descripcion;
+            }
+            else
+            {
+                string message = "Querido cliente le informamos que su cita ha sido rechadaza, si desea pida otra cita";
+                result = "Se ha borrado la cita se le informara al cliente";
+                ConversacionesPost convpost = new ConversacionesPost();
+                Conversacion conversacion = convpost.verificarConversacion(1, cl_id);
+                if (conversacion.conv_id == 0)
+                {
+                    convpost.crearConversacion(cl_id, 1);
+                }
+                conversacion = convpost.verificarConversacion(1, cl_id);
+                MensajesPost mespost = new MensajesPost();
+                mespost.guardarMensaje(conversacion.conv_id, message);
+            }
+            response.response = result;
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(response);
+        }
+        #endregion
+
+        #region cargarCita
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        public string cita_cargarCita(int cita_id)
+        {
+            CitasPost post = new CitasPost();
+            Cita_cliente cita = new Cita_cliente();
+            cita = post.cargarCita(cita_id);
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(cita);
+        }
+        #endregion
+
+        #region cargarCitas
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        public string cita_cargarCitas()
+        {
+            CitasPost post = new CitasPost();
+            List<Cita_cliente> cita = new List<Cita_cliente>();
+            cita = post.cargarCitas();
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(cita);
+        }
+        #endregion
+
+        #region cargarCitasAprobadas
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        public string cita_cargarCitasAprobadas()
+        {
+            CitasPost post = new CitasPost();
+            List<Cita_cliente> cita = new List<Cita_cliente>();
+            cita = post.cargarCitasAprobadas();
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(cita);
+        }
+        #endregion
+
+        #region cargarCitasNoAprobadas
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        public string cita_cargarCitasNoAprobadas()
+        {
+            CitasPost post = new CitasPost();
+            List<Cita_cliente> cita = new List<Cita_cliente>();
+            cita = post.cargarCitasNoAprobadas();
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(cita);
+        }
+        #endregion
+
+        #endregion
     }
 }

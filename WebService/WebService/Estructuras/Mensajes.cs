@@ -13,10 +13,7 @@ namespace WebService.Estructuras
 
         public string mes_message { get; set; }
 
-        public DateTime mes_entrada { get; set; }
-
         public DateTime mes_salida { get; set; }
 
-        public int mes_estado { get; set; }
     }
 }

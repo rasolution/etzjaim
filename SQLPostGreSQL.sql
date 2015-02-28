@@ -151,9 +151,8 @@ CREATE TABLE mensajes
 (
   mes_id serial NOT NULL,
   conv_id integer,
-  mes_entrada timestamp with time zone,
   mes_salida timestamp with time zone,
-  mes_estado integer,
+  mes_message character varying(255),
   CONSTRAINT pk_messaje PRIMARY KEY (mes_id),
   CONSTRAINT fk_conver FOREIGN KEY (conv_id)
       REFERENCES conversaciones (conv_id) MATCH SIMPLE
@@ -166,6 +165,7 @@ ALTER TABLE mensajes
   OWNER TO etzjaim;
 GRANT ALL ON TABLE mensajes TO etzjaim;
 GRANT ALL ON TABLE mensajes TO public;
+
 
 
 

@@ -69,11 +69,11 @@ namespace WebService.Metodos.PostSQL.PostDatabase
 
         #endregion
 
-        #region aprovarCita
+        #region aprobarCita
         public void aprobarCita(int cita_id)
         {
             StringBuilder sql = new StringBuilder();
-            sql.AppendLine("update citas set cita_esta='1' where cita_id=@cita_id");
+            sql.AppendLine("update citas set cita_estado='1' where cita_id=@cita_id");
             var parametros = new List<NpgsqlParameter>
             {
                  new NpgsqlParameter{
@@ -113,6 +113,36 @@ namespace WebService.Metodos.PostSQL.PostDatabase
             }
             return citas;
         }
+        #endregion
+
+        #region cargarCita
+        public Cita_cliente cargarCita(int cita_id)
+        {
+           Cita_cliente cita= new Cita_cliente();
+            StringBuilder sql = new StringBuilder();
+            sql.AppendLine("select a.cita_id,a.cl_id,b.cl_nombre,b.cl_apellidos,b.cl_username,a.cita_fecha,a.cita_estado from citas as a, clientes as b where a.cl_id=b.cl_id and a.cita_id=@cita_id");
+            var parametros = new List<NpgsqlParameter>
+            {
+                 new NpgsqlParameter{
+                        ParameterName="cita_id",
+                        NpgsqlDbType=NpgsqlDbType.Integer,
+                        NpgsqlValue=cita_id,
+                    },
+            };
+            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(),parametros);
+            foreach (DataRow item in odatos.Tables[0].Rows)
+            {
+                cita.cita_id = Convert.ToInt32(item["cita_id"]);
+                cita.cl_id = Convert.ToInt32(item["cl_id"]);
+                cita.cl_Nombre_Apellidos = item["cl_nombre"].ToString() + " " + item["cl_apellidos"].ToString();
+                cita.cl_username = item["cl_username"].ToString();
+                cita.cita_fecha = Convert.ToDateTime(item["cita_fecha"]);
+                cita.cita_estado = Convert.ToInt32(item["cita_estado"]);
+                
+            }
+            return cita;
+        }
+
         #endregion
 
         #region cargarCitasAprobadas
@@ -179,7 +209,38 @@ namespace WebService.Metodos.PostSQL.PostDatabase
             {
                 cita.cl_id = Convert.ToInt32(item["cl_id"]);
                 cita.cita_id = Convert.ToInt32(item["cita_id"]);
-                cita.cita_estado = Convert.ToInt32(item["cl_estado"]);
+                cita.cita_estado = Convert.ToInt32(item["cita_estado"]);
+                cita.cita_fecha = Convert.ToDateTime(item["cita_fecha"]);
+            }
+            if (cita.cita_estado == 1)
+            {
+                result = true;
+            }
+            return result;
+        }
+        #endregion
+
+        #region verificarCita
+        public bool verificarCita(int cita_id)
+        {
+            bool result = false;
+            StringBuilder sql = new StringBuilder();
+            sql.AppendLine("select * from citas where cita_id=@cita_id");
+            var parametros = new List<NpgsqlParameter>{
+                    new NpgsqlParameter{
+                        ParameterName="cita_id",
+                        NpgsqlDbType=NpgsqlDbType.Integer,
+                        NpgsqlValue=cita_id,
+                    },
+                };
+
+            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(), parametros);
+            Cita cita = new Cita();
+            foreach (DataRow item in odatos.Tables[0].Rows)
+            {
+                cita.cl_id = Convert.ToInt32(item["cl_id"]);
+                cita.cita_id = Convert.ToInt32(item["cita_id"]);
+                cita.cita_estado = Convert.ToInt32(item["cita_estado"]);
                 cita.cita_fecha = Convert.ToDateTime(item["cita_fecha"]);
             }
             if (cita.cita_estado == 1)
