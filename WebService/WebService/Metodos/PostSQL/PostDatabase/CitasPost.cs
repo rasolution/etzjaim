@@ -18,16 +18,16 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         public string Error_Descripcion { get; set; }
 
         #region guardarCita
-        public void guardarCita(int cl_id, DateTime cita_fecha)
+        public void guardarCita(string username, DateTime cita_fecha)
         {
             StringBuilder sql = new StringBuilder();
-            sql.AppendLine("insert into citas(cl_id,cita_fecha,cita_estado) values(@cl_id,@cita_fecha,'0')");
+            sql.AppendLine("insert into citas(username,cita_fecha,cita_estado) values(@username,@cita_fecha,'0')");
             var parametros = new List<NpgsqlParameter>
             {
                  new NpgsqlParameter{
-                        ParameterName="cl_id",
-                        NpgsqlDbType=NpgsqlDbType.Integer,
-                        NpgsqlValue=cl_id,
+                        ParameterName="username",
+                        NpgsqlDbType=NpgsqlDbType.Varchar,
+                        NpgsqlValue=username,
                     },
                  new NpgsqlParameter{
                         ParameterName="cita_fecha",
@@ -94,19 +94,18 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         #endregion
 
         #region CargarCitas
-        public List<Cita_cliente> cargarCitas()
+        public List<Cita_Usuario> cargarCitas()
         {
-            List<Cita_cliente> citas = new List<Cita_cliente>();
+            List<Cita_Usuario> citas = new List<Cita_Usuario>();
             StringBuilder sql = new StringBuilder();
-            sql.AppendLine("select a.cita_id,a.cl_id,b.cl_nombre,b.cl_apellidos,b.cl_username,a.cita_fecha,a.cita_estado from citas as a, clientes as b where a.cl_id=b.cl_id");
+            sql.AppendLine("select a.cita_id,a.username,b.user_nombre,b.user_apellidos,a.cita_fecha,a.cita_estado from citas as a, usuarios as b where a.username=b.username");
             var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString());
             foreach (DataRow item in odatos.Tables[0].Rows)
             {
-                Cita_cliente cita = new Cita_cliente();
+                Cita_Usuario cita = new Cita_Usuario();
                 cita.cita_id = Convert.ToInt32(item["cita_id"]);
-                cita.cl_id=Convert.ToInt32(item["cl_id"]);
-                cita.cl_Nombre_Apellidos = item["cl_nombre"].ToString() + " " + item["cl_apellidos"].ToString();
-                cita.cl_username = item["cl_username"].ToString();
+                cita.user_info = item["user_nombre"].ToString() + " " + item["user_nombre"].ToString();
+                cita.username = item["username"].ToString();
                 cita.cita_fecha = Convert.ToDateTime(item["cita_fecha"]);
                 cita.cita_estado = Convert.ToInt32(item["cita_estado"]);
                 citas.Add(cita);
@@ -116,11 +115,11 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         #endregion
 
         #region cargarCita
-        public Cita_cliente cargarCita(int cita_id)
+        public Cita_Usuario cargarCita(int cita_id)
         {
-           Cita_cliente cita= new Cita_cliente();
+            Cita_Usuario cita = new Cita_Usuario();
             StringBuilder sql = new StringBuilder();
-            sql.AppendLine("select a.cita_id,a.cl_id,b.cl_nombre,b.cl_apellidos,b.cl_username,a.cita_fecha,a.cita_estado from citas as a, clientes as b where a.cl_id=b.cl_id and a.cita_id=@cita_id");
+            sql.AppendLine("select a.cita_id,a.username,b.user_nombre,b.user_apellidos,a.cita_fecha,a.cita_estado from citas as a, usuarios as b where a.username=b.username and a.cita_id=@cita_id");
             var parametros = new List<NpgsqlParameter>
             {
                  new NpgsqlParameter{
@@ -133,9 +132,8 @@ namespace WebService.Metodos.PostSQL.PostDatabase
             foreach (DataRow item in odatos.Tables[0].Rows)
             {
                 cita.cita_id = Convert.ToInt32(item["cita_id"]);
-                cita.cl_id = Convert.ToInt32(item["cl_id"]);
-                cita.cl_Nombre_Apellidos = item["cl_nombre"].ToString() + " " + item["cl_apellidos"].ToString();
-                cita.cl_username = item["cl_username"].ToString();
+                cita.user_info = item["user_nombre"].ToString() + " " + item["user_nombre"].ToString();
+                cita.username = item["username"].ToString();
                 cita.cita_fecha = Convert.ToDateTime(item["cita_fecha"]);
                 cita.cita_estado = Convert.ToInt32(item["cita_estado"]);
                 
@@ -146,19 +144,18 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         #endregion
 
         #region cargarCitasAprobadas
-        public List<Cita_cliente> cargarCitasAprobadas()
+        public List<Cita_Usuario> cargarCitasAprobadas()
         {
-            List<Cita_cliente> citas = new List<Cita_cliente>();
+            List<Cita_Usuario> citas = new List<Cita_Usuario>();
             StringBuilder sql = new StringBuilder();
-            sql.AppendLine("select a.cita_id,a.cl_id,b.cl_nombre,b.cl_apellidos,b.cl_username,a.cita_fecha,a.cita_estado from citas as a, clientes as b where a.cl_id=b.cl_id and cita_estado='1'");
+            sql.AppendLine("select a.cita_id,a.username,b.user_nombre,b.user_apellidos,a.cita_fecha,a.cita_estado from citas as a, usuarios as b where a.username=b.username and cita_estado='1'");
             var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString());
             foreach (DataRow item in odatos.Tables[0].Rows)
             {
-                Cita_cliente cita = new Cita_cliente();
+                Cita_Usuario cita = new Cita_Usuario();
                 cita.cita_id = Convert.ToInt32(item["cita_id"]);
-                cita.cl_id = Convert.ToInt32(item["cl_id"]);
-                cita.cl_Nombre_Apellidos = item["cl_nombre"].ToString() + " " + item["cl_apellidos"].ToString();
-                cita.cl_username = item["cl_username"].ToString();
+                cita.user_info = item["user_nombre"].ToString() + " " + item["user_nombre"].ToString();
+                cita.username = item["username"].ToString();
                 cita.cita_fecha = Convert.ToDateTime(item["cita_fecha"]);
                 cita.cita_estado = Convert.ToInt32(item["cita_estado"]);
                 citas.Add(cita);
@@ -168,19 +165,18 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         #endregion
 
         #region cargarCitasNoAprobadas
-        public List<Cita_cliente> cargarCitasNoAprobadas()
+        public List<Cita_Usuario> cargarCitasNoAprobadas()
         {
-            List<Cita_cliente> citas = new List<Cita_cliente>();
+            List<Cita_Usuario> citas = new List<Cita_Usuario>();
             StringBuilder sql = new StringBuilder();
-            sql.AppendLine("select a.cita_id,a.cl_id,b.cl_nombre,b.cl_apellidos,b.cl_username,a.cita_fecha,a.cita_estado from citas as a, clientes as b where a.cl_id=b.cl_id and cita_estado='0'");
+            sql.AppendLine("select a.cita_id,a.username,b.user_nombre,b.user_apellidos,b.username,a.cita_fecha,a.cita_estado from citas as a, usuarios as b where a.username=b.username and cita_estado='0'");
             var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString());
             foreach (DataRow item in odatos.Tables[0].Rows)
             {
-                Cita_cliente cita = new Cita_cliente();
+                Cita_Usuario cita = new Cita_Usuario();
                 cita.cita_id = Convert.ToInt32(item["cita_id"]);
-                cita.cl_id = Convert.ToInt32(item["cl_id"]);
-                cita.cl_Nombre_Apellidos = item["cl_nombre"].ToString() + " " + item["cl_apellidos"].ToString();
-                cita.cl_username = item["cl_username"].ToString();
+                cita.user_info = item["user_nombre"].ToString() + " " + item["user_nombre"].ToString();
+                cita.username = item["username"].ToString();
                 cita.cita_fecha = Convert.ToDateTime(item["cita_fecha"]);
                 cita.cita_estado = Convert.ToInt32(item["cita_estado"]);
                 citas.Add(cita);
@@ -207,7 +203,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
             Cita cita = new Cita();
             foreach (DataRow item in odatos.Tables[0].Rows)
             {
-                cita.cl_id = Convert.ToInt32(item["cl_id"]);
+                cita.username = item["username"].ToString();
                 cita.cita_id = Convert.ToInt32(item["cita_id"]);
                 cita.cita_estado = Convert.ToInt32(item["cita_estado"]);
                 cita.cita_fecha = Convert.ToDateTime(item["cita_fecha"]);
@@ -238,7 +234,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
             Cita cita = new Cita();
             foreach (DataRow item in odatos.Tables[0].Rows)
             {
-                cita.cl_id = Convert.ToInt32(item["cl_id"]);
+                cita.username = item["username"].ToString();
                 cita.cita_id = Convert.ToInt32(item["cita_id"]);
                 cita.cita_estado = Convert.ToInt32(item["cita_estado"]);
                 cita.cita_fecha = Convert.ToDateTime(item["cita_fecha"]);

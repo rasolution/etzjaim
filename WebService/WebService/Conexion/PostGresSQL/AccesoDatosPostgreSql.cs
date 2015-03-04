@@ -49,9 +49,10 @@ namespace WebService.Conexion.PostGresSQL
         #region Métodos de conexion
 
         // Indica el estado de la persistencia
-        public string Estado()
+        public bool Estado()
         {
             string mensaje = "";
+            bool result = false;
             this.LimpiarEstado();
             // estado dela conexión
             switch (ConexionPost.State)
@@ -69,10 +70,14 @@ namespace WebService.Conexion.PostGresSQL
                 case System.Data.ConnectionState.Open: mensaje = "Abierta";
                     break;
             }
-
+            if (mensaje.Equals("Ejecutando") || mensaje.Equals("Extrayendo") || mensaje.Equals("Abierta"))
+            {
+                result = true;
+            }
             // cargar la propiedad con el estado de la conexion
+
             
-            return mensaje;
+            return result;
         }
 
         public DataSet EjecutarConsultaSQL(String sql)

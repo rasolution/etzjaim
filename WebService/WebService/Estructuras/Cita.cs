@@ -9,7 +9,7 @@ namespace WebService.Estructuras
     {
         public int cita_id { set; get; }
 
-        public int cl_id { set; get; }
+        public string username { set; get; }
 
         public DateTime cita_fecha { set; get; }
 

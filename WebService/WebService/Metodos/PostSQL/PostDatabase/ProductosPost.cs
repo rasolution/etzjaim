@@ -147,8 +147,16 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         {
             Producto Producto = new Producto();
             var sql = new StringBuilder();
-            sql.AppendLine("select * from productos");
-            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString());
+            sql.AppendLine("select * from productos where pro_id=@pro_id");
+            var parametros = new List<NpgsqlParameter>
+            {
+                new NpgsqlParameter{
+                    ParameterName="pro_id",
+                    NpgsqlDbType=NpgsqlDbType.Integer,
+                    NpgsqlValue=pro_id
+                },      
+            };
+            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(),parametros);
             foreach (DataRow item in odatos.Tables[0].Rows)
             {
                 Producto.pro_id = Convert.ToInt32(item["pro_id"]);

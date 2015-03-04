@@ -10,7 +10,7 @@ namespace WebService.Conexion.PostGresSQL
         #region Métodos de conexion
 
         // Indica el estado de la persistencia
-        String Estado();
+        bool Estado();
 
         DataSet EjecutarConsultaSQL(String sql);
 
