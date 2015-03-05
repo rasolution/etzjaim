@@ -118,21 +118,10 @@ namespace WebService.Metodos.PostSQL.PostDatabase
             username2 = username2.ToLower();
             Conversaciones conversacion = new Conversaciones();
             StringBuilder sql = new StringBuilder();
-            sql.AppendLine("select * from conversaciones where (username1=@username1 or username2=@username1) and (username1=@username2 or username2=@username2");
-            var parametros = new List<NpgsqlParameter>{
-                    new NpgsqlParameter{
-                        ParameterName="username1",
-                        NpgsqlDbType=NpgsqlDbType.Varchar,
-                        NpgsqlValue=username1,
-                    },
-                    new NpgsqlParameter{
-                        ParameterName="username2",
-                        NpgsqlDbType=NpgsqlDbType.Varchar,
-                        NpgsqlValue=username2,
-                    },
-                };
+            sql.AppendLine("select * from conversaciones where (username1='"+username1+
+                "' or username2='" + username1 + "') and (username1='" + username2 + "' or username2='" + username2 + "')");
 
-            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(), parametros);
+            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString());
             if (odatos == null)
             {
                 conversacion = null;

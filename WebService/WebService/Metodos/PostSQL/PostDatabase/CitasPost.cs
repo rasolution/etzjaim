@@ -164,27 +164,6 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         }
         #endregion
 
-        #region cargarCitasNoAprobadas
-        public List<Cita_Usuario> cargarCitasNoAprobadas()
-        {
-            List<Cita_Usuario> citas = new List<Cita_Usuario>();
-            StringBuilder sql = new StringBuilder();
-            sql.AppendLine("select a.cita_id,a.username,b.user_nombre,b.user_apellidos,b.username,a.cita_fecha,a.cita_estado from citas as a, usuarios as b where a.username=b.username and cita_estado='0'");
-            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString());
-            foreach (DataRow item in odatos.Tables[0].Rows)
-            {
-                Cita_Usuario cita = new Cita_Usuario();
-                cita.cita_id = Convert.ToInt32(item["cita_id"]);
-                cita.user_info = item["user_nombre"].ToString() + " " + item["user_nombre"].ToString();
-                cita.username = item["username"].ToString();
-                cita.cita_fecha = Convert.ToDateTime(item["cita_fecha"]);
-                cita.cita_estado = Convert.ToInt32(item["cita_estado"]);
-                citas.Add(cita);
-            }
-            return citas;
-        }
-        #endregion
-
         #region verificarCita_Fecha
         public bool verficiarCita_Fecha(DateTime cita_fecha)
         {

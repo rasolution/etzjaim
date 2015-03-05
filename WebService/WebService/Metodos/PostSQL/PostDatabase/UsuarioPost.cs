@@ -176,6 +176,29 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         }
         #endregion
 
+        #region habilitarUsuario
+        public void habilitarUsuario(string username,int tipo)
+        {
+            username = username.ToLower();
+            var sql = new StringBuilder();
+            sql.Append("update usuarios set user_tipo='"+tipo+"' where username=@username");
+            var parametros = new List<NpgsqlParameter>
+            {
+                new NpgsqlParameter{
+                    ParameterName="username",
+                    NpgsqlDbType=NpgsqlDbType.Varchar,
+                    NpgsqlValue=username
+                },
+            };
+            AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(), parametros);
+            if (AccesoDatosPost.Instance.accesodatos.IsError)
+            {
+                this.IsError = AccesoDatosPost.Instance.accesodatos.IsError;
+                this.ErrorDescripcion = AccesoDatosPost.Instance.accesodatos.ErrorDescripcion;
+            }
+        }
+        #endregion
+
         #region cambiarContraseña
         public void cambiarContraseña(string username, string password)
         {

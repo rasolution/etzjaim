@@ -29,7 +29,7 @@ namespace WebService
         AccesoDatosPost postgres = new AccesoDatosPost();
         AccesoDatosSQL sqlserver = new AccesoDatosSQL();
         Respuesta response = new Respuesta();
-        string errorMessage = "A ocurrido un error";
+        string errorMessage = "A ocurrido un error ";
         #region testearConexion
         [WebMethod]
         public bool testearConexion()
@@ -162,7 +162,7 @@ namespace WebService
             post.guardarProducto(pro_nombre, pro_precio, pro_estado, pro_foto);
             if (post.IsError)
             {
-                result = "A ocurrido un error " + post.ErrorDescripcion;
+                result = errorMessage + post.ErrorDescripcion;
             }
             else
             {
@@ -184,7 +184,7 @@ namespace WebService
             post.eliminarProducto(pro_id);
             if (post.IsError)
             {
-                result = "A ocurrido un error " + post.ErrorDescripcion;
+                result = errorMessage + post.ErrorDescripcion;
             }
             else
             {
@@ -206,7 +206,7 @@ namespace WebService
             post.editarProducto(pro_id, pro_nombre, pro_precio, pro_estado, pro_foto);
             if (post.IsError)
             {
-                result = "A ocurrido un error " + post.ErrorDescripcion;
+                result = errorMessage + post.ErrorDescripcion;
             }
             else
             {
@@ -244,16 +244,269 @@ namespace WebService
 
         #endregion
 
+        #region MetodosCitas
+
+        #region SolicitarCita
         [WebMethod]
-        public string CargarConversacionesUsuario(string username)
+        public string cita_solicitarCita(string username, DateTime cita_fecha)
+        {
+            string result = "";
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            CitasPost post = new CitasPost();
+            if (post.verficiarCita_Fecha(cita_fecha))
+            {
+                result = "Ya hay una cita aprobada para dicha fecha";
+            }
+            else
+            {
+                post.guardarCita(username, cita_fecha);
+                if (post.Is_error)
+                {
+                    result = errorMessage + post.Error_Descripcion;
+                }
+                else
+                {
+                    result = "La cita se ha solicitado con exito se le informara si su cita ha sido aprobada o rechazada";
+                }
+            }
+            response.response = result;
+            return js.Serialize(response);
+        }
+        #endregion
+
+        #region aprobarCita
+        [WebMethod]
+        public string cita_aprobarCita(int cita_id)
+        {
+            string result = "";
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            CitasPost post = new CitasPost();
+            if (post.verificarCita(cita_id))
+            {
+                result = "La cita ya ha sido aprobada";
+            }
+            else
+            {
+                Cita_Usuario cita = new Cita_Usuario();
+                cita = post.cargarCita(cita_id);
+                 post.aprobarCita(cita_id);
+                if (post.Is_error)
+                {
+                    result = "A ocurrido un error " + post.Error_Descripcion;
+                }
+                else
+                {
+                    string message = "Querido cliente le informamos que su cita ha sido aprobada";
+                    result = "Se ha aprovado la cita se le informara al cliente";
+                    ConversacionesPost convpost = new ConversacionesPost();
+                    Conversaciones conversacion = convpost.verificarConversacion("service", cita.username);
+                    if (conversacion.conv_id == 0)
+                    {
+                        convpost.crearConversacion("service", cita.username);
+                    }
+                    conversacion = convpost.verificarConversacion("service", cita.username);
+                    MensajesPost mespost = new MensajesPost();
+                    mespost.guardarMensaje(conversacion.conv_id, message, "service");
+                    convpost.estadoNoLeido(cita.username,conversacion.conv_id);
+                }
+            }
+            response.response = result;
+            return js.Serialize(response);
+        }
+
+        #endregion
+
+        #region rechazarCita
+        [WebMethod]
+        public string cita_rechazarCita(int cita_id)
+        {
+            string result = "";
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            CitasPost post = new CitasPost();
+            Cita_Usuario cita = new Cita_Usuario();
+            cita = post.cargarCita(cita_id);
+            post.borrarCita(cita_id);
+            if (post.Is_error)
+            {
+                result = "A ocurrido un error " + post.Error_Descripcion;
+            }
+            else
+            {
+                string message = "Querido cliente le informamos que su cita ha sido rechazada, si desea solicitar otra peude hacerlo";
+                result = "Se ha borrado la cita se le informara al cliente";
+                ConversacionesPost convpost = new ConversacionesPost();
+                Conversaciones conversacion = convpost.verificarConversacion("service", cita.username);
+                if (conversacion.conv_id == 0)
+                {
+                    convpost.crearConversacion("service", cita.username);
+                }
+                conversacion = convpost.verificarConversacion("service", cita.username);
+                MensajesPost mespost = new MensajesPost();
+                mespost.guardarMensaje(conversacion.conv_id, message, "service");
+                convpost.estadoNoLeido(cita.username, conversacion.conv_id);
+            }
+
+            response.response = result;
+            return js.Serialize(response);
+
+        }
+        
+        #endregion
+
+        #region cargarCitas
+        [WebMethod]
+        public string cita_cargarCitas()
+        {
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            CitasPost post = new CitasPost();
+            List<Cita_Usuario> citas = post.cargarCitas();
+            return js.Serialize(citas);
+        }
+        #endregion
+
+        #region cargarCita
+        [WebMethod]
+        public string cita_cargarCita(int cita_id)
+        {
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            CitasPost post = new CitasPost();
+            Cita_Usuario cita = post.cargarCita(cita_id);
+            return js.Serialize(cita);
+        }
+        #endregion
+
+        #region cargarCitasAprobadas
+        [WebMethod]
+        public string cita_cargarCitasAprobadas()
+        {
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            CitasPost post = new CitasPost();
+            List<Cita_Usuario> citas = post.cargarCitasAprobadas();
+            return js.Serialize(citas);
+        }
+        #endregion
+
+        #endregion
+
+        #region MetodosConversaciones
+
+        #region CargarConversacionesUsuario
+        [WebMethod]
+        public string conv_CargarConversacionesUsuario(string username)
         {
             ConversacionesPost post = new ConversacionesPost();
             List<Conversaciones> conversaciones =post.cargarConversacionesUsuario(username);
             JavaScriptSerializer js = new JavaScriptSerializer();
             return js.Serialize(conversaciones);
         }
-       
+        #endregion
 
+        #region crearConversacion
+        [WebMethod]
+        public string conv_crearConversacion(string username1, string username2,string message)
+        {        
+            ConversacionesPost post = new ConversacionesPost();
+            MensajesPost messagepost = new MensajesPost();
+            Conversaciones conversacion = post.verificarConversacion(username1, username2);
+            if (conversacion.conv_id == 0)
+            {
+                post.crearConversacion(username1, username2);
+            }
+            conversacion = post.verificarConversacion(username1, username2);
+            messagepost.guardarMensaje(conversacion.conv_id, message, username1);
+            post.estadoNoLeido(username2, conversacion.conv_id);
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(conversacion);
+        }
+        #endregion
+
+        #region CargarConversacion
+        [WebMethod]
+        public string conv_CargarConversacion(int conv_id)
+        {
+            ConversacionesPost post = new ConversacionesPost();
+            Conversaciones conversacion = post.cargarConversacion(conv_id);
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(conversacion);
+        }
+        #endregion
+
+        #region agregarSpam
+        [WebMethod]
+        public string conv_agregarSpam(string username,int conv_id)
+        {
+            string result = "";
+            ConversacionesPost post = new ConversacionesPost();
+            post.agregarSpam(username, conv_id);
+            if (post.IsError)
+            {
+                result = errorMessage + post.ErrorDescripcion;
+            }
+            else
+            {
+                result = "Se ha movido a spam con exito";
+            }
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            response.response = result;
+            return js.Serialize(response);
+        }
+        #endregion
+
+        #region quitarSpam
+        [WebMethod]
+        public string conv_quitarSpam(string username, int conv_id)
+        {
+            string result = "";
+            ConversacionesPost post = new ConversacionesPost();
+            post.quitarSpam(username, conv_id);
+            if (post.IsError)
+            {
+                result = errorMessage + post.ErrorDescripcion;
+            }
+            else
+            {
+                result = "Se ha quitado de spam con exito";
+            }
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            response.response = result;
+            return js.Serialize(response);
+        }
+        #endregion
+
+        #region CargarConversacionesUsuario
+        [WebMethod]
+        public string conv_cargarConversacionesSpamUsuario(string username)
+        {
+            ConversacionesPost post = new ConversacionesPost();
+            List<Conversaciones> conversaciones = post.cargarConversacionesSpamUsuario(username);
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(conversaciones);
+        }
+        #endregion
+
+        #region cargarConversacionesLeidas
+        [WebMethod]
+        public string conv_cargarConversacionesLeidas(string username)
+        {
+            ConversacionesPost post = new ConversacionesPost();
+            List<Conversaciones> conversaciones = post.cargarConversacionesLeidas(username);
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(conversaciones);
+        }
+        #endregion
+
+        #region cargarConversacionesNoLeidas
+        [WebMethod]
+        public string conv_cargarConversacionesNoLeidas(string username)
+        {
+            ConversacionesPost post = new ConversacionesPost();
+            List<Conversaciones> conversaciones = post.cargarConversacionesNoLeidas(username);
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(conversaciones);
+        }
+        #endregion
+
+        #endregion
 
     }
 }

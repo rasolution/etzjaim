@@ -16,11 +16,12 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         public string Error_Descripcion { get; set; }
 
         #region guardarMensaje
-        public void guardarMensaje(int conv_id, string mes_message)
+        public void guardarMensaje(int conv_id, string message,string username)
         {
-            DateTime mes_salida = DateTime.Now;
+            username = username.ToLower();
+            DateTime mes_fecha = DateTime.Now;
             StringBuilder sql = new StringBuilder();
-            sql.AppendLine("insert into mensajes (conv_id,mes_salida,mes_message) values(@conv_id,@mes_salida,@mes_message)");
+            sql.AppendLine("insert into conv_message (conv_id,username,message,mes_fecha) values(@conv_id,@username,@message,@mes_fecha)");
             var parametros = new List<NpgsqlParameter>
             {
                 new NpgsqlParameter{
@@ -28,16 +29,23 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                     NpgsqlDbType=NpgsqlDbType.Integer,
                     NpgsqlValue=conv_id
                 },
-                new NpgsqlParameter{
-                    ParameterName="mes_salida",
-                    NpgsqlDbType=NpgsqlDbType.Timestamp,
-                    NpgsqlValue=mes_salida
-                },
-                new NpgsqlParameter{
-                    ParameterName="mes_message",
+                  new NpgsqlParameter{
+                    ParameterName="username",
                     NpgsqlDbType=NpgsqlDbType.Varchar,
-                    NpgsqlValue=mes_message
+                    NpgsqlValue=username
                 },
+                  new NpgsqlParameter{
+                    ParameterName="message",
+                    NpgsqlDbType=NpgsqlDbType.Varchar,
+                    NpgsqlValue=message
+                },
+                new NpgsqlParameter{
+                    ParameterName="mes_fecha",
+                    NpgsqlDbType=NpgsqlDbType.TimestampTZ,
+                    NpgsqlValue=mes_fecha
+                },
+              
+              
             };
             AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(), parametros);
             if (AccesoDatosPost.Instance.accesodatos.IsError)
