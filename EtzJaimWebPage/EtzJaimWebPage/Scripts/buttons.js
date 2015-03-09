@@ -34,6 +34,42 @@
             }
         });
     });
+    $("#spam").bind("click", function () {
+        var conv_id = $("#conv_id").text();
+        var user = $("#user").text();
+        $.ajax({
+            url: "/WebPage/Conversaciones/moveSpam",
+            type: "POST",
+            data: JSON.stringify({ 'username': user, 'conv_id': conv_id, }),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = JSON.parse(data);
+                alert(data.response);
+            },
+            error: function () {
+                alert("An error has occured!!!");
+            }
+        });
+    });
+    $("#quitspam").bind("click", function () {
+        var conv_id = $("#conv_id").text();
+        var user = $("#user").text();
+        $.ajax({
+            url: "/WebPage/Conversaciones/NoSpam",
+            type: "POST",
+            data: JSON.stringify({'username': user, 'conv_id': conv_id, }),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = JSON.parse(data);
+                alert(data.response);
+            },
+            error: function () {
+                alert("An error has occured!!!");
+            }
+        });
+    });
     $("#enviar").bind("click", function () {
         var user = $("#user").text();
         var conv_id = $("#conv_id").text();

@@ -50,6 +50,16 @@ namespace EtzJaimWebPage
            url: "{controller}/{action}/{pro_id}/{pro_nombre}/{pro_precio}/{pro_estado}",
            defaults: new { controller = "Productos", action = "EditProduct", id = UrlParameter.Optional }
        );
+            routes.MapRoute(
+             name: "moveSpam",
+             url: "{controller}/{action}/{username}/{conv_id}",
+             defaults: new { controller = "Conversaciones", action = "moveSpam", id = UrlParameter.Optional }
+         );
+            routes.MapRoute(
+           name: "NoSpam",
+           url: "{controller}/{action}/{username}/{conv_id}",
+           defaults: new { controller = "Conversaciones", action = "NoSpam", id = UrlParameter.Optional }
+       );
         }
     }
 }

@@ -2,6 +2,9 @@
 @{
     ViewBag.Title = "Cargar";
 }
+<button type="button" class="btn btn-default" id="spam">Agregar Spam</button>
+<button type="button" class="btn btn-default" id="quitspam">Quitar Spam</button>
+<br/>
 <label id="conv_id">@Model.messages[0].conv_id</label>
 <label id="user">@Model.user.username</label>
 <h2></h2>
@@ -15,5 +18,6 @@
         <br />
     }
 </div>
+
 
   

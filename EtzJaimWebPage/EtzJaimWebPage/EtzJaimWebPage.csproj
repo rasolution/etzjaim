@@ -138,6 +138,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="service.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Start\Content\bootstrap.css" />
@@ -305,8 +306,9 @@
     <Content Include="Views\Conversaciones\Send.cshtml" />
     <Content Include="Views\Usuarios\Ajax.cshtml" />
     <None Include="Service References\WebService\WebService.wsdl" />
-    <Content Include="Views\Conversaciones\crearConver.cshtml" />
     <Content Include="Views\Productos\EditProduct.cshtml" />
+    <Content Include="Views\Conversaciones\moveSpam.cshtml" />
+    <Content Include="Views\Conversaciones\NoSpam.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

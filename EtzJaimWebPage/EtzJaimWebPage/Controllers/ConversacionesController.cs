@@ -213,5 +213,19 @@ namespace EtzJaimWebPage.Controllers
             var service = new WebService.WebServiceSoapClient();
             return Json(service.mes_enviarmensaje(conv_id,message,username));
         }
+
+        [HttpPost]
+        public ActionResult moveSpam(string username,int conv_id)
+        {
+            var service = new WebService.WebServiceSoapClient();
+            return Json(service.conv_agregarSpam(username,conv_id));
+        }
+
+        [HttpPost]
+        public ActionResult NoSpam(string username, int conv_id)
+        {
+            var service = new WebService.WebServiceSoapClient();
+            return Json(service.conv_quitarSpam(username,conv_id));
+        }
     }
 }
