@@ -319,7 +319,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                     conversacionesfinal.Add(conversaciones[i]);
                 }
             }
-            return conversaciones;
+            return conversacionesfinal;
         }
         #endregion
 
@@ -340,7 +340,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                     conversacionesfinal.Add(conversaciones[i]);
                 }
             }
-            return conversaciones;
+            return conversacionesfinal;
         }
         #endregion
 
@@ -361,7 +361,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                     conversacionesfinal.Add(conversaciones[i]);
                 }
             }
-            return conversaciones;
+            return conversacionesfinal;
         }
         #endregion
 
@@ -382,7 +382,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                     conversacionesfinal.Add(conversaciones[i]);
                 }
             }
-            return conversaciones;
+            return conversacionesfinal;
 
         }
 

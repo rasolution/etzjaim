@@ -6,9 +6,7 @@
 <h2>Editar Producto</h2>
 <h3>@ViewBag.Message</h3>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+<form id="formeditProduct" action="" method="post">
 
     <div class="form-horizontal">
 
@@ -19,13 +17,13 @@
             <label class="control-label col-md-2" for="pro_nombre">Numero del Producto</label>
 
             <div class="col-md-10">
-                <input class="form-control text-box single-line" id="pro_id" name="pro_id" type="text" placeholder=@Model.pro_id readonly>
+                <input class="form-control text-box single-line" id="pro_id" name="pro_id" type="text" value=@Model.pro_id readonly>
             </div>
 
             <label class="control-label col-md-2" for="pro_nombre">Nombre del Producto</label>
 
             <div class="col-md-10">
-                <input class="form-control text-box single-line" id="pro_precio" name="pro_precio" type="text"  placeholder=@Model.pro_nombre>
+                <input class="form-control text-box single-line" id="pro_nombre" name="pro_nombre" type="text" placeholder=@Model.pro_nombre>
             </div>
 
             <br />
@@ -34,8 +32,8 @@
             <label class="control-label col-md-2" for="pro_precio">Precio</label>
 
             <div class="col-md-10">
-                <input class="form-control text-box single-line" id="pro_precio" name="pro_precio" type="text"  placeholder=@Model.pro_precio>
-            </div> 
+                <input class="form-control text-box single-line" id="pro_precio" name="pro_precio" type="text" placeholder=@Model.pro_precio>
+            </div>
 
             <br />
             <br />
@@ -52,10 +50,10 @@
             <br />
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Edit" class="btn btn-default" />
+                    <button type="button" class="btn btn-default" id="btneditProduct">Editar</button><a href="~/Productos"><button value="Index" class="btn btn-default">Volver</button></a>
                 </div>
             </div>
         </div>
     </div>
-}
-<a href="~/Productos"><button value="Index" class="btn btn-default">Volver</button></a>
+ </form> 
+    

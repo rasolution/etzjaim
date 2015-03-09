@@ -1,0 +1,19 @@
+﻿@model  EtzJaimWebPage.Models.MensajeFinal
+@{
+    ViewBag.Title = "Cargar";
+}
+<label id="conv_id">@Model.messages[0].conv_id</label>
+<label id="user">@Model.user.username</label>
+<h2></h2>
+<h3>Escribe  un mensaje</h3> <input type="text" id="message" /> <button id="enviar" type="button" class="btn btn-default">Enviar</button>
+<div class="pre-scrollable" id="messages">
+    @foreach (var item in @Model.messages)
+    {
+        <h4>@item.username</h4>
+        <h5>@item.mes_fecha</h5>
+        <p>@item.message</p>
+        <br />
+    }
+</div>
+
+  

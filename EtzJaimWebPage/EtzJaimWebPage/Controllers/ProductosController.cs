@@ -192,19 +192,15 @@ namespace EtzJaimWebPage.Controllers
                 }
             }
         }
-
-        [HttpPost, ActionName("Edit")]
-        [ValidateAntiForgeryToken]
-        public ActionResult BorradoConfirmed([Bind(Include = "pro_id,pro_nombre,pro_precio,pro_estado")] Producto product)
+        [HttpPost]
+        public JsonResult EditProduct(int pro_id,string pro_nombre,int pro_precio,int pro_estado)
         {
-           
-                var service = new WebService.WebServiceSoapClient();
-                JavaScriptSerializer js = new JavaScriptSerializer();
-                var datos = js.Deserialize<Respuesta>(service.product_editarProducto(product.pro_id,product.pro_nombre,product.pro_precio,product.pro_estado,product.pro_foto));
-                ViewBag.Message = datos.response;
             
-            return RedirectToAction("Index");
+            var service = new WebService.WebServiceSoapClient();
+            return Json(service.product_editarProducto(pro_id,pro_nombre,pro_precio,pro_estado,null));
         }
+
+        
     }
 
 }

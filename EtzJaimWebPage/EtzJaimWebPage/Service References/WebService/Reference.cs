@@ -70,6 +70,13 @@ namespace EtzJaimWebPage.WebService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/user_delete", ReplyAction="*")]
         System.Threading.Tasks.Task<EtzJaimWebPage.WebService.user_deleteResponse> user_deleteAsync(EtzJaimWebPage.WebService.user_deleteRequest request);
         
+        // CODEGEN: Generating message contract since element name user from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/user_Ajax", ReplyAction="*")]
+        EtzJaimWebPage.WebService.user_AjaxResponse user_Ajax(EtzJaimWebPage.WebService.user_AjaxRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/user_Ajax", ReplyAction="*")]
+        System.Threading.Tasks.Task<EtzJaimWebPage.WebService.user_AjaxResponse> user_AjaxAsync(EtzJaimWebPage.WebService.user_AjaxRequest request);
+        
         // CODEGEN: Generating message contract since element name pro_nombre from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/product_guardarProducto", ReplyAction="*")]
         EtzJaimWebPage.WebService.product_guardarProductoResponse product_guardarProducto(EtzJaimWebPage.WebService.product_guardarProductoRequest request);
@@ -168,6 +175,13 @@ namespace EtzJaimWebPage.WebService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/conv_crearConversacion", ReplyAction="*")]
         System.Threading.Tasks.Task<EtzJaimWebPage.WebService.conv_crearConversacionResponse> conv_crearConversacionAsync(EtzJaimWebPage.WebService.conv_crearConversacionRequest request);
         
+        // CODEGEN: Generating message contract since element name username1 from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/conv_verificarConversacion", ReplyAction="*")]
+        EtzJaimWebPage.WebService.conv_verificarConversacionResponse conv_verificarConversacion(EtzJaimWebPage.WebService.conv_verificarConversacionRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/conv_verificarConversacion", ReplyAction="*")]
+        System.Threading.Tasks.Task<EtzJaimWebPage.WebService.conv_verificarConversacionResponse> conv_verificarConversacionAsync(EtzJaimWebPage.WebService.conv_verificarConversacionRequest request);
+        
         // CODEGEN: Generating message contract since element name conv_CargarConversacionResult from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/conv_CargarConversacion", ReplyAction="*")]
         EtzJaimWebPage.WebService.conv_CargarConversacionResponse conv_CargarConversacion(EtzJaimWebPage.WebService.conv_CargarConversacionRequest request);
@@ -209,6 +223,20 @@ namespace EtzJaimWebPage.WebService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/conv_cargarConversacionesNoLeidas", ReplyAction="*")]
         System.Threading.Tasks.Task<EtzJaimWebPage.WebService.conv_cargarConversacionesNoLeidasResponse> conv_cargarConversacionesNoLeidasAsync(EtzJaimWebPage.WebService.conv_cargarConversacionesNoLeidasRequest request);
+        
+        // CODEGEN: Generating message contract since element name mes_cargarMensajesResult from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/mes_cargarMensajes", ReplyAction="*")]
+        EtzJaimWebPage.WebService.mes_cargarMensajesResponse mes_cargarMensajes(EtzJaimWebPage.WebService.mes_cargarMensajesRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/mes_cargarMensajes", ReplyAction="*")]
+        System.Threading.Tasks.Task<EtzJaimWebPage.WebService.mes_cargarMensajesResponse> mes_cargarMensajesAsync(EtzJaimWebPage.WebService.mes_cargarMensajesRequest request);
+        
+        // CODEGEN: Generating message contract since element name message from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/mes_enviarmensaje", ReplyAction="*")]
+        EtzJaimWebPage.WebService.mes_enviarmensajeResponse mes_enviarmensaje(EtzJaimWebPage.WebService.mes_enviarmensajeRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/mes_enviarmensaje", ReplyAction="*")]
+        System.Threading.Tasks.Task<EtzJaimWebPage.WebService.mes_enviarmensajeResponse> mes_enviarmensajeAsync(EtzJaimWebPage.WebService.mes_enviarmensajeRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -701,6 +729,74 @@ namespace EtzJaimWebPage.WebService {
         
         public user_deleteResponseBody(string user_deleteResult) {
             this.user_deleteResult = user_deleteResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class user_AjaxRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="user_Ajax", Namespace="http://tempuri.org/", Order=0)]
+        public EtzJaimWebPage.WebService.user_AjaxRequestBody Body;
+        
+        public user_AjaxRequest() {
+        }
+        
+        public user_AjaxRequest(EtzJaimWebPage.WebService.user_AjaxRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class user_AjaxRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string user;
+        
+        public user_AjaxRequestBody() {
+        }
+        
+        public user_AjaxRequestBody(string user) {
+            this.user = user;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class user_AjaxResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="user_AjaxResponse", Namespace="http://tempuri.org/", Order=0)]
+        public EtzJaimWebPage.WebService.user_AjaxResponseBody Body;
+        
+        public user_AjaxResponse() {
+        }
+        
+        public user_AjaxResponse(EtzJaimWebPage.WebService.user_AjaxResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class user_AjaxResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string user_AjaxResult;
+        
+        public user_AjaxResponseBody() {
+        }
+        
+        public user_AjaxResponseBody(string user_AjaxResult) {
+            this.user_AjaxResult = user_AjaxResult;
         }
     }
     
@@ -1676,6 +1772,78 @@ namespace EtzJaimWebPage.WebService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class conv_verificarConversacionRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="conv_verificarConversacion", Namespace="http://tempuri.org/", Order=0)]
+        public EtzJaimWebPage.WebService.conv_verificarConversacionRequestBody Body;
+        
+        public conv_verificarConversacionRequest() {
+        }
+        
+        public conv_verificarConversacionRequest(EtzJaimWebPage.WebService.conv_verificarConversacionRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class conv_verificarConversacionRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string username1;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
+        public string username2;
+        
+        public conv_verificarConversacionRequestBody() {
+        }
+        
+        public conv_verificarConversacionRequestBody(string username1, string username2) {
+            this.username1 = username1;
+            this.username2 = username2;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class conv_verificarConversacionResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="conv_verificarConversacionResponse", Namespace="http://tempuri.org/", Order=0)]
+        public EtzJaimWebPage.WebService.conv_verificarConversacionResponseBody Body;
+        
+        public conv_verificarConversacionResponse() {
+        }
+        
+        public conv_verificarConversacionResponse(EtzJaimWebPage.WebService.conv_verificarConversacionResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class conv_verificarConversacionResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string conv_verificarConversacionResult;
+        
+        public conv_verificarConversacionResponseBody() {
+        }
+        
+        public conv_verificarConversacionResponseBody(string conv_verificarConversacionResult) {
+            this.conv_verificarConversacionResult = conv_verificarConversacionResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class conv_CargarConversacionRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="conv_CargarConversacion", Namespace="http://tempuri.org/", Order=0)]
@@ -2088,6 +2256,150 @@ namespace EtzJaimWebPage.WebService {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class mes_cargarMensajesRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="mes_cargarMensajes", Namespace="http://tempuri.org/", Order=0)]
+        public EtzJaimWebPage.WebService.mes_cargarMensajesRequestBody Body;
+        
+        public mes_cargarMensajesRequest() {
+        }
+        
+        public mes_cargarMensajesRequest(EtzJaimWebPage.WebService.mes_cargarMensajesRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class mes_cargarMensajesRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public int conv_id;
+        
+        public mes_cargarMensajesRequestBody() {
+        }
+        
+        public mes_cargarMensajesRequestBody(int conv_id) {
+            this.conv_id = conv_id;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class mes_cargarMensajesResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="mes_cargarMensajesResponse", Namespace="http://tempuri.org/", Order=0)]
+        public EtzJaimWebPage.WebService.mes_cargarMensajesResponseBody Body;
+        
+        public mes_cargarMensajesResponse() {
+        }
+        
+        public mes_cargarMensajesResponse(EtzJaimWebPage.WebService.mes_cargarMensajesResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class mes_cargarMensajesResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string mes_cargarMensajesResult;
+        
+        public mes_cargarMensajesResponseBody() {
+        }
+        
+        public mes_cargarMensajesResponseBody(string mes_cargarMensajesResult) {
+            this.mes_cargarMensajesResult = mes_cargarMensajesResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class mes_enviarmensajeRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="mes_enviarmensaje", Namespace="http://tempuri.org/", Order=0)]
+        public EtzJaimWebPage.WebService.mes_enviarmensajeRequestBody Body;
+        
+        public mes_enviarmensajeRequest() {
+        }
+        
+        public mes_enviarmensajeRequest(EtzJaimWebPage.WebService.mes_enviarmensajeRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class mes_enviarmensajeRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public int conv_id;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
+        public string message;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        public string username;
+        
+        public mes_enviarmensajeRequestBody() {
+        }
+        
+        public mes_enviarmensajeRequestBody(int conv_id, string message, string username) {
+            this.conv_id = conv_id;
+            this.message = message;
+            this.username = username;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class mes_enviarmensajeResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="mes_enviarmensajeResponse", Namespace="http://tempuri.org/", Order=0)]
+        public EtzJaimWebPage.WebService.mes_enviarmensajeResponseBody Body;
+        
+        public mes_enviarmensajeResponse() {
+        }
+        
+        public mes_enviarmensajeResponse(EtzJaimWebPage.WebService.mes_enviarmensajeResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class mes_enviarmensajeResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string mes_enviarmensajeResult;
+        
+        public mes_enviarmensajeResponseBody() {
+        }
+        
+        public mes_enviarmensajeResponseBody(string mes_enviarmensajeResult) {
+            this.mes_enviarmensajeResult = mes_enviarmensajeResult;
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface WebServiceSoapChannel : EtzJaimWebPage.WebService.WebServiceSoap, System.ServiceModel.IClientChannel {
     }
@@ -2306,6 +2618,31 @@ namespace EtzJaimWebPage.WebService {
             inValue.Body = new EtzJaimWebPage.WebService.user_deleteRequestBody();
             inValue.Body.username = username;
             return ((EtzJaimWebPage.WebService.WebServiceSoap)(this)).user_deleteAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        EtzJaimWebPage.WebService.user_AjaxResponse EtzJaimWebPage.WebService.WebServiceSoap.user_Ajax(EtzJaimWebPage.WebService.user_AjaxRequest request) {
+            return base.Channel.user_Ajax(request);
+        }
+        
+        public string user_Ajax(string user) {
+            EtzJaimWebPage.WebService.user_AjaxRequest inValue = new EtzJaimWebPage.WebService.user_AjaxRequest();
+            inValue.Body = new EtzJaimWebPage.WebService.user_AjaxRequestBody();
+            inValue.Body.user = user;
+            EtzJaimWebPage.WebService.user_AjaxResponse retVal = ((EtzJaimWebPage.WebService.WebServiceSoap)(this)).user_Ajax(inValue);
+            return retVal.Body.user_AjaxResult;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<EtzJaimWebPage.WebService.user_AjaxResponse> EtzJaimWebPage.WebService.WebServiceSoap.user_AjaxAsync(EtzJaimWebPage.WebService.user_AjaxRequest request) {
+            return base.Channel.user_AjaxAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<EtzJaimWebPage.WebService.user_AjaxResponse> user_AjaxAsync(string user) {
+            EtzJaimWebPage.WebService.user_AjaxRequest inValue = new EtzJaimWebPage.WebService.user_AjaxRequest();
+            inValue.Body = new EtzJaimWebPage.WebService.user_AjaxRequestBody();
+            inValue.Body.user = user;
+            return ((EtzJaimWebPage.WebService.WebServiceSoap)(this)).user_AjaxAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2673,6 +3010,33 @@ namespace EtzJaimWebPage.WebService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        EtzJaimWebPage.WebService.conv_verificarConversacionResponse EtzJaimWebPage.WebService.WebServiceSoap.conv_verificarConversacion(EtzJaimWebPage.WebService.conv_verificarConversacionRequest request) {
+            return base.Channel.conv_verificarConversacion(request);
+        }
+        
+        public string conv_verificarConversacion(string username1, string username2) {
+            EtzJaimWebPage.WebService.conv_verificarConversacionRequest inValue = new EtzJaimWebPage.WebService.conv_verificarConversacionRequest();
+            inValue.Body = new EtzJaimWebPage.WebService.conv_verificarConversacionRequestBody();
+            inValue.Body.username1 = username1;
+            inValue.Body.username2 = username2;
+            EtzJaimWebPage.WebService.conv_verificarConversacionResponse retVal = ((EtzJaimWebPage.WebService.WebServiceSoap)(this)).conv_verificarConversacion(inValue);
+            return retVal.Body.conv_verificarConversacionResult;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<EtzJaimWebPage.WebService.conv_verificarConversacionResponse> EtzJaimWebPage.WebService.WebServiceSoap.conv_verificarConversacionAsync(EtzJaimWebPage.WebService.conv_verificarConversacionRequest request) {
+            return base.Channel.conv_verificarConversacionAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<EtzJaimWebPage.WebService.conv_verificarConversacionResponse> conv_verificarConversacionAsync(string username1, string username2) {
+            EtzJaimWebPage.WebService.conv_verificarConversacionRequest inValue = new EtzJaimWebPage.WebService.conv_verificarConversacionRequest();
+            inValue.Body = new EtzJaimWebPage.WebService.conv_verificarConversacionRequestBody();
+            inValue.Body.username1 = username1;
+            inValue.Body.username2 = username2;
+            return ((EtzJaimWebPage.WebService.WebServiceSoap)(this)).conv_verificarConversacionAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         EtzJaimWebPage.WebService.conv_CargarConversacionResponse EtzJaimWebPage.WebService.WebServiceSoap.conv_CargarConversacion(EtzJaimWebPage.WebService.conv_CargarConversacionRequest request) {
             return base.Channel.conv_CargarConversacion(request);
         }
@@ -2824,6 +3188,60 @@ namespace EtzJaimWebPage.WebService {
             inValue.Body = new EtzJaimWebPage.WebService.conv_cargarConversacionesNoLeidasRequestBody();
             inValue.Body.username = username;
             return ((EtzJaimWebPage.WebService.WebServiceSoap)(this)).conv_cargarConversacionesNoLeidasAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        EtzJaimWebPage.WebService.mes_cargarMensajesResponse EtzJaimWebPage.WebService.WebServiceSoap.mes_cargarMensajes(EtzJaimWebPage.WebService.mes_cargarMensajesRequest request) {
+            return base.Channel.mes_cargarMensajes(request);
+        }
+        
+        public string mes_cargarMensajes(int conv_id) {
+            EtzJaimWebPage.WebService.mes_cargarMensajesRequest inValue = new EtzJaimWebPage.WebService.mes_cargarMensajesRequest();
+            inValue.Body = new EtzJaimWebPage.WebService.mes_cargarMensajesRequestBody();
+            inValue.Body.conv_id = conv_id;
+            EtzJaimWebPage.WebService.mes_cargarMensajesResponse retVal = ((EtzJaimWebPage.WebService.WebServiceSoap)(this)).mes_cargarMensajes(inValue);
+            return retVal.Body.mes_cargarMensajesResult;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<EtzJaimWebPage.WebService.mes_cargarMensajesResponse> EtzJaimWebPage.WebService.WebServiceSoap.mes_cargarMensajesAsync(EtzJaimWebPage.WebService.mes_cargarMensajesRequest request) {
+            return base.Channel.mes_cargarMensajesAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<EtzJaimWebPage.WebService.mes_cargarMensajesResponse> mes_cargarMensajesAsync(int conv_id) {
+            EtzJaimWebPage.WebService.mes_cargarMensajesRequest inValue = new EtzJaimWebPage.WebService.mes_cargarMensajesRequest();
+            inValue.Body = new EtzJaimWebPage.WebService.mes_cargarMensajesRequestBody();
+            inValue.Body.conv_id = conv_id;
+            return ((EtzJaimWebPage.WebService.WebServiceSoap)(this)).mes_cargarMensajesAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        EtzJaimWebPage.WebService.mes_enviarmensajeResponse EtzJaimWebPage.WebService.WebServiceSoap.mes_enviarmensaje(EtzJaimWebPage.WebService.mes_enviarmensajeRequest request) {
+            return base.Channel.mes_enviarmensaje(request);
+        }
+        
+        public string mes_enviarmensaje(int conv_id, string message, string username) {
+            EtzJaimWebPage.WebService.mes_enviarmensajeRequest inValue = new EtzJaimWebPage.WebService.mes_enviarmensajeRequest();
+            inValue.Body = new EtzJaimWebPage.WebService.mes_enviarmensajeRequestBody();
+            inValue.Body.conv_id = conv_id;
+            inValue.Body.message = message;
+            inValue.Body.username = username;
+            EtzJaimWebPage.WebService.mes_enviarmensajeResponse retVal = ((EtzJaimWebPage.WebService.WebServiceSoap)(this)).mes_enviarmensaje(inValue);
+            return retVal.Body.mes_enviarmensajeResult;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<EtzJaimWebPage.WebService.mes_enviarmensajeResponse> EtzJaimWebPage.WebService.WebServiceSoap.mes_enviarmensajeAsync(EtzJaimWebPage.WebService.mes_enviarmensajeRequest request) {
+            return base.Channel.mes_enviarmensajeAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<EtzJaimWebPage.WebService.mes_enviarmensajeResponse> mes_enviarmensajeAsync(int conv_id, string message, string username) {
+            EtzJaimWebPage.WebService.mes_enviarmensajeRequest inValue = new EtzJaimWebPage.WebService.mes_enviarmensajeRequest();
+            inValue.Body = new EtzJaimWebPage.WebService.mes_enviarmensajeRequestBody();
+            inValue.Body.conv_id = conv_id;
+            inValue.Body.message = message;
+            inValue.Body.username = username;
+            return ((EtzJaimWebPage.WebService.WebServiceSoap)(this)).mes_enviarmensajeAsync(inValue);
         }
     }
 }

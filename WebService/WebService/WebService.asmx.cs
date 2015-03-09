@@ -169,6 +169,18 @@ namespace WebService
         }
         #endregion
 
+        #region user_Ajax
+        [WebMethod]
+        public string user_Ajax(string user)
+        {
+            UsuarioPost post = new UsuarioPost();
+            List<Usuario> usuarios = post.user_Ajax(user);
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(usuarios);
+        }
+        #endregion
+
+
 
         #endregion
 
@@ -409,6 +421,7 @@ namespace WebService
         #endregion
 
 
+
         #region cargarCitasPendientes
         [WebMethod]
         public string cita_cargarCitasPendientes()
@@ -448,6 +461,17 @@ namespace WebService
             conversacion = post.verificarConversacion(username1, username2);
             messagepost.guardarMensaje(conversacion.conv_id, message, username1);
             post.estadoNoLeido(username2, conversacion.conv_id);
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(conversacion);
+        }
+        #endregion
+
+        #region verificarConversacion
+        [WebMethod]
+        public string conv_verificarConversacion(string username1,string username2)
+        {
+            ConversacionesPost post = new ConversacionesPost();
+            Conversaciones conversacion = post.verificarConversacion(username1, username2);
             JavaScriptSerializer js = new JavaScriptSerializer();
             return js.Serialize(conversacion);
         }
@@ -539,6 +563,31 @@ namespace WebService
         }
         #endregion
 
+        #endregion
+
+        #region metodosMensajes
+        #region cargarMensajes
+        [WebMethod]
+        public string mes_cargarMensajes(int conv_id)
+        {          
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            MensajesPost post = new MensajesPost();
+            List<Conv_Message> messages = post.cargarMensajes(conv_id);
+            return js.Serialize(messages);
+        }
+        #endregion
+
+        #region enviarMensaje
+        [WebMethod]
+        public string mes_enviarmensaje(int conv_id,string message,string username)
+        {
+            MensajesPost post = new MensajesPost();
+            
+            post.guardarMensaje(conv_id, message, username);
+            return "enviado";
+        }
+
+        #endregion
         #endregion
 
     }

@@ -270,6 +270,30 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         }
         #endregion
 
+        
+
+
+            #region User Ajax
+        public List<Usuario> user_Ajax(string character)
+        {
+            var sql = new StringBuilder();
+            sql.AppendLine("select * from usuarios where user_tipo < '2' and username LIKE '%"+character+"%' ");
+            List<Usuario> usuarios = new List<Usuario>();
+            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString());
+            foreach (DataRow item in odatos.Tables[0].Rows)
+            {
+                usuarios.Add(new Usuario()
+                {
+                    username = item["username"].ToString(),
+                   
+                    nombre = item["user_nombre"].ToString(),
+                    apellidos = item["user_apellidos"].ToString(),
+                    tipo = Convert.ToInt32(item["user_tipo"]),
+                });
+            }
+            return usuarios;
+        }
+        #endregion
         public string encriptacion(string password)
         {
             MD5CryptoServiceProvider provider = new MD5CryptoServiceProvider();

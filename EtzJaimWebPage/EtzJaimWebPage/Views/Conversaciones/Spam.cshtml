@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Spam";
+}
+
+<h2>Spam</h2>
+<a href="~/Conversaciones"><button class="btn btn-default">Conversaciones</button></a>
+<a href="~/Conversaciones/Leidas"><button class="btn btn-default">Leidas</button></a>
+<a href="~/Conversaciones/NoLeidas"><button class="btn btn-default">No Leidas</button></a>
+<a href="~/Conversaciones/Spam"><button class="btn btn-default">Spam</button></a>
+<br />
+<table class="table">
+    <tr>
+        <th>
+            Usuario
+        </th>
+        
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <a href="/WebPage/Conversaciones/Cargar?conv_id=@item.conv_id">@item.username2</a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+
+

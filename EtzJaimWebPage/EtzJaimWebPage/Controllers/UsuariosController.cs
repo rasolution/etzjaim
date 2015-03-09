@@ -15,7 +15,7 @@ namespace EtzJaimWebPage.Controllers
         #region index
         public ActionResult Index()
         {
-           if (Session["user"] == null)
+            if (Session["user"] == null)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -81,7 +81,7 @@ namespace EtzJaimWebPage.Controllers
                 }
             }
         }
-        #endregion 
+        #endregion
 
         #region ChangepaswwordView
 
@@ -117,13 +117,13 @@ namespace EtzJaimWebPage.Controllers
         #region CreateFunciont
         [HttpPost, ActionName("Password")]
         [ValidateAntiForgeryToken]
-        public ActionResult PasswordConfirmed(string username,string password)
+        public ActionResult PasswordConfirmed(string username, string password)
         {
             if (ModelState.IsValid)
             {
                 var service = new WebService.WebServiceSoapClient();
                 JavaScriptSerializer js = new JavaScriptSerializer();
-                var datos = js.Deserialize<Respuesta>(service.user_CambiarContraseña(username,password));
+                var datos = js.Deserialize<Respuesta>(service.user_CambiarContraseña(username, password));
                 ViewBag.Message = datos.response;
                 return RedirectToAction("Index");
             }
@@ -140,16 +140,17 @@ namespace EtzJaimWebPage.Controllers
             {
                 var service = new WebService.WebServiceSoapClient();
                 JavaScriptSerializer js = new JavaScriptSerializer();
-                var datos = js.Deserialize<Respuesta>(service.user_Save(user.username,user.password,user.nombre,user.apellidos,user.tipo));
-                ViewBag.Message=datos.response;
-                
+                var datos = js.Deserialize<Respuesta>(service.user_Save(user.username, user.password, user.nombre, user.apellidos, user.tipo));
+                ViewBag.Message = datos.response;
+
             }
             return View();
         }
-        #endregion 
+        #endregion
 
         #region user
-        public ActionResult User(string username){
+        public ActionResult User(string username)
+        {
             if (Session["user"] == null)
             {
                 return RedirectToAction("Index", "Home");
@@ -205,9 +206,9 @@ namespace EtzJaimWebPage.Controllers
                 }
             }
         }
-        
 
-        [HttpPost,ActionName("Borrar")]
+
+        [HttpPost, ActionName("Borrar")]
         [ValidateAntiForgeryToken]
         public ActionResult BorradoConfirmed(string username)
         {
@@ -224,6 +225,14 @@ namespace EtzJaimWebPage.Controllers
         {
             return RedirectToAction("Index");
         }
-    }
+
         #endregion
+
+        [HttpPost]
+        public JsonResult Ajax(string user)
+        {
+            var service = new WebService.WebServiceSoapClient();
+            return Json(service.user_Ajax(user));
+        }
+    }
 }

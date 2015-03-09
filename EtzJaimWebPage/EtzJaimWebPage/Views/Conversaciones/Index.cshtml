@@ -1,0 +1,54 @@
+﻿@model List<EtzJaimWebPage.Models.Conversaciones>
+@{
+    ViewBag.Title = "Conversaciones";
+}
+
+<h2>Conversaciones</h2>
+<h3>Conversar Con</h3>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="col-md-6">
+            <input class="form-control text-box single-line" id="search" name="search" onkeyup="Search(this.value)"/>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+
+                    <button type="submit" value="crearConver" class="btn btn-default" >Conversar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<br/>
+<br/>
+<div>
+    <a href="~/Conversaciones"><button class="btn btn-default">Conversaciones</button></a>
+    <a href="~/Conversaciones/Leidas"><button class="btn btn-default">Leidas</button></a>
+    <a href="~/Conversaciones/NoLeidas"><button class="btn btn-default">No Leidas</button></a>
+    <a href="~/Conversaciones/Spam"><button class="btn btn-default">Spam</button></a>
+</div>
+<br />
+<table class="table">
+    <tr>
+        <th>
+            Usuario
+        </th>
+        
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(""+@item.username2, "Cargar", new { conv_id = item.conv_id })
+            </td>
+        </tr>
+    }
+
+</table>
+
+
