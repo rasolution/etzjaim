@@ -1,0 +1,49 @@
+﻿@model EtzJaimWebPage.Models.Cita
+@{
+    ViewBag.Title = "Solicitar";
+}
+
+<h2>Solicitar</h2>
+<h3>@ViewBag.Message</h3>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <br />
+
+            @Html.LabelFor(model => model.cita_fecha, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" id="fecha" name="fecha" type="date">
+                <select class="form-control text-box single-line" id="hora" name="hora">
+                    <option value="08:00:00">08:00 am</option>
+                    <option value="09:00:00">09:00 am</option>
+                    <option value="10:00:00">10:00 am</option>
+                    <option value="11:00:00">11:00 am</option>
+                    <option value="12:00:00">12:00 pm</option>
+                    <option value="13:00:00">01:00 pm</option>
+                    <option value="14:00:00">02:00 pm</option>
+                    <option value="15:00:00">03:00 pm</option>
+                    <option value="16:00:00">04:00 pm</option>
+                    <option value="17:00:00">05:00 pm</option>
+                </select>
+            </div>
+        </div>
+      
+        <br />
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Solicitar" class="btn btn-default" />
+            </div>
+        </div>
+    
+        </div>
+}
+<a href="~/Home/Cliente"><button value="Index" class="btn btn-default">Volver</button></a>
+

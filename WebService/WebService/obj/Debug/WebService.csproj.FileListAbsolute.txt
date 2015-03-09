@@ -89,3 +89,9 @@ C:\Users\Casa-PC\Dropbox\etzjaim\WebService\WebService\bin\zh-CN\Npgsql.resource
 C:\Users\Casa-PC\Dropbox\etzjaim\WebService\WebService\obj\Debug\WebService.csprojResolveAssemblyReference.cache
 C:\Users\Casa-PC\Dropbox\etzjaim\WebService\WebService\obj\Debug\WebService.dll
 C:\Users\Casa-PC\Dropbox\etzjaim\WebService\WebService\obj\Debug\WebService.pdb
+C:\inetpub\wwwroot\etzjaim\WebService\WebService\bin\EntityFramework.dll
+C:\inetpub\wwwroot\etzjaim\WebService\WebService\bin\EntityFramework.SqlServer.dll
+C:\inetpub\wwwroot\etzjaim\WebService\WebService\bin\Npgsql.EntityFramework.dll
+C:\inetpub\wwwroot\etzjaim\WebService\WebService\bin\EntityFramework.xml
+C:\inetpub\wwwroot\etzjaim\WebService\WebService\bin\EntityFramework.SqlServer.xml
+C:\inetpub\wwwroot\etzjaim\WebService\WebService\bin\Npgsql.EntityFramework.xml

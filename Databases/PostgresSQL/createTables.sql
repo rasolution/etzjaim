@@ -15,7 +15,6 @@ ALTER TABLE usuarios
 GRANT ALL ON TABLE usuarios TO etzjaim;
 GRANT ALL ON TABLE usuarios TO public;
 
-
 CREATE TABLE productos
 (
   pro_id serial NOT NULL,
@@ -32,23 +31,6 @@ ALTER TABLE productos
   OWNER TO etzjaim;
 GRANT ALL ON TABLE productos TO etzjaim;
 GRANT ALL ON TABLE productos TO public;
-
-CREATE TABLE notificaciones
-(
-  noti_id serial NOT NULL,
-  noti_difusion character varying(255),
-  noti_estado integer,
-  CONSTRAINT pk_notifications PRIMARY KEY (noti_id)
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE notificaciones
-  OWNER TO etzjaim;
-GRANT ALL ON TABLE notificaciones TO etzjaim;
-GRANT ALL ON TABLE notificaciones TO public;
-
-
 
 CREATE TABLE conversaciones
 (
@@ -96,8 +78,9 @@ CREATE TABLE citas
 (
   cita_id serial NOT NULL,
   username character varying(255),
-  cita_fecha timestamp with time zone,
   cita_estado integer,
+  cita_fecha character varying(255),
+  cita_hora character varying(255),
   CONSTRAINT pk_meeting PRIMARY KEY (cita_id),
   CONSTRAINT fk_usuario FOREIGN KEY (username)
       REFERENCES usuarios (username) MATCH SIMPLE
@@ -129,5 +112,17 @@ ALTER TABLE alarmas
   OWNER TO etzjaim;
 GRANT ALL ON TABLE alarmas TO etzjaim;
 GRANT ALL ON TABLE alarmas TO public;
-
-
+CREATE TABLE notificaciones
+(
+  noti_id serial NOT NULL,
+  noti_difusion character varying(255),
+  noti_estado integer,
+  CONSTRAINT pk_notifications PRIMARY KEY (noti_id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE notificaciones
+  OWNER TO etzjaim;
+GRANT ALL ON TABLE notificaciones TO etzjaim;
+GRANT ALL ON TABLE notificaciones TO public;

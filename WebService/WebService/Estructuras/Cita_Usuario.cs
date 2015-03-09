@@ -13,7 +13,10 @@ namespace WebService.Estructuras
 
         public string user_info { get; set; }
 
-        public DateTime cita_fecha { get; set; }
+        public string cita_fecha { set; get; }
+
+        public string cita_hora { set; get; }
+
 
         public int cita_estado { get; set; }
     }

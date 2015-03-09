@@ -1,0 +1,55 @@
+﻿@model List<EtzJaimWebPage.Models.Producto>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Productos</h2>
+<a href="~/Productos/Create"><button class="btn btn-default">Crear Producto</button></a>
+<br />
+<table class="table">
+    <tr>
+        <th>
+            ID
+        </th>
+        <th>
+            Nombre
+        </th>
+        <th>
+            Precio
+        </th>
+        <th>
+            Estado
+        </th>
+        
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.pro_id
+            </td>
+            <td>
+                @item.pro_nombre
+            </td>
+            <td>
+                @item.pro_precio
+            </td>
+            @if (item.pro_estado == 1)
+            {
+                <td>Inactivo</td>
+            }
+            @if (item.pro_estado == 0)
+            {
+                <td>Activo</td>}
+            <td>
+
+                @Html.ActionLink("Borrar", "Borrar", new { pro_id = item.pro_id }) |
+                @Html.ActionLink("Ver", "Product", new { pro_id = item.pro_id }) |
+                @Html.ActionLink("Editar", "Edit", new { pro_id = item.pro_id })
+            </td>
+        </tr>
+    }
+
+</table>

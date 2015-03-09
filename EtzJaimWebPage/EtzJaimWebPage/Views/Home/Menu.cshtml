@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Menu";
+}
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+
+
+    <div class="navbar">
+        <ul class="nav navbar-nav">
+
+            <li>@Html.ActionLink("Usuarios", "Index", "Usuarios")</li>
+            <li>@Html.ActionLink("Productos", "Index", "Productos")</li>
+            <li>@Html.ActionLink("Citas", "Index", "Citas")</li>
+
+        </ul>
+    </div>
+

@@ -1,0 +1,75 @@
+﻿@model List<EtzJaimWebPage.Models.Cita_Usuario>
+
+@{
+    ViewBag.Title = "Citas";
+}
+
+<h2>Citas</h2>
+<br />
+
+
+    <a href="~/Citas/Aprobadas"><button value="Aprobadas" class="btn btn-default">Aprobadas</button></a>
+    <a href="~/Citas/Pendientes"><button value="Pendientes" class="btn btn-default">Pendientes</button></a>
+
+
+<br />
+
+<table class="table">
+    <tr>
+        <th>
+            Numero de Cita
+        </th>
+        <th>
+            Usuario
+        </th>
+        <th>
+            Info
+        </th>
+        <th>
+            Fecha
+        </th>
+        <th>
+            Hora
+        </th>
+        <th>
+            Estado
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.cita_id
+            </td>
+            <td>
+                @item.username
+            </td>
+            <td>
+                @item.user_info
+            </td>
+            <td>
+                @item.cita_fecha
+            </td>
+            <td>
+                @item.cita_hora
+            </td>
+
+            @if (item.cita_estado == 1)
+            {
+                <td>Aprobada</td>
+            }
+            @if (item.cita_estado == 0)
+            {
+                <td>Pendiente</td>}
+            <td>
+                @Html.ActionLink("Cargar", "Cargar", new { cita_id = item.cita_id }) 
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+

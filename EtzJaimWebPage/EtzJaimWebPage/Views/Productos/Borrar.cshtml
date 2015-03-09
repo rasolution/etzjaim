@@ -1,0 +1,16 @@
+﻿@model EtzJaimWebPage.Models.Producto
+@{
+    ViewBag.Title = "Borrar";
+}
+
+<h2>Borrar</h2>
+<h3>Esta seguro que desea borrarlo?</h3>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-actions no-color">
+        <input type="submit" value="Borrar" class="btn btn-default" /> 
+    </div>
+    <a href="~/Productos"><button value="Index" class="btn btn-default">Volver</button></a>
+}

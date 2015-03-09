@@ -1,0 +1,1194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="testearConexion">
+        <s:complexType />
+      </s:element>
+      <s:element name="testearConexionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="testearConexionResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="user_Login">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="user_LoginResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="user_LoginResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="user_Save">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nombre" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apellidos" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="tipo" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="user_SaveResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="user_SaveResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="user_CambiarContraseña">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="user_CambiarContraseñaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="user_CambiarContraseñaResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="user_CargarUsuarios">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="tipo" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="user_CargarUsuariosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="user_CargarUsuariosResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="user_CargarUsuario">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="user_CargarUsuarioResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="user_CargarUsuarioResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="user_CargarUsuariosTodos">
+        <s:complexType />
+      </s:element>
+      <s:element name="user_CargarUsuariosTodosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="user_CargarUsuariosTodosResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="user_delete">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="user_deleteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="user_deleteResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="product_guardarProducto">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pro_nombre" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pro_precio" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="pro_estado" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="pro_foto" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="product_guardarProductoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="product_guardarProductoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="product_eliminarCliente">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="pro_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="product_eliminarClienteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="product_eliminarClienteResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="product_editarProducto">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="pro_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="pro_nombre" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pro_precio" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="pro_estado" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="pro_foto" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="product_editarProductoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="product_editarProductoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="product_cargarProductos">
+        <s:complexType />
+      </s:element>
+      <s:element name="product_cargarProductosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="product_cargarProductosResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="product_cargarProducto">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="pro_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="product_cargarProductoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="product_cargarProductoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="cita_solicitarCita">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cita_fecha" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cita_hora" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="cita_solicitarCitaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cita_solicitarCitaResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="cita_aprobarCita">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="cita_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="cita_aprobarCitaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cita_aprobarCitaResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="cita_rechazarCita">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="cita_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="cita_rechazarCitaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cita_rechazarCitaResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="cita_cargarCitas">
+        <s:complexType />
+      </s:element>
+      <s:element name="cita_cargarCitasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cita_cargarCitasResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="cita_cargarCita">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="cita_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="cita_cargarCitaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cita_cargarCitaResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="cita_cargarCitasAprobadas">
+        <s:complexType />
+      </s:element>
+      <s:element name="cita_cargarCitasAprobadasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cita_cargarCitasAprobadasResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="cita_cargarCitasPendientes">
+        <s:complexType />
+      </s:element>
+      <s:element name="cita_cargarCitasPendientesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cita_cargarCitasPendientesResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="conv_CargarConversacionesUsuario">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="conv_CargarConversacionesUsuarioResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="conv_CargarConversacionesUsuarioResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="conv_crearConversacion">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="username2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="message" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="conv_crearConversacionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="conv_crearConversacionResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="conv_CargarConversacion">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="conv_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="conv_CargarConversacionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="conv_CargarConversacionResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="conv_agregarSpam">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="conv_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="conv_agregarSpamResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="conv_agregarSpamResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="conv_quitarSpam">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="conv_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="conv_quitarSpamResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="conv_quitarSpamResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="conv_cargarConversacionesSpamUsuario">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="conv_cargarConversacionesSpamUsuarioResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="conv_cargarConversacionesSpamUsuarioResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="conv_cargarConversacionesLeidas">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="conv_cargarConversacionesLeidasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="conv_cargarConversacionesLeidasResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="conv_cargarConversacionesNoLeidas">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="conv_cargarConversacionesNoLeidasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="conv_cargarConversacionesNoLeidasResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="testearConexionSoapIn">
+    <wsdl:part name="parameters" element="tns:testearConexion" />
+  </wsdl:message>
+  <wsdl:message name="testearConexionSoapOut">
+    <wsdl:part name="parameters" element="tns:testearConexionResponse" />
+  </wsdl:message>
+  <wsdl:message name="user_LoginSoapIn">
+    <wsdl:part name="parameters" element="tns:user_Login" />
+  </wsdl:message>
+  <wsdl:message name="user_LoginSoapOut">
+    <wsdl:part name="parameters" element="tns:user_LoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="user_SaveSoapIn">
+    <wsdl:part name="parameters" element="tns:user_Save" />
+  </wsdl:message>
+  <wsdl:message name="user_SaveSoapOut">
+    <wsdl:part name="parameters" element="tns:user_SaveResponse" />
+  </wsdl:message>
+  <wsdl:message name="user_CambiarContraseñaSoapIn">
+    <wsdl:part name="parameters" element="tns:user_CambiarContraseña" />
+  </wsdl:message>
+  <wsdl:message name="user_CambiarContraseñaSoapOut">
+    <wsdl:part name="parameters" element="tns:user_CambiarContraseñaResponse" />
+  </wsdl:message>
+  <wsdl:message name="user_CargarUsuariosSoapIn">
+    <wsdl:part name="parameters" element="tns:user_CargarUsuarios" />
+  </wsdl:message>
+  <wsdl:message name="user_CargarUsuariosSoapOut">
+    <wsdl:part name="parameters" element="tns:user_CargarUsuariosResponse" />
+  </wsdl:message>
+  <wsdl:message name="user_CargarUsuarioSoapIn">
+    <wsdl:part name="parameters" element="tns:user_CargarUsuario" />
+  </wsdl:message>
+  <wsdl:message name="user_CargarUsuarioSoapOut">
+    <wsdl:part name="parameters" element="tns:user_CargarUsuarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="user_CargarUsuariosTodosSoapIn">
+    <wsdl:part name="parameters" element="tns:user_CargarUsuariosTodos" />
+  </wsdl:message>
+  <wsdl:message name="user_CargarUsuariosTodosSoapOut">
+    <wsdl:part name="parameters" element="tns:user_CargarUsuariosTodosResponse" />
+  </wsdl:message>
+  <wsdl:message name="user_deleteSoapIn">
+    <wsdl:part name="parameters" element="tns:user_delete" />
+  </wsdl:message>
+  <wsdl:message name="user_deleteSoapOut">
+    <wsdl:part name="parameters" element="tns:user_deleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="product_guardarProductoSoapIn">
+    <wsdl:part name="parameters" element="tns:product_guardarProducto" />
+  </wsdl:message>
+  <wsdl:message name="product_guardarProductoSoapOut">
+    <wsdl:part name="parameters" element="tns:product_guardarProductoResponse" />
+  </wsdl:message>
+  <wsdl:message name="product_eliminarClienteSoapIn">
+    <wsdl:part name="parameters" element="tns:product_eliminarCliente" />
+  </wsdl:message>
+  <wsdl:message name="product_eliminarClienteSoapOut">
+    <wsdl:part name="parameters" element="tns:product_eliminarClienteResponse" />
+  </wsdl:message>
+  <wsdl:message name="product_editarProductoSoapIn">
+    <wsdl:part name="parameters" element="tns:product_editarProducto" />
+  </wsdl:message>
+  <wsdl:message name="product_editarProductoSoapOut">
+    <wsdl:part name="parameters" element="tns:product_editarProductoResponse" />
+  </wsdl:message>
+  <wsdl:message name="product_cargarProductosSoapIn">
+    <wsdl:part name="parameters" element="tns:product_cargarProductos" />
+  </wsdl:message>
+  <wsdl:message name="product_cargarProductosSoapOut">
+    <wsdl:part name="parameters" element="tns:product_cargarProductosResponse" />
+  </wsdl:message>
+  <wsdl:message name="product_cargarProductoSoapIn">
+    <wsdl:part name="parameters" element="tns:product_cargarProducto" />
+  </wsdl:message>
+  <wsdl:message name="product_cargarProductoSoapOut">
+    <wsdl:part name="parameters" element="tns:product_cargarProductoResponse" />
+  </wsdl:message>
+  <wsdl:message name="cita_solicitarCitaSoapIn">
+    <wsdl:part name="parameters" element="tns:cita_solicitarCita" />
+  </wsdl:message>
+  <wsdl:message name="cita_solicitarCitaSoapOut">
+    <wsdl:part name="parameters" element="tns:cita_solicitarCitaResponse" />
+  </wsdl:message>
+  <wsdl:message name="cita_aprobarCitaSoapIn">
+    <wsdl:part name="parameters" element="tns:cita_aprobarCita" />
+  </wsdl:message>
+  <wsdl:message name="cita_aprobarCitaSoapOut">
+    <wsdl:part name="parameters" element="tns:cita_aprobarCitaResponse" />
+  </wsdl:message>
+  <wsdl:message name="cita_rechazarCitaSoapIn">
+    <wsdl:part name="parameters" element="tns:cita_rechazarCita" />
+  </wsdl:message>
+  <wsdl:message name="cita_rechazarCitaSoapOut">
+    <wsdl:part name="parameters" element="tns:cita_rechazarCitaResponse" />
+  </wsdl:message>
+  <wsdl:message name="cita_cargarCitasSoapIn">
+    <wsdl:part name="parameters" element="tns:cita_cargarCitas" />
+  </wsdl:message>
+  <wsdl:message name="cita_cargarCitasSoapOut">
+    <wsdl:part name="parameters" element="tns:cita_cargarCitasResponse" />
+  </wsdl:message>
+  <wsdl:message name="cita_cargarCitaSoapIn">
+    <wsdl:part name="parameters" element="tns:cita_cargarCita" />
+  </wsdl:message>
+  <wsdl:message name="cita_cargarCitaSoapOut">
+    <wsdl:part name="parameters" element="tns:cita_cargarCitaResponse" />
+  </wsdl:message>
+  <wsdl:message name="cita_cargarCitasAprobadasSoapIn">
+    <wsdl:part name="parameters" element="tns:cita_cargarCitasAprobadas" />
+  </wsdl:message>
+  <wsdl:message name="cita_cargarCitasAprobadasSoapOut">
+    <wsdl:part name="parameters" element="tns:cita_cargarCitasAprobadasResponse" />
+  </wsdl:message>
+  <wsdl:message name="cita_cargarCitasPendientesSoapIn">
+    <wsdl:part name="parameters" element="tns:cita_cargarCitasPendientes" />
+  </wsdl:message>
+  <wsdl:message name="cita_cargarCitasPendientesSoapOut">
+    <wsdl:part name="parameters" element="tns:cita_cargarCitasPendientesResponse" />
+  </wsdl:message>
+  <wsdl:message name="conv_CargarConversacionesUsuarioSoapIn">
+    <wsdl:part name="parameters" element="tns:conv_CargarConversacionesUsuario" />
+  </wsdl:message>
+  <wsdl:message name="conv_CargarConversacionesUsuarioSoapOut">
+    <wsdl:part name="parameters" element="tns:conv_CargarConversacionesUsuarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="conv_crearConversacionSoapIn">
+    <wsdl:part name="parameters" element="tns:conv_crearConversacion" />
+  </wsdl:message>
+  <wsdl:message name="conv_crearConversacionSoapOut">
+    <wsdl:part name="parameters" element="tns:conv_crearConversacionResponse" />
+  </wsdl:message>
+  <wsdl:message name="conv_CargarConversacionSoapIn">
+    <wsdl:part name="parameters" element="tns:conv_CargarConversacion" />
+  </wsdl:message>
+  <wsdl:message name="conv_CargarConversacionSoapOut">
+    <wsdl:part name="parameters" element="tns:conv_CargarConversacionResponse" />
+  </wsdl:message>
+  <wsdl:message name="conv_agregarSpamSoapIn">
+    <wsdl:part name="parameters" element="tns:conv_agregarSpam" />
+  </wsdl:message>
+  <wsdl:message name="conv_agregarSpamSoapOut">
+    <wsdl:part name="parameters" element="tns:conv_agregarSpamResponse" />
+  </wsdl:message>
+  <wsdl:message name="conv_quitarSpamSoapIn">
+    <wsdl:part name="parameters" element="tns:conv_quitarSpam" />
+  </wsdl:message>
+  <wsdl:message name="conv_quitarSpamSoapOut">
+    <wsdl:part name="parameters" element="tns:conv_quitarSpamResponse" />
+  </wsdl:message>
+  <wsdl:message name="conv_cargarConversacionesSpamUsuarioSoapIn">
+    <wsdl:part name="parameters" element="tns:conv_cargarConversacionesSpamUsuario" />
+  </wsdl:message>
+  <wsdl:message name="conv_cargarConversacionesSpamUsuarioSoapOut">
+    <wsdl:part name="parameters" element="tns:conv_cargarConversacionesSpamUsuarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="conv_cargarConversacionesLeidasSoapIn">
+    <wsdl:part name="parameters" element="tns:conv_cargarConversacionesLeidas" />
+  </wsdl:message>
+  <wsdl:message name="conv_cargarConversacionesLeidasSoapOut">
+    <wsdl:part name="parameters" element="tns:conv_cargarConversacionesLeidasResponse" />
+  </wsdl:message>
+  <wsdl:message name="conv_cargarConversacionesNoLeidasSoapIn">
+    <wsdl:part name="parameters" element="tns:conv_cargarConversacionesNoLeidas" />
+  </wsdl:message>
+  <wsdl:message name="conv_cargarConversacionesNoLeidasSoapOut">
+    <wsdl:part name="parameters" element="tns:conv_cargarConversacionesNoLeidasResponse" />
+  </wsdl:message>
+  <wsdl:portType name="WebServiceSoap">
+    <wsdl:operation name="testearConexion">
+      <wsdl:input message="tns:testearConexionSoapIn" />
+      <wsdl:output message="tns:testearConexionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="user_Login">
+      <wsdl:input message="tns:user_LoginSoapIn" />
+      <wsdl:output message="tns:user_LoginSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="user_Save">
+      <wsdl:input message="tns:user_SaveSoapIn" />
+      <wsdl:output message="tns:user_SaveSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="user_CambiarContraseña">
+      <wsdl:input message="tns:user_CambiarContraseñaSoapIn" />
+      <wsdl:output message="tns:user_CambiarContraseñaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="user_CargarUsuarios">
+      <wsdl:input message="tns:user_CargarUsuariosSoapIn" />
+      <wsdl:output message="tns:user_CargarUsuariosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="user_CargarUsuario">
+      <wsdl:input message="tns:user_CargarUsuarioSoapIn" />
+      <wsdl:output message="tns:user_CargarUsuarioSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="user_CargarUsuariosTodos">
+      <wsdl:input message="tns:user_CargarUsuariosTodosSoapIn" />
+      <wsdl:output message="tns:user_CargarUsuariosTodosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="user_delete">
+      <wsdl:input message="tns:user_deleteSoapIn" />
+      <wsdl:output message="tns:user_deleteSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="product_guardarProducto">
+      <wsdl:input message="tns:product_guardarProductoSoapIn" />
+      <wsdl:output message="tns:product_guardarProductoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="product_eliminarCliente">
+      <wsdl:input message="tns:product_eliminarClienteSoapIn" />
+      <wsdl:output message="tns:product_eliminarClienteSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="product_editarProducto">
+      <wsdl:input message="tns:product_editarProductoSoapIn" />
+      <wsdl:output message="tns:product_editarProductoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="product_cargarProductos">
+      <wsdl:input message="tns:product_cargarProductosSoapIn" />
+      <wsdl:output message="tns:product_cargarProductosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="product_cargarProducto">
+      <wsdl:input message="tns:product_cargarProductoSoapIn" />
+      <wsdl:output message="tns:product_cargarProductoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="cita_solicitarCita">
+      <wsdl:input message="tns:cita_solicitarCitaSoapIn" />
+      <wsdl:output message="tns:cita_solicitarCitaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="cita_aprobarCita">
+      <wsdl:input message="tns:cita_aprobarCitaSoapIn" />
+      <wsdl:output message="tns:cita_aprobarCitaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="cita_rechazarCita">
+      <wsdl:input message="tns:cita_rechazarCitaSoapIn" />
+      <wsdl:output message="tns:cita_rechazarCitaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="cita_cargarCitas">
+      <wsdl:input message="tns:cita_cargarCitasSoapIn" />
+      <wsdl:output message="tns:cita_cargarCitasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="cita_cargarCita">
+      <wsdl:input message="tns:cita_cargarCitaSoapIn" />
+      <wsdl:output message="tns:cita_cargarCitaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="cita_cargarCitasAprobadas">
+      <wsdl:input message="tns:cita_cargarCitasAprobadasSoapIn" />
+      <wsdl:output message="tns:cita_cargarCitasAprobadasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="cita_cargarCitasPendientes">
+      <wsdl:input message="tns:cita_cargarCitasPendientesSoapIn" />
+      <wsdl:output message="tns:cita_cargarCitasPendientesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="conv_CargarConversacionesUsuario">
+      <wsdl:input message="tns:conv_CargarConversacionesUsuarioSoapIn" />
+      <wsdl:output message="tns:conv_CargarConversacionesUsuarioSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="conv_crearConversacion">
+      <wsdl:input message="tns:conv_crearConversacionSoapIn" />
+      <wsdl:output message="tns:conv_crearConversacionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="conv_CargarConversacion">
+      <wsdl:input message="tns:conv_CargarConversacionSoapIn" />
+      <wsdl:output message="tns:conv_CargarConversacionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="conv_agregarSpam">
+      <wsdl:input message="tns:conv_agregarSpamSoapIn" />
+      <wsdl:output message="tns:conv_agregarSpamSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="conv_quitarSpam">
+      <wsdl:input message="tns:conv_quitarSpamSoapIn" />
+      <wsdl:output message="tns:conv_quitarSpamSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="conv_cargarConversacionesSpamUsuario">
+      <wsdl:input message="tns:conv_cargarConversacionesSpamUsuarioSoapIn" />
+      <wsdl:output message="tns:conv_cargarConversacionesSpamUsuarioSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="conv_cargarConversacionesLeidas">
+      <wsdl:input message="tns:conv_cargarConversacionesLeidasSoapIn" />
+      <wsdl:output message="tns:conv_cargarConversacionesLeidasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="conv_cargarConversacionesNoLeidas">
+      <wsdl:input message="tns:conv_cargarConversacionesNoLeidasSoapIn" />
+      <wsdl:output message="tns:conv_cargarConversacionesNoLeidasSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WebServiceSoap" type="tns:WebServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="testearConexion">
+      <soap:operation soapAction="http://tempuri.org/testearConexion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="user_Login">
+      <soap:operation soapAction="http://tempuri.org/user_Login" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="user_Save">
+      <soap:operation soapAction="http://tempuri.org/user_Save" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="user_CambiarContraseña">
+      <soap:operation soapAction="http://tempuri.org/user_CambiarContraseña" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="user_CargarUsuarios">
+      <soap:operation soapAction="http://tempuri.org/user_CargarUsuarios" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="user_CargarUsuario">
+      <soap:operation soapAction="http://tempuri.org/user_CargarUsuario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="user_CargarUsuariosTodos">
+      <soap:operation soapAction="http://tempuri.org/user_CargarUsuariosTodos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="user_delete">
+      <soap:operation soapAction="http://tempuri.org/user_delete" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="product_guardarProducto">
+      <soap:operation soapAction="http://tempuri.org/product_guardarProducto" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="product_eliminarCliente">
+      <soap:operation soapAction="http://tempuri.org/product_eliminarCliente" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="product_editarProducto">
+      <soap:operation soapAction="http://tempuri.org/product_editarProducto" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="product_cargarProductos">
+      <soap:operation soapAction="http://tempuri.org/product_cargarProductos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="product_cargarProducto">
+      <soap:operation soapAction="http://tempuri.org/product_cargarProducto" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cita_solicitarCita">
+      <soap:operation soapAction="http://tempuri.org/cita_solicitarCita" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cita_aprobarCita">
+      <soap:operation soapAction="http://tempuri.org/cita_aprobarCita" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cita_rechazarCita">
+      <soap:operation soapAction="http://tempuri.org/cita_rechazarCita" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cita_cargarCitas">
+      <soap:operation soapAction="http://tempuri.org/cita_cargarCitas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cita_cargarCita">
+      <soap:operation soapAction="http://tempuri.org/cita_cargarCita" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cita_cargarCitasAprobadas">
+      <soap:operation soapAction="http://tempuri.org/cita_cargarCitasAprobadas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cita_cargarCitasPendientes">
+      <soap:operation soapAction="http://tempuri.org/cita_cargarCitasPendientes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="conv_CargarConversacionesUsuario">
+      <soap:operation soapAction="http://tempuri.org/conv_CargarConversacionesUsuario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="conv_crearConversacion">
+      <soap:operation soapAction="http://tempuri.org/conv_crearConversacion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="conv_CargarConversacion">
+      <soap:operation soapAction="http://tempuri.org/conv_CargarConversacion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="conv_agregarSpam">
+      <soap:operation soapAction="http://tempuri.org/conv_agregarSpam" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="conv_quitarSpam">
+      <soap:operation soapAction="http://tempuri.org/conv_quitarSpam" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="conv_cargarConversacionesSpamUsuario">
+      <soap:operation soapAction="http://tempuri.org/conv_cargarConversacionesSpamUsuario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="conv_cargarConversacionesLeidas">
+      <soap:operation soapAction="http://tempuri.org/conv_cargarConversacionesLeidas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="conv_cargarConversacionesNoLeidas">
+      <soap:operation soapAction="http://tempuri.org/conv_cargarConversacionesNoLeidas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="WebServiceSoap12" type="tns:WebServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="testearConexion">
+      <soap12:operation soapAction="http://tempuri.org/testearConexion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="user_Login">
+      <soap12:operation soapAction="http://tempuri.org/user_Login" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="user_Save">
+      <soap12:operation soapAction="http://tempuri.org/user_Save" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="user_CambiarContraseña">
+      <soap12:operation soapAction="http://tempuri.org/user_CambiarContraseña" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="user_CargarUsuarios">
+      <soap12:operation soapAction="http://tempuri.org/user_CargarUsuarios" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="user_CargarUsuario">
+      <soap12:operation soapAction="http://tempuri.org/user_CargarUsuario" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="user_CargarUsuariosTodos">
+      <soap12:operation soapAction="http://tempuri.org/user_CargarUsuariosTodos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="user_delete">
+      <soap12:operation soapAction="http://tempuri.org/user_delete" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="product_guardarProducto">
+      <soap12:operation soapAction="http://tempuri.org/product_guardarProducto" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="product_eliminarCliente">
+      <soap12:operation soapAction="http://tempuri.org/product_eliminarCliente" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="product_editarProducto">
+      <soap12:operation soapAction="http://tempuri.org/product_editarProducto" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="product_cargarProductos">
+      <soap12:operation soapAction="http://tempuri.org/product_cargarProductos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="product_cargarProducto">
+      <soap12:operation soapAction="http://tempuri.org/product_cargarProducto" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cita_solicitarCita">
+      <soap12:operation soapAction="http://tempuri.org/cita_solicitarCita" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cita_aprobarCita">
+      <soap12:operation soapAction="http://tempuri.org/cita_aprobarCita" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cita_rechazarCita">
+      <soap12:operation soapAction="http://tempuri.org/cita_rechazarCita" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cita_cargarCitas">
+      <soap12:operation soapAction="http://tempuri.org/cita_cargarCitas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cita_cargarCita">
+      <soap12:operation soapAction="http://tempuri.org/cita_cargarCita" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cita_cargarCitasAprobadas">
+      <soap12:operation soapAction="http://tempuri.org/cita_cargarCitasAprobadas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cita_cargarCitasPendientes">
+      <soap12:operation soapAction="http://tempuri.org/cita_cargarCitasPendientes" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="conv_CargarConversacionesUsuario">
+      <soap12:operation soapAction="http://tempuri.org/conv_CargarConversacionesUsuario" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="conv_crearConversacion">
+      <soap12:operation soapAction="http://tempuri.org/conv_crearConversacion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="conv_CargarConversacion">
+      <soap12:operation soapAction="http://tempuri.org/conv_CargarConversacion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="conv_agregarSpam">
+      <soap12:operation soapAction="http://tempuri.org/conv_agregarSpam" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="conv_quitarSpam">
+      <soap12:operation soapAction="http://tempuri.org/conv_quitarSpam" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="conv_cargarConversacionesSpamUsuario">
+      <soap12:operation soapAction="http://tempuri.org/conv_cargarConversacionesSpamUsuario" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="conv_cargarConversacionesLeidas">
+      <soap12:operation soapAction="http://tempuri.org/conv_cargarConversacionesLeidas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="conv_cargarConversacionesNoLeidas">
+      <soap12:operation soapAction="http://tempuri.org/conv_cargarConversacionesNoLeidas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WebService">
+    <wsdl:port name="WebServiceSoap" binding="tns:WebServiceSoap">
+      <soap:address location="http://192.168.1.111/webservice/WebService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="WebServiceSoap12" binding="tns:WebServiceSoap12">
+      <soap12:address location="http://192.168.1.111/webservice/WebService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

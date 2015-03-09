@@ -1,0 +1,35 @@
+﻿@model EtzJaimWebPage.Models.Usuario
+@{
+    ViewBag.Title = "User";
+}
+<h1>Usuario</h1>
+<br/>
+
+<dl class="dl-horizontal">
+    <h4>Username</h4>
+        @Html.DisplayNameFor(model => model.username)
+    <br/>
+
+    <h4>Nombre</h4>
+        @Html.DisplayFor(model => model.nombre)
+   <br/>
+
+    <h4>Apellidos</h4>
+        @Html.DisplayFor(model => model.apellidos)
+    <br/>
+    <h4>Tipo</h4>
+        @if (Model.tipo == 1)
+                {
+            <td>Cliente</td>
+                }
+        @if (Model.tipo == 0)
+        {
+            <td>Administrador</td>
+        }
+    <br/>
+    <a href="~/Usuarios"><button value="Index" class="btn btn-default">Volver</button></a>
+
+</dl>
+
+
+

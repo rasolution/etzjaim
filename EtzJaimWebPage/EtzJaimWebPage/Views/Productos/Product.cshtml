@@ -1,0 +1,33 @@
+﻿@model EtzJaimWebPage.Models.Producto
+@{
+    ViewBag.Title = "Product";
+}
+
+<h2>Producto</h2>
+<dl class="dl-horizontal">
+    <h4>Numero del Producto</h4>
+        @Model.pro_id
+    <br />
+
+    <h4>Nombre del Producto</h4>
+        @Model.pro_nombre
+    <br />
+
+    <h4>Precio</h4>
+    @Html.DisplayFor(model => model.pro_precio)
+    <br />
+
+    <h4>Estado</h4>
+    @if (Model.pro_estado == 1)
+    {
+        <td>Inactivo</td>
+    }
+    @if (Model.pro_estado == 0)
+    {
+        <td>Activo</td>
+    }
+    <br />
+    <a href="~/Productos"><button value="Index" class="btn btn-default">Volver</button></a>
+
+</dl>
+

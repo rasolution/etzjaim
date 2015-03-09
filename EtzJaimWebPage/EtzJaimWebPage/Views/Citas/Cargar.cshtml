@@ -1,0 +1,38 @@
+﻿@model EtzJaimWebPage.Models.Cita_Usuario
+@{
+    ViewBag.Title = "Cargar";
+}
+
+<h2>Producto</h2>
+<dl class="dl-horizontal">
+    <h4>Numero de Cita</h4>
+        <label id="cita_id" name="cita_id" value=@Model.cita_id>@Model.cita_id</label>
+    <br />
+
+    <h4>Usuario</h4>
+        <label id="username" name="username" value=@Model.username>@Model.username</label>
+    <br />
+
+    <h4>Informacion</h4>
+    <label id="user_info" name="user_info" value=@Model.user_info>@Model.user_info</label>
+    <br />
+
+    <h4>Fecha</h4>
+    <label id="cita_fecha" name="cita_fecha" value=@Model.cita_fecha>@Model.cita_fecha</label>
+    <br />
+
+    <h4>Estado</h4>
+    @if (Model.cita_estado == 1)
+    {
+        <label id="cita_estado" name="cita_estado" value=@Model.cita_estado>@Model.cita_estado</label>
+    }
+    @if (Model.cita_estado == 0)
+    {
+        <label id="cita_estado" nombre="cita_estado" value=@Model.cita_estado>@Model.cita_estado</label>
+    }
+    <br />
+    <button  id="aprobarCita"  type="button" class="btn btn-default">Aprobar</button>
+    <button id="rechazarCita"  type="button" class="btn btn-default">Rechazar</button>
+    <a href="~/Citas"><button name="Index" class="btn btn-default">Volver</button></a>
+
+</dl>

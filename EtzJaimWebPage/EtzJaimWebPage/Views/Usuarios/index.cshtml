@@ -1,0 +1,72 @@
+﻿@model List<EtzJaimWebPage.Models.Usuario>
+@{
+    ViewBag.Title = "index";
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="col-md-6">
+            <select class="form-control text-box single-line col-md-3" id="tipo" name="tipo">
+                <option value="0">Administrador</option>
+                <option value="1">Cliente</option>
+            </select>
+
+            <button type="submit" value="Index" class="btn btn-default col-md-3" >Cargar</button>
+
+        </div>
+    </div>
+}
+<br/>
+<h2>Usuarios</h2>
+<a href="~/Usuarios/Create"><button class="btn btn-default">Crear Usuario</button></a>
+<br/>
+        <table class="table">
+            <tr>
+                <th>
+                    Username
+                </th>
+                <th>
+                    Usuario
+                </th>
+                <th>
+                    Informacion
+                </th>
+                <th>
+                    Fecha
+                </th>
+                <th>
+                    Estado
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+    {
+                <tr>
+                    <td>
+                        @item.username
+                    </td>
+                    <td>
+                        @item.nombre
+                    </td>
+                    <td>
+                        @item.apellidos
+                    </td>
+                    @if (item.tipo == 1)
+                {
+                        <td>Cliente</td>
+                }
+                    @if(item.tipo==0){
+            <td>Administrador</td>}
+                    <td>
+                        @Html.ActionLink("Borrar", "Borrar", new { username = item.username }) |
+                        @Html.ActionLink("Ver", "User", new { username = item.username }) |
+                        @Html.ActionLink("CambiarContraseña", "Password", new { username = item.username })
+                    </td>
+                </tr>
+    }
+
+        </table>

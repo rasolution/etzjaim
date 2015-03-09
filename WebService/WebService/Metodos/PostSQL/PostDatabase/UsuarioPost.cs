@@ -30,7 +30,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         public List<Usuario> cargarUsuarios()
         {
             var sql = new StringBuilder();
-            sql.AppendLine("select * from usuarios");
+            sql.AppendLine("select * from usuarios where user_tipo < '2'");
             List<Usuario> usuarios = new List<Usuario>();
             var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString());
             foreach (DataRow item in odatos.Tables[0].Rows)

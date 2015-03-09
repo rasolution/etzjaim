@@ -148,6 +148,28 @@ namespace WebService
         }
         #endregion
 
+        #region borrarUsuario
+        [WebMethod]
+        public string user_delete(string username)
+        {
+            string result = "";
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            UsuarioPost post = new UsuarioPost();
+            post.eliminarUsuario(username);
+            if (post.IsError)
+            {
+                result = errorMessage + post.ErrorDescripcion;
+            }
+            else
+            {
+                result = "Eliminado con exito";
+            }
+            response.response = result;
+            return js.Serialize(response);
+        }
+        #endregion
+
+
         #endregion
 
         #region MetodosProductos
@@ -248,18 +270,18 @@ namespace WebService
 
         #region SolicitarCita
         [WebMethod]
-        public string cita_solicitarCita(string username, DateTime cita_fecha)
+        public string cita_solicitarCita(string username, string cita_fecha,string cita_hora)
         {
             string result = "";
             JavaScriptSerializer js = new JavaScriptSerializer();
             CitasPost post = new CitasPost();
-            if (post.verficiarCita_Fecha(cita_fecha))
+            if (post.verficiarCita_Fecha(cita_fecha,cita_hora))
             {
                 result = "Ya hay una cita aprobada para dicha fecha";
             }
             else
             {
-                post.guardarCita(username, cita_fecha);
+                post.guardarCita(username, cita_fecha,cita_hora);
                 if (post.Is_error)
                 {
                     result = errorMessage + post.Error_Descripcion;
@@ -386,6 +408,17 @@ namespace WebService
         }
         #endregion
 
+
+        #region cargarCitasPendientes
+        [WebMethod]
+        public string cita_cargarCitasPendientes()
+        {
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            CitasPost post = new CitasPost();
+            List<Cita_Usuario> citas = post.cargarCitasPendientes();
+            return js.Serialize(citas);
+        }
+        #endregion
         #endregion
 
         #region MetodosConversaciones
