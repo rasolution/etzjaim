@@ -27,9 +27,15 @@ namespace WebService
     {
         //Inicio de conexiones a base de datos 
         AccesoDatosPost postgres = new AccesoDatosPost();
-        AccesoDatosSQL sqlserver = new AccesoDatosSQL();
         Respuesta response = new Respuesta();
+        JavaScriptSerializer js = new JavaScriptSerializer();
+        UsuarioPost usuariopostgress = new UsuarioPost();
+        ProductosPost Productopost = new ProductosPost();
+        CitasPost Citaspost = new CitasPost();
+        ConversacionesPost Conversacionespost = new ConversacionesPost();
+        MensajesPost Messagepost = new MensajesPost();
         string errorMessage = "A ocurrido un error ";
+
         #region testearConexion
         [WebMethod]
         public bool testearConexion()
@@ -51,12 +57,11 @@ namespace WebService
         public string user_Login(string username, string password)
         {
             Respuesta_Usuario userresponse = new Respuesta_Usuario();
-            JavaScriptSerializer js = new JavaScriptSerializer();
-            UsuarioPost post = new UsuarioPost();
-            if (post.Login(username, password) == true)
+
+            if (usuariopostgress.Login(username, password) == true)
             {
                 userresponse.response = "yes";
-                userresponse.user = post.cargarUsuario(username);
+                userresponse.user = usuariopostgress.cargarUsuario(username);
             }
             else
             {
@@ -72,24 +77,22 @@ namespace WebService
         public string user_Save(string username, string password, string nombre, string apellidos, int tipo)
         {
             string result = "";
-            JavaScriptSerializer js = new JavaScriptSerializer();
-            UsuarioPost post = new UsuarioPost();
-            if (post.UsernameRepetido(username))
+            if (usuariopostgress.UsernameRepetido(username))
             {
                 result = "El nombre de usuario ya esta en uso";
             }
             else
             {
-                post.guardarUsuario(username, password, nombre, apellidos, tipo);
-                if (post.IsError)
+                usuariopostgress.guardarUsuario(username, password, nombre, apellidos, tipo);
+                if (usuariopostgress.IsError)
                 {
-                    result = errorMessage+ post.ErrorDescripcion;
+                    result = errorMessage + usuariopostgress.ErrorDescripcion;
                 }
                 else
                 {
                     result = "Guardado con exito";
                 }
-            }        
+            }
             response.response = result;
             return js.Serialize(response);
         }
@@ -100,12 +103,10 @@ namespace WebService
         public string user_CambiarContraseña(string username, string password)
         {
             string result = "";
-            JavaScriptSerializer js = new JavaScriptSerializer();
-            UsuarioPost post = new UsuarioPost();
-            post.cambiarContraseña(username, password);
-            if (post.IsError)
+            usuariopostgress.cambiarContraseña(username, password);
+            if (usuariopostgress.IsError)
             {
-                result = errorMessage + post.ErrorDescripcion;
+                result = errorMessage + usuariopostgress.ErrorDescripcion;
             }
             else
             {
@@ -119,9 +120,7 @@ namespace WebService
         [WebMethod]
         public string user_CargarUsuarios(int tipo)
         {
-            UsuarioPost post=new UsuarioPost();
-            List<Usuario> usuarios = post.cargarAdmins_Clientes(tipo);
-            JavaScriptSerializer js = new JavaScriptSerializer();
+            List<Usuario> usuarios = usuariopostgress.cargarAdmins_Clientes(tipo);
             return js.Serialize(usuarios);
         }
         #endregion
@@ -130,9 +129,7 @@ namespace WebService
         [WebMethod]
         public string user_CargarUsuario(string username)
         {
-            UsuarioPost post = new UsuarioPost();
-            Usuario usuario= post.cargarUsuario(username);
-            JavaScriptSerializer js = new JavaScriptSerializer();
+            Usuario usuario = usuariopostgress.cargarUsuario(username);
             return js.Serialize(usuario);
         }
         #endregion
@@ -141,9 +138,7 @@ namespace WebService
         [WebMethod]
         public string user_CargarUsuariosTodos()
         {
-            UsuarioPost post = new UsuarioPost();
-            List<Usuario> usuarios = post.cargarUsuarios();
-            JavaScriptSerializer js = new JavaScriptSerializer();
+            List<Usuario> usuarios = usuariopostgress.cargarUsuarios();
             return js.Serialize(usuarios);
         }
         #endregion
@@ -153,12 +148,10 @@ namespace WebService
         public string user_delete(string username)
         {
             string result = "";
-            JavaScriptSerializer js = new JavaScriptSerializer();
-            UsuarioPost post = new UsuarioPost();
-            post.eliminarUsuario(username);
-            if (post.IsError)
+            usuariopostgress.eliminarUsuario(username);
+            if (usuariopostgress.IsError)
             {
-                result = errorMessage + post.ErrorDescripcion;
+                result = errorMessage + usuariopostgress.ErrorDescripcion;
             }
             else
             {
@@ -173,9 +166,7 @@ namespace WebService
         [WebMethod]
         public string user_Ajax(string user)
         {
-            UsuarioPost post = new UsuarioPost();
-            List<Usuario> usuarios = post.user_Ajax(user);
-            JavaScriptSerializer js = new JavaScriptSerializer();
+            List<Usuario> usuarios = usuariopostgress.user_Ajax(user);
             return js.Serialize(usuarios);
         }
         #endregion
@@ -192,18 +183,17 @@ namespace WebService
         public string product_guardarProducto(string pro_nombre, int pro_precio, int pro_estado, byte[] pro_foto)
         {
             string result = "";
-            ProductosPost post = new ProductosPost();
-            post.guardarProducto(pro_nombre, pro_precio, pro_estado, pro_foto);
-            if (post.IsError)
+
+            Productopost.guardarProducto(pro_nombre, pro_precio, pro_estado, pro_foto);
+            if (Productopost.IsError)
             {
-                result = errorMessage + post.ErrorDescripcion;
+                result = errorMessage + Productopost.ErrorDescripcion;
             }
             else
             {
                 result = "Se ha guardado con exito";
             }
             response.response = result;
-            JavaScriptSerializer js = new JavaScriptSerializer();
             return js.Serialize(response);
         }
         #endregion
@@ -214,18 +204,16 @@ namespace WebService
         public string product_eliminarCliente(int pro_id)
         {
             string result;
-            ProductosPost post = new ProductosPost();
-            post.eliminarProducto(pro_id);
-            if (post.IsError)
+            Productopost.eliminarProducto(pro_id);
+            if (Productopost.IsError)
             {
-                result = errorMessage + post.ErrorDescripcion;
+                result = errorMessage + Productopost.ErrorDescripcion;
             }
             else
             {
                 result = "Se ha borrado con exito";
             }
             response.response = result;
-            JavaScriptSerializer js = new JavaScriptSerializer();
             return js.Serialize(response);
         }
         #endregion
@@ -236,18 +224,16 @@ namespace WebService
         public string product_editarProducto(int pro_id, string pro_nombre, int pro_precio, int pro_estado, byte[] pro_foto)
         {
             string result = "";
-            ProductosPost post = new ProductosPost();
-            post.editarProducto(pro_id, pro_nombre, pro_precio, pro_estado, pro_foto);
-            if (post.IsError)
+            Productopost.editarProducto(pro_id, pro_nombre, pro_precio, pro_estado, pro_foto);
+            if (Productopost.IsError)
             {
-                result = errorMessage + post.ErrorDescripcion;
+                result = errorMessage + Productopost.ErrorDescripcion;
             }
             else
             {
                 result = "Edición correcta";
             }
             response.response = result;
-            JavaScriptSerializer js = new JavaScriptSerializer();
             return js.Serialize(response);
         }
         #endregion
@@ -257,9 +243,7 @@ namespace WebService
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
         public string product_cargarProductos()
         {
-            ProductosPost post = new ProductosPost();
-            List<Producto> Productos = post.cargarProductos();
-            JavaScriptSerializer js = new JavaScriptSerializer();
+            List<Producto> Productos = Productopost.cargarProductos();
             return js.Serialize(Productos);
         }
         #endregion
@@ -268,10 +252,8 @@ namespace WebService
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
         public string product_cargarProducto(int pro_id)
-        {
-            ProductosPost post = new ProductosPost();
-            Producto Producto = post.cargarProducto(pro_id);
-            JavaScriptSerializer js = new JavaScriptSerializer();
+        { 
+            Producto Producto = Productopost.cargarProducto(pro_id);
             return js.Serialize(Producto);
         }
         #endregion
@@ -282,21 +264,20 @@ namespace WebService
 
         #region SolicitarCita
         [WebMethod]
-        public string cita_solicitarCita(string username, string cita_fecha,string cita_hora)
+        public string cita_solicitarCita(string username, string cita_fecha, string cita_hora)
         {
             string result = "";
-            JavaScriptSerializer js = new JavaScriptSerializer();
-            CitasPost post = new CitasPost();
-            if (post.verficiarCita_Fecha(cita_fecha,cita_hora))
+
+            if (Citaspost.verficiarCita_Fecha(cita_fecha, cita_hora))
             {
                 result = "Ya hay una cita aprobada para dicha fecha";
             }
             else
             {
-                post.guardarCita(username, cita_fecha,cita_hora);
-                if (post.Is_error)
+                Citaspost.guardarCita(username, cita_fecha, cita_hora);
+                if (Citaspost.Is_error)
                 {
-                    result = errorMessage + post.Error_Descripcion;
+                    result = errorMessage + Citaspost.Error_Descripcion;
                 }
                 else
                 {
@@ -313,20 +294,18 @@ namespace WebService
         public string cita_aprobarCita(int cita_id)
         {
             string result = "";
-            JavaScriptSerializer js = new JavaScriptSerializer();
-            CitasPost post = new CitasPost();
-            if (post.verificarCita(cita_id))
+            if (Citaspost.verificarCita(cita_id))
             {
                 result = "La cita ya ha sido aprobada";
             }
             else
             {
                 Cita_Usuario cita = new Cita_Usuario();
-                cita = post.cargarCita(cita_id);
-                 post.aprobarCita(cita_id);
-                if (post.Is_error)
+                cita = Citaspost.cargarCita(cita_id);
+                Citaspost.aprobarCita(cita_id);
+                if (Citaspost.Is_error)
                 {
-                    result = "A ocurrido un error " + post.Error_Descripcion;
+                    result = "A ocurrido un error " + Citaspost.Error_Descripcion;
                 }
                 else
                 {
@@ -341,7 +320,7 @@ namespace WebService
                     conversacion = convpost.verificarConversacion("service", cita.username);
                     MensajesPost mespost = new MensajesPost();
                     mespost.guardarMensaje(conversacion.conv_id, message, "service");
-                    convpost.estadoNoLeido(cita.username,conversacion.conv_id);
+                    convpost.estadoNoLeido(cita.username, conversacion.conv_id);
                 }
             }
             response.response = result;
@@ -355,45 +334,37 @@ namespace WebService
         public string cita_rechazarCita(int cita_id)
         {
             string result = "";
-            JavaScriptSerializer js = new JavaScriptSerializer();
-            CitasPost post = new CitasPost();
             Cita_Usuario cita = new Cita_Usuario();
-            cita = post.cargarCita(cita_id);
-            post.borrarCita(cita_id);
-            if (post.Is_error)
+            cita = Citaspost.cargarCita(cita_id);
+            Citaspost.borrarCita(cita_id);
+            if (Citaspost.Is_error)
             {
-                result = "A ocurrido un error " + post.Error_Descripcion;
+                result = "A ocurrido un error " + Citaspost.Error_Descripcion;
             }
             else
             {
                 string message = "Querido cliente le informamos que su cita ha sido rechazada, si desea solicitar otra peude hacerlo";
                 result = "Se ha borrado la cita se le informara al cliente";
-                ConversacionesPost convpost = new ConversacionesPost();
-                Conversaciones conversacion = convpost.verificarConversacion("service", cita.username);
+                Conversaciones conversacion = Conversacionespost.verificarConversacion("service", cita.username);
                 if (conversacion.conv_id == 0)
                 {
-                    convpost.crearConversacion("service", cita.username);
+                    Conversacionespost.crearConversacion("service", cita.username);
                 }
-                conversacion = convpost.verificarConversacion("service", cita.username);
-                MensajesPost mespost = new MensajesPost();
-                mespost.guardarMensaje(conversacion.conv_id, message, "service");
-                convpost.estadoNoLeido(cita.username, conversacion.conv_id);
+                conversacion = Conversacionespost.verificarConversacion("service", cita.username);
+                Messagepost.guardarMensaje(conversacion.conv_id, message, "service");
+                Conversacionespost.estadoNoLeido(cita.username, conversacion.conv_id);
             }
-
             response.response = result;
             return js.Serialize(response);
-
         }
-        
+
         #endregion
 
         #region cargarCitas
         [WebMethod]
         public string cita_cargarCitas()
         {
-            JavaScriptSerializer js = new JavaScriptSerializer();
-            CitasPost post = new CitasPost();
-            List<Cita_Usuario> citas = post.cargarCitas();
+            List<Cita_Usuario> citas = Citaspost.cargarCitas();
             return js.Serialize(citas);
         }
         #endregion
@@ -402,9 +373,7 @@ namespace WebService
         [WebMethod]
         public string cita_cargarCita(int cita_id)
         {
-            JavaScriptSerializer js = new JavaScriptSerializer();
-            CitasPost post = new CitasPost();
-            Cita_Usuario cita = post.cargarCita(cita_id);
+            Cita_Usuario cita = Citaspost.cargarCita(cita_id);
             return js.Serialize(cita);
         }
         #endregion
@@ -413,22 +382,16 @@ namespace WebService
         [WebMethod]
         public string cita_cargarCitasAprobadas()
         {
-            JavaScriptSerializer js = new JavaScriptSerializer();
-            CitasPost post = new CitasPost();
-            List<Cita_Usuario> citas = post.cargarCitasAprobadas();
+            List<Cita_Usuario> citas = Citaspost.cargarCitasAprobadas();
             return js.Serialize(citas);
         }
         #endregion
-
-
 
         #region cargarCitasPendientes
         [WebMethod]
         public string cita_cargarCitasPendientes()
         {
-            JavaScriptSerializer js = new JavaScriptSerializer();
-            CitasPost post = new CitasPost();
-            List<Cita_Usuario> citas = post.cargarCitasPendientes();
+            List<Cita_Usuario> citas = Citaspost.cargarCitasPendientes();
             return js.Serialize(citas);
         }
         #endregion
@@ -439,40 +402,33 @@ namespace WebService
         #region CargarConversacionesUsuario
         [WebMethod]
         public string conv_CargarConversacionesUsuario(string username)
-        {
-            ConversacionesPost post = new ConversacionesPost();
-            List<Conversaciones> conversaciones =post.cargarConversacionesUsuario(username);
-            JavaScriptSerializer js = new JavaScriptSerializer();
+        {   
+            List<Conversaciones> conversaciones = Conversacionespost.cargarConversacionesUsuario(username);         
             return js.Serialize(conversaciones);
         }
         #endregion
 
         #region crearConversacion
         [WebMethod]
-        public string conv_crearConversacion(string username1, string username2,string message)
-        {        
-            ConversacionesPost post = new ConversacionesPost();
-            MensajesPost messagepost = new MensajesPost();
-            Conversaciones conversacion = post.verificarConversacion(username1, username2);
+        public string conv_crearConversacion(string username1, string username2, string message)
+        {      
+            Conversaciones conversacion = Conversacionespost.verificarConversacion(username1, username2);
             if (conversacion.conv_id == 0)
             {
-                post.crearConversacion(username1, username2);
+                Conversacionespost.crearConversacion(username1, username2);
             }
-            conversacion = post.verificarConversacion(username1, username2);
-            messagepost.guardarMensaje(conversacion.conv_id, message, username1);
-            post.estadoNoLeido(username2, conversacion.conv_id);
-            JavaScriptSerializer js = new JavaScriptSerializer();
+            conversacion = Conversacionespost.verificarConversacion(username1, username2);
+            Messagepost.guardarMensaje(conversacion.conv_id, message, username1);
+            Conversacionespost.estadoNoLeido(username2, conversacion.conv_id);          
             return js.Serialize(conversacion);
         }
         #endregion
 
         #region verificarConversacion
         [WebMethod]
-        public string conv_verificarConversacion(string username1,string username2)
-        {
-            ConversacionesPost post = new ConversacionesPost();
-            Conversaciones conversacion = post.verificarConversacion(username1, username2);
-            JavaScriptSerializer js = new JavaScriptSerializer();
+        public string conv_verificarConversacion(string username1, string username2)
+        {          
+            Conversaciones conversacion = Conversacionespost.verificarConversacion(username1, username2);
             return js.Serialize(conversacion);
         }
         #endregion
@@ -480,30 +436,26 @@ namespace WebService
         #region CargarConversacion
         [WebMethod]
         public string conv_CargarConversacion(int conv_id)
-        {
-            ConversacionesPost post = new ConversacionesPost();
-            Conversaciones conversacion = post.cargarConversacion(conv_id);
-            JavaScriptSerializer js = new JavaScriptSerializer();
+        {         
+            Conversaciones conversacion = Conversacionespost.cargarConversacion(conv_id);
             return js.Serialize(conversacion);
         }
         #endregion
 
         #region agregarSpam
         [WebMethod]
-        public string conv_agregarSpam(string username,int conv_id)
+        public string conv_agregarSpam(string username, int conv_id)
         {
             string result = "";
-            ConversacionesPost post = new ConversacionesPost();
-            post.agregarSpam(username, conv_id);
-            if (post.IsError)
+            Conversacionespost.agregarSpam(username, conv_id);
+            if (Conversacionespost.IsError)
             {
-                result = errorMessage + post.ErrorDescripcion;
+                result = errorMessage + Conversacionespost.ErrorDescripcion;
             }
             else
             {
                 result = "Se ha movido a spam con exito";
             }
-            JavaScriptSerializer js = new JavaScriptSerializer();
             response.response = result;
             return js.Serialize(response);
         }
@@ -514,17 +466,15 @@ namespace WebService
         public string conv_quitarSpam(string username, int conv_id)
         {
             string result = "";
-            ConversacionesPost post = new ConversacionesPost();
-            post.quitarSpam(username, conv_id);
-            if (post.IsError)
+            Conversacionespost.quitarSpam(username, conv_id);
+            if (Conversacionespost.IsError)
             {
-                result = errorMessage + post.ErrorDescripcion;
+                result = errorMessage + Conversacionespost.ErrorDescripcion;
             }
             else
             {
                 result = "Se ha quitado de spam con exito";
             }
-            JavaScriptSerializer js = new JavaScriptSerializer();
             response.response = result;
             return js.Serialize(response);
         }
@@ -534,9 +484,7 @@ namespace WebService
         [WebMethod]
         public string conv_cargarConversacionesSpamUsuario(string username)
         {
-            ConversacionesPost post = new ConversacionesPost();
-            List<Conversaciones> conversaciones = post.cargarConversacionesSpamUsuario(username);
-            JavaScriptSerializer js = new JavaScriptSerializer();
+            List<Conversaciones> conversaciones = Conversacionespost.cargarConversacionesSpamUsuario(username);
             return js.Serialize(conversaciones);
         }
         #endregion
@@ -545,9 +493,7 @@ namespace WebService
         [WebMethod]
         public string conv_cargarConversacionesLeidas(string username)
         {
-            ConversacionesPost post = new ConversacionesPost();
-            List<Conversaciones> conversaciones = post.cargarConversacionesLeidas(username);
-            JavaScriptSerializer js = new JavaScriptSerializer();
+            List<Conversaciones> conversaciones = Conversacionespost.cargarConversacionesLeidas(username);
             return js.Serialize(conversaciones);
         }
         #endregion
@@ -556,9 +502,7 @@ namespace WebService
         [WebMethod]
         public string conv_cargarConversacionesNoLeidas(string username)
         {
-            ConversacionesPost post = new ConversacionesPost();
-            List<Conversaciones> conversaciones = post.cargarConversacionesNoLeidas(username);
-            JavaScriptSerializer js = new JavaScriptSerializer();
+            List<Conversaciones> conversaciones = Conversacionespost.cargarConversacionesNoLeidas(username);
             return js.Serialize(conversaciones);
         }
         #endregion
@@ -569,21 +513,17 @@ namespace WebService
         #region cargarMensajes
         [WebMethod]
         public string mes_cargarMensajes(int conv_id)
-        {          
-            JavaScriptSerializer js = new JavaScriptSerializer();
-            MensajesPost post = new MensajesPost();
-            List<Conv_Message> messages = post.cargarMensajes(conv_id);
+        { 
+            List<Conv_Message> messages = Messagepost.cargarMensajes(conv_id);
             return js.Serialize(messages);
         }
         #endregion
 
         #region enviarMensaje
         [WebMethod]
-        public string mes_enviarmensaje(int conv_id,string message,string username)
+        public string mes_enviarmensaje(int conv_id, string message, string username)
         {
-            MensajesPost post = new MensajesPost();
-            
-            post.guardarMensaje(conv_id, message, username);
+            Messagepost.guardarMensaje(conv_id, message, username);
             return "enviado";
         }
 
