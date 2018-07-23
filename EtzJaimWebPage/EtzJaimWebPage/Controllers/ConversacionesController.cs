@@ -20,13 +20,14 @@ namespace EtzJaimWebPage.Controllers
             else
             {
                 Usuario user = (Usuario)Session["user"];
-                if (user.tipo == 0 || user.tipo==1)
+                if (user.tipo == 0 || user.tipo == 1)
                 {
                     var service = new WebService.WebServiceSoapClient();
                     JavaScriptSerializer js = new JavaScriptSerializer();
                     var datos = js.Deserialize<List<Conversaciones>>(service.conv_CargarConversacionesUsuario(user.username));
                     List<Conversaciones> finalList = new List<Conversaciones>();
-                    foreach(var item in datos){
+                    foreach (var item in datos)
+                    {
                         Conversaciones conv = item;
                         if (item.username2 == user.username)
                         {
@@ -156,7 +157,7 @@ namespace EtzJaimWebPage.Controllers
             }
         }
 
-       
+
         public ActionResult Cargar(int conv_id)
         {
             if (Session["user"] == null)
@@ -190,14 +191,14 @@ namespace EtzJaimWebPage.Controllers
         {
             Usuario user = (Usuario)Session["user"];
             var service = new WebService.WebServiceSoapClient();
-            JavaScriptSerializer js=new JavaScriptSerializer();
+            JavaScriptSerializer js = new JavaScriptSerializer();
             var conv = js.Deserialize<Conversaciones>(service.conv_verificarConversacion(user.username, search));
             if (conv.conv_id == 0)
             {
-                service.conv_crearConversacion(user.username, search,"");
+                service.conv_crearConversacion(user.username, search, "");
             }
             js.Deserialize<Conversaciones>(service.conv_verificarConversacion(user.username, search));
-            return RedirectToAction("Cargar?conv_id="+conv.conv_id, "Conversaciones");
+            return RedirectToAction("Cargar?conv_id=" + conv.conv_id, "Conversaciones");
         }
 
         [HttpPost]
@@ -208,24 +209,24 @@ namespace EtzJaimWebPage.Controllers
         }
 
         [HttpPost]
-        public ActionResult Send(int conv_id,string message,string username)
+        public ActionResult Send(int conv_id, string message, string username)
         {
             var service = new WebService.WebServiceSoapClient();
-            return Json(service.mes_enviarmensaje(conv_id,message,username));
+            return Json(service.mes_enviarmensaje(conv_id, message, username));
         }
 
         [HttpPost]
-        public ActionResult moveSpam(string username,int conv_id)
+        public ActionResult moveSpam(string username, int conv_id)
         {
             var service = new WebService.WebServiceSoapClient();
-            return Json(service.conv_agregarSpam(username,conv_id));
+            return Json(service.conv_agregarSpam(username, conv_id));
         }
 
         [HttpPost]
         public ActionResult NoSpam(string username, int conv_id)
         {
             var service = new WebService.WebServiceSoapClient();
-            return Json(service.conv_quitarSpam(username,conv_id));
+            return Json(service.conv_quitarSpam(username, conv_id));
         }
     }
 }

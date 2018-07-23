@@ -2,7 +2,7 @@
 
 namespace EtzJaimWebPage
 {
-    public  static class service
+    public static class service
     {
 
     }

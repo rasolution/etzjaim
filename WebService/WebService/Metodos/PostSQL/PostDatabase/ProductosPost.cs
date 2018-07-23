@@ -135,7 +135,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                     pro_nombre = item["pro_nombre"].ToString(),
                     pro_precio = Convert.ToInt32(item["pro_precio"]),
                     pro_estado = Convert.ToInt32(item["pro_estado"]),
-                    pro_foto =GetBytes(item["pro_foto"].ToString()),
+                    pro_foto = GetBytes(item["pro_foto"].ToString()),
                 });
             }
             return Productos;
@@ -154,9 +154,9 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                     ParameterName="pro_id",
                     NpgsqlDbType=NpgsqlDbType.Integer,
                     NpgsqlValue=pro_id
-                },      
+                },
             };
-            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(),parametros);
+            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(), parametros);
             foreach (DataRow item in odatos.Tables[0].Rows)
             {
                 Producto.pro_id = Convert.ToInt32(item["pro_id"]);

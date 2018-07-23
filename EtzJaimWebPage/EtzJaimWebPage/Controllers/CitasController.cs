@@ -161,15 +161,15 @@ namespace EtzJaimWebPage.Controllers
         }
         [HttpPost, ActionName("Solicitar")]
         [ValidateAntiForgeryToken]
-        public ActionResult SolicitarConfirmada(string fecha,string hora)
+        public ActionResult SolicitarConfirmada(string fecha, string hora)
         {
             if (ModelState.IsValid)
             {
                 var service = new WebService.WebServiceSoapClient();
                 JavaScriptSerializer js = new JavaScriptSerializer();
-                
+
                 Usuario user = (Usuario)Session["user"];
-                var data = js.Deserialize<Respuesta>(service.cita_solicitarCita(user.username, fecha,hora));
+                var data = js.Deserialize<Respuesta>(service.cita_solicitarCita(user.username, fecha, hora));
                 ViewBag.Message = data.response;
             }
             else
@@ -178,6 +178,6 @@ namespace EtzJaimWebPage.Controllers
             }
             return View();
         }
-     
+
     }
 }

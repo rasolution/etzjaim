@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace WebService.Conexion.SQLServer
 {
-    public  interface IMetodosConexion
+    public interface IMetodosConexion
     {
         bool HayError { set; get; }
         string ErrorDescripcion { set; get; }
@@ -22,9 +22,9 @@ namespace WebService.Conexion.SQLServer
         void EjecutarSQL(string sql, IEnumerable parametros);
 
         // Método para manipular DQL (Select) Para busquedas escalares SUM(), Count(), Etc.
-        SqlConnection  Conexion { set; get; }
+        SqlConnection Conexion { set; get; }
         // Método para manipular DQL (Select) Exclusivo para carga de listas y combos
-       
+
         bool HayTransaccion { set; get; }
 
         void LimpiarEstado();

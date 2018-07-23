@@ -22,7 +22,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         {
             username2 = username2.ToLower();
             username1 = username1.ToLower();
-            var sql =new StringBuilder();
+            var sql = new StringBuilder();
             sql.AppendLine("insert into conversaciones(username1,username2,user1_spam,user2_spam,user1_estado,user2_estado) values (@username1,@username2,'0','0','0','0')");
             var parametros = new List<NpgsqlParameter>
             {
@@ -35,7 +35,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                     ParameterName="username2",
                     NpgsqlDbType=NpgsqlDbType.Varchar,
                     NpgsqlValue=username2
-                },     
+                },
             };
             AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(), parametros);
             if (AccesoDatosPost.Instance.accesodatos.IsError)
@@ -60,10 +60,10 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                     ParameterName="username",
                     NpgsqlDbType=NpgsqlDbType.Varchar,
                     NpgsqlValue=username
-                },      
+                },
             };
-            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(),parametros);
-          
+            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(), parametros);
+
             foreach (DataRow item in odatos.Tables[0].Rows)
             {
                 Conversaciones conversacion = new Conversaciones();
@@ -92,13 +92,13 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                     ParameterName="conv_id",
                     NpgsqlDbType=NpgsqlDbType.Integer,
                     NpgsqlValue=conv_id
-                },      
+                },
             };
             var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(), parametros);
 
             foreach (DataRow item in odatos.Tables[0].Rows)
             {
-                
+
                 conversacion.conv_id = Convert.ToInt32(item["conv_id"]);
                 conversacion.username1 = item["username1"].ToString();
                 conversacion.username2 = item["username2"].ToString();
@@ -118,7 +118,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
             username2 = username2.ToLower();
             Conversaciones conversacion = new Conversaciones();
             StringBuilder sql = new StringBuilder();
-            sql.AppendLine("select * from conversaciones where (username1='"+username1+
+            sql.AppendLine("select * from conversaciones where (username1='" + username1 +
                 "' or username2='" + username1 + "') and (username1='" + username2 + "' or username2='" + username2 + "')");
 
             var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString());
@@ -141,13 +141,13 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         public void agregarSpam(string username, int conv_id)
         {
             username = username.ToLower();
-            string usernametoedit= "username";
+            string usernametoedit = "username";
             string userspam = "";
             Conversaciones conversacion = cargarConversacion(conv_id);
             if (conversacion.username1.Equals(username))
             {
                 usernametoedit = usernametoedit + "1";
-               userspam = "user1_spam";
+                userspam = "user1_spam";
             }
             else
             {
@@ -162,7 +162,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                     ParameterName="username",
                     NpgsqlDbType=NpgsqlDbType.Varchar,
                     NpgsqlValue=username
-                }, 
+                },
                  new NpgsqlParameter{
                     ParameterName="conv_id",
                     NpgsqlDbType=NpgsqlDbType.Integer,
@@ -176,7 +176,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                 this.ErrorDescripcion = AccesoDatosPost.Instance.accesodatos.ErrorDescripcion;
             }
         }
-     
+
         #endregion
 
         #region quitarSpam
@@ -204,7 +204,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                     ParameterName="username",
                     NpgsqlDbType=NpgsqlDbType.Varchar,
                     NpgsqlValue=username
-                }, 
+                },
                  new NpgsqlParameter{
                     ParameterName="conv_id",
                     NpgsqlDbType=NpgsqlDbType.Integer,
@@ -246,7 +246,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                     ParameterName="username",
                     NpgsqlDbType=NpgsqlDbType.Varchar,
                     NpgsqlValue=username
-                }, 
+                },
                  new NpgsqlParameter{
                     ParameterName="conv_id",
                     NpgsqlDbType=NpgsqlDbType.Integer,
@@ -287,7 +287,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                     ParameterName="username",
                     NpgsqlDbType=NpgsqlDbType.Varchar,
                     NpgsqlValue=username
-                }, 
+                },
                  new NpgsqlParameter{
                     ParameterName="conv_id",
                     NpgsqlDbType=NpgsqlDbType.Integer,
@@ -308,10 +308,11 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         {
             username = username.ToLower();
             List<Conversaciones> conversaciones = cargarConversaciones(username);
-            List<Conversaciones> conversacionesfinal=new List<Conversaciones>();
+            List<Conversaciones> conversacionesfinal = new List<Conversaciones>();
             for (int i = 0; i < conversaciones.Count; i++)
             {
-                if(conversaciones[i].username1.Equals(username) && conversaciones[i].user1_spam==1){
+                if (conversaciones[i].username1.Equals(username) && conversaciones[i].user1_spam == 1)
+                {
                     conversacionesfinal.Add(conversaciones[i]);
                 }
                 if (conversaciones[i].username2.Equals(username) && conversaciones[i].user2_spam == 1)
@@ -352,7 +353,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
             List<Conversaciones> conversacionesfinal = new List<Conversaciones>();
             for (int i = 0; i < conversaciones.Count; i++)
             {
-                if (conversaciones[i].username1.Equals(username) && conversaciones[i].user1_estado== 0)
+                if (conversaciones[i].username1.Equals(username) && conversaciones[i].user1_estado == 0)
                 {
                     conversacionesfinal.Add(conversaciones[i]);
                 }

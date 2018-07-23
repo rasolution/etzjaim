@@ -193,14 +193,14 @@ namespace EtzJaimWebPage.Controllers
             }
         }
         [HttpPost]
-        public JsonResult EditProduct(int pro_id,string pro_nombre,int pro_precio,int pro_estado)
+        public JsonResult EditProduct(int pro_id, string pro_nombre, int pro_precio, int pro_estado)
         {
-            
+
             var service = new WebService.WebServiceSoapClient();
-            return Json(service.product_editarProducto(pro_id,pro_nombre,pro_precio,pro_estado,null));
+            return Json(service.product_editarProducto(pro_id, pro_nombre, pro_precio, pro_estado, null));
         }
 
-        
+
     }
 
 }

@@ -252,7 +252,7 @@ namespace WebService
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
         public string product_cargarProducto(int pro_id)
-        { 
+        {
             Producto Producto = Productopost.cargarProducto(pro_id);
             return js.Serialize(Producto);
         }
@@ -402,8 +402,8 @@ namespace WebService
         #region CargarConversacionesUsuario
         [WebMethod]
         public string conv_CargarConversacionesUsuario(string username)
-        {   
-            List<Conversaciones> conversaciones = Conversacionespost.cargarConversacionesUsuario(username);         
+        {
+            List<Conversaciones> conversaciones = Conversacionespost.cargarConversacionesUsuario(username);
             return js.Serialize(conversaciones);
         }
         #endregion
@@ -411,7 +411,7 @@ namespace WebService
         #region crearConversacion
         [WebMethod]
         public string conv_crearConversacion(string username1, string username2, string message)
-        {      
+        {
             Conversaciones conversacion = Conversacionespost.verificarConversacion(username1, username2);
             if (conversacion.conv_id == 0)
             {
@@ -419,7 +419,7 @@ namespace WebService
             }
             conversacion = Conversacionespost.verificarConversacion(username1, username2);
             Messagepost.guardarMensaje(conversacion.conv_id, message, username1);
-            Conversacionespost.estadoNoLeido(username2, conversacion.conv_id);          
+            Conversacionespost.estadoNoLeido(username2, conversacion.conv_id);
             return js.Serialize(conversacion);
         }
         #endregion
@@ -427,7 +427,7 @@ namespace WebService
         #region verificarConversacion
         [WebMethod]
         public string conv_verificarConversacion(string username1, string username2)
-        {          
+        {
             Conversaciones conversacion = Conversacionespost.verificarConversacion(username1, username2);
             return js.Serialize(conversacion);
         }
@@ -436,7 +436,7 @@ namespace WebService
         #region CargarConversacion
         [WebMethod]
         public string conv_CargarConversacion(int conv_id)
-        {         
+        {
             Conversaciones conversacion = Conversacionespost.cargarConversacion(conv_id);
             return js.Serialize(conversacion);
         }
@@ -513,7 +513,7 @@ namespace WebService
         #region cargarMensajes
         [WebMethod]
         public string mes_cargarMensajes(int conv_id)
-        { 
+        {
             List<Conv_Message> messages = Messagepost.cargarMensajes(conv_id);
             return js.Serialize(messages);
         }

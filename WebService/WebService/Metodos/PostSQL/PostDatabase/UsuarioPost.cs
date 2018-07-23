@@ -92,7 +92,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                     ParameterName="username",
                     NpgsqlDbType=NpgsqlDbType.Varchar,
                     NpgsqlValue=username
-                },      
+                },
             };
             var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(), parametros);
             foreach (DataRow item in odatos.Tables[0].Rows)
@@ -177,11 +177,11 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         #endregion
 
         #region habilitarUsuario
-        public void habilitarUsuario(string username,int tipo)
+        public void habilitarUsuario(string username, int tipo)
         {
             username = username.ToLower();
             var sql = new StringBuilder();
-            sql.Append("update usuarios set user_tipo='"+tipo+"' where username=@username");
+            sql.Append("update usuarios set user_tipo='" + tipo + "' where username=@username");
             var parametros = new List<NpgsqlParameter>
             {
                 new NpgsqlParameter{
@@ -256,7 +256,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
             password = encriptacion(password);
 
             List<Usuario> Usuarios = cargarUsuarios();
-            
+
             for (int i = 0; i < Usuarios.Count; i++)
             {
                 if (Usuarios[i].username.Equals(username) &&
@@ -270,14 +270,14 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         }
         #endregion
 
-        
 
 
-            #region User Ajax
+
+        #region User Ajax
         public List<Usuario> user_Ajax(string character)
         {
             var sql = new StringBuilder();
-            sql.AppendLine("select * from usuarios where user_tipo < '2' and username LIKE '%"+character+"%' ");
+            sql.AppendLine("select * from usuarios where user_tipo < '2' and username LIKE '%" + character + "%' ");
             List<Usuario> usuarios = new List<Usuario>();
             var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString());
             foreach (DataRow item in odatos.Tables[0].Rows)
@@ -285,7 +285,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                 usuarios.Add(new Usuario()
                 {
                     username = item["username"].ToString(),
-                   
+
                     nombre = item["user_nombre"].ToString(),
                     apellidos = item["user_apellidos"].ToString(),
                     tipo = Convert.ToInt32(item["user_tipo"]),

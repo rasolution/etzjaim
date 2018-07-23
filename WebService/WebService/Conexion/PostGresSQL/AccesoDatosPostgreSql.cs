@@ -57,17 +57,23 @@ namespace WebService.Conexion.PostGresSQL
             // estado dela conexión
             switch (ConexionPost.State)
             {
-                case System.Data.ConnectionState.Broken: mensaje = "Quebrada";
+                case System.Data.ConnectionState.Broken:
+                    mensaje = "Quebrada";
                     break;
-                case System.Data.ConnectionState.Closed: mensaje = "Cerrada";
+                case System.Data.ConnectionState.Closed:
+                    mensaje = "Cerrada";
                     break;
-                case System.Data.ConnectionState.Connecting: mensaje = "Conectandose";
+                case System.Data.ConnectionState.Connecting:
+                    mensaje = "Conectandose";
                     break;
-                case System.Data.ConnectionState.Executing: mensaje = "Ejecutando";
+                case System.Data.ConnectionState.Executing:
+                    mensaje = "Ejecutando";
                     break;
-                case System.Data.ConnectionState.Fetching: mensaje = "Extrayendo";
+                case System.Data.ConnectionState.Fetching:
+                    mensaje = "Extrayendo";
                     break;
-                case System.Data.ConnectionState.Open: mensaje = "Abierta";
+                case System.Data.ConnectionState.Open:
+                    mensaje = "Abierta";
                     break;
             }
             if (mensaje.Equals("Ejecutando") || mensaje.Equals("Extrayendo") || mensaje.Equals("Abierta"))
@@ -76,7 +82,7 @@ namespace WebService.Conexion.PostGresSQL
             }
             // cargar la propiedad con el estado de la conexion
 
-            
+
             return result;
         }
 
@@ -208,10 +214,10 @@ namespace WebService.Conexion.PostGresSQL
 
         public static int Instancias { set; get; }
 
-        public bool HayTransaccion { set; get; }       
+        public bool HayTransaccion { set; get; }
 
         public NpgsqlTransaction Transaccion { set; get; }
-      
+
         public NpgsqlConnection ConexionPost { set; get; }
 
         #endregion

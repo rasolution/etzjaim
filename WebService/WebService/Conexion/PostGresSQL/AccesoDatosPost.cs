@@ -13,7 +13,7 @@ namespace WebService.Conexion.PostGresSQL
         public IAccesoDatos accesodatos;
         public AccesoDatosPost()
         {
-            accesodatos= new AccesoDatosPostgreSql(
+            accesodatos = new AccesoDatosPostgreSql(
                          ConfigurationManager.AppSettings["ServerPG"],
                          ConfigurationManager.AppSettings["PuertoPG"],
                          ConfigurationManager.AppSettings["UsuarioPG"],

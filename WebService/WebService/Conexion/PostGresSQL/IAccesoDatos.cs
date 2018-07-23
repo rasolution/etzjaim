@@ -33,9 +33,9 @@ namespace WebService.Conexion.PostGresSQL
         String ErrorDescripcion { set; get; }
 
         bool HayTransaccion { set; get; }
-       
+
         NpgsqlConnection ConexionPost { set; get; }
-    
+
         #endregion
 
         #region Métodos de la clase

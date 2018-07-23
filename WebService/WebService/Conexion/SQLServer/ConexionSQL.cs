@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace WebService.Conexion.SQLServer
 {
-    public class ConexionSQL:IMetodosConexion
+    public class ConexionSQL : IMetodosConexion
     {
         public ConexionSQL(String servidor, String usuario, String contrasena, String baseDatos)
         {
@@ -58,17 +58,23 @@ namespace WebService.Conexion.SQLServer
             // estado dela conexión
             switch (Conexion.State)
             {
-                case System.Data.ConnectionState.Broken: mensaje = "Quebrada";
+                case System.Data.ConnectionState.Broken:
+                    mensaje = "Quebrada";
                     break;
-                case System.Data.ConnectionState.Closed: mensaje = "Cerrada";
+                case System.Data.ConnectionState.Closed:
+                    mensaje = "Cerrada";
                     break;
-                case System.Data.ConnectionState.Connecting: mensaje = "Conectandose";
+                case System.Data.ConnectionState.Connecting:
+                    mensaje = "Conectandose";
                     break;
-                case System.Data.ConnectionState.Executing: mensaje = "Ejecutando";
+                case System.Data.ConnectionState.Executing:
+                    mensaje = "Ejecutando";
                     break;
-                case System.Data.ConnectionState.Fetching: mensaje = "Extrayendo";
+                case System.Data.ConnectionState.Fetching:
+                    mensaje = "Extrayendo";
                     break;
-                case System.Data.ConnectionState.Open: mensaje = "Abierta";
+                case System.Data.ConnectionState.Open:
+                    mensaje = "Abierta";
                     break;
             }
 
@@ -77,7 +83,7 @@ namespace WebService.Conexion.SQLServer
             return mensaje;
         }
 
-     public DataSet EjecutarConsultaSQL(String sql)
+        public DataSet EjecutarConsultaSQL(String sql)
         {
             this.LimpiarEstado();
             var oDataSet = new DataSet();

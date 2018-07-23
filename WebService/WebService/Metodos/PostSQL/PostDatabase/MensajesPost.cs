@@ -18,12 +18,12 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         public string Error_Descripcion { get; set; }
 
         #region guardarMensaje
-        public void guardarMensaje(int conv_id, string message,string username)
+        public void guardarMensaje(int conv_id, string message, string username)
         {
             username = username.ToLower();
             DateTime mes_fecha = System.DateTime.Now;
             StringBuilder sql = new StringBuilder();
-            sql.AppendLine("insert into conv_message (conv_id,username,message,mes_fecha) values(@conv_id,@username,@message,'"+mes_fecha+"')");
+            sql.AppendLine("insert into conv_message (conv_id,username,message,mes_fecha) values(@conv_id,@username,@message,'" + mes_fecha + "')");
             var parametros = new List<NpgsqlParameter>
             {
                 new NpgsqlParameter{
@@ -40,7 +40,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                     ParameterName="message",
                     NpgsqlDbType=NpgsqlDbType.Varchar,
                     NpgsqlValue=message
-                },            
+                },
             };
             AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(), parametros);
             if (AccesoDatosPost.Instance.accesodatos.IsError)
@@ -65,7 +65,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                     ParameterName="conv_id",
                     NpgsqlDbType=NpgsqlDbType.Integer,
                     NpgsqlValue=conv_id
-                },      
+                },
             };
             var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(), parametros);
 
@@ -82,5 +82,5 @@ namespace WebService.Metodos.PostSQL.PostDatabase
             return messages;
         }
     }
-        #endregion
+    #endregion
 }

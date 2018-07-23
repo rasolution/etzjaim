@@ -58,7 +58,7 @@
         $.ajax({
             url: "/WebPage/Conversaciones/NoSpam",
             type: "POST",
-            data: JSON.stringify({'username': user, 'conv_id': conv_id, }),
+            data: JSON.stringify({ 'username': user, 'conv_id': conv_id, }),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
@@ -77,7 +77,7 @@
         $.ajax({
             url: "/WebPage/Conversaciones/Send",
             type: "POST",
-            data: JSON.stringify({'conv_id': conv_id, 'message': message, 'username': user}),
+            data: JSON.stringify({ 'conv_id': conv_id, 'message': message, 'username': user }),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
@@ -87,7 +87,7 @@
                 alert("An error has occured!!!");
             }
         });
-        var message = document.getElementById("message").value="";
+        var message = document.getElementById("message").value = "";
     });
     $("#btneditProduct").bind("click", function () {
         var pro_id = document.getElementById("pro_id").value;
@@ -112,7 +112,7 @@
             data: JSON.stringify({ 'pro_id': pro_id, 'pro_nombre': pro_nombre, 'pro_precio': pro_precio, 'pro_estado': pro_estado }),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
-            success: function (data) {              
+            success: function (data) {
                 data = JSON.parse(data);
                 alert(data.response);
             },
@@ -120,9 +120,9 @@
                 alert("An error has occured!!!");
             }
         });
-       
+
     });
-    
+
 });
 
 function pullmessajes() {
@@ -130,13 +130,13 @@ function pullmessajes() {
     $.ajax({
         url: "/WebPage/Conversaciones/Pull",
         type: "POST",
-        data: JSON.stringify({'conv_id': conv_id}),
+        data: JSON.stringify({ 'conv_id': conv_id }),
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             var messages = JSON.parse(data);
             var div = "<div class='pre-scrollable' id='messages'>";
-            for (var i = 0;i <messages.length;i++){
+            for (var i = 0; i < messages.length; i++) {
                 div = div + "<h4>" + messages[i].username + "</h4>";
                 div = div + "<h6>" + messages[i].mes_fecha + "</h6>";
                 div = div + "<p>" + messages[i].message + "</p><br/>";
@@ -158,10 +158,10 @@ function Search(busqueda) {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
     }).done(function (response) {
-        var data = [];      
-        response = JSON.parse(response);      
-        for (var i = 0; i < response.length ; i++) {
-            data.push(response[i].username);       
+        var data = [];
+        response = JSON.parse(response);
+        for (var i = 0; i < response.length; i++) {
+            data.push(response[i].username);
         }
         $("#search").autocomplete({
             source: data
@@ -169,4 +169,4 @@ function Search(busqueda) {
     });
 
 }
-    
+

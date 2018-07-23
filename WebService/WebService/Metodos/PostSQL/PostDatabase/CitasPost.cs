@@ -18,7 +18,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         public string Error_Descripcion { get; set; }
 
         #region guardarCita
-        public void guardarCita(string username, string cita_fecha,string cita_hora)
+        public void guardarCita(string username, string cita_fecha, string cita_hora)
         {
             StringBuilder sql = new StringBuilder();
             sql.AppendLine("insert into citas(username,cita_estado,cita_fecha,cita_hora) values(@username,'0',@cita_fecha,@cita_hora)");
@@ -134,7 +134,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                         NpgsqlValue=cita_id,
                     },
             };
-            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(),parametros);
+            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(), parametros);
             foreach (DataRow item in odatos.Tables[0].Rows)
             {
                 cita.cita_id = Convert.ToInt32(item["cita_id"]);
@@ -143,7 +143,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
                 cita.cita_fecha = item["cita_fecha"].ToString();
                 cita.cita_hora = item["cita_hora"].ToString();
                 cita.cita_estado = Convert.ToInt32(item["cita_estado"]);
-                
+
             }
             return cita;
         }
@@ -195,7 +195,7 @@ namespace WebService.Metodos.PostSQL.PostDatabase
         #endregion
 
         #region verificarCita_Fecha
-        public bool verficiarCita_Fecha(string cita_fecha,string cita_hora)
+        public bool verficiarCita_Fecha(string cita_fecha, string cita_hora)
         {
             bool result = false;
             StringBuilder sql = new StringBuilder();
