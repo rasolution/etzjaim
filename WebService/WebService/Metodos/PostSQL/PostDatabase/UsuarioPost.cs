@@ -3,10 +3,8 @@ using NpgsqlTypes;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Web;
 using WebService.Conexion.PostGresSQL;
 using WebService.Estructuras;
 
@@ -14,298 +12,318 @@ namespace WebService.Metodos.PostSQL.PostDatabase
 {
     public class UsuarioPost
     {
-        public bool IsError
+        public bool IsError { get; set; }
+        public string ErrorDescripcion { get; set; }
+
+        private static bool HasRows(DataSet ds)
         {
-            get;
-            set;
+            return ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0;
         }
 
-        public string ErrorDescripcion
+        private static Usuario MapPublicUsuario(DataRow item)
         {
-            get;
-            set;
+            return new Usuario
+            {
+                username = item["username"].ToString(),
+                password = string.Empty,
+                nombre = item["user_nombre"].ToString(),
+                apellidos = item["user_apellidos"].ToString(),
+                tipo = Convert.ToInt32(item["user_tipo"])
+            };
         }
 
-        #region cargarUsuarios
         public List<Usuario> cargarUsuarios()
         {
-            var sql = new StringBuilder();
-            sql.AppendLine("select * from usuarios where user_tipo < '2'");
-            List<Usuario> usuarios = new List<Usuario>();
-            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString());
-            foreach (DataRow item in odatos.Tables[0].Rows)
+            var usuarios = new List<Usuario>();
+            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL("select username, user_nombre, user_apellidos, user_tipo from usuarios where user_tipo < 2");
+            if (HasRows(odatos))
             {
-                usuarios.Add(new Usuario()
+                foreach (DataRow item in odatos.Tables[0].Rows)
                 {
-                    username = item["username"].ToString(),
-                    password = item["password"].ToString(),
-                    nombre = item["user_nombre"].ToString(),
-                    apellidos = item["user_apellidos"].ToString(),
-                    tipo = Convert.ToInt32(item["user_tipo"]),
-                });
+                    usuarios.Add(MapPublicUsuario(item));
+                }
             }
             return usuarios;
         }
-        #endregion
 
-        #region cargarAdmins
         public List<Usuario> cargarAdmins_Clientes(int tipo)
         {
-
-            var sql = new StringBuilder();
-            switch (tipo)
+            var usuarios = new List<Usuario>();
+            if (tipo != 0 && tipo != 1)
             {
-                case 0:
-                    sql.AppendLine("select * from usuarios where user_tipo=0");
-                    break;
-                case 1:
-                    sql.AppendLine("select * from usuarios where user_tipo=1");
-                    break;
+                return usuarios;
             }
-            List<Usuario> usuarios = new List<Usuario>();
-            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString());
-            foreach (DataRow item in odatos.Tables[0].Rows)
+
+            var parametros = new List<NpgsqlParameter>
             {
-                usuarios.Add(new Usuario()
+                new NpgsqlParameter
                 {
-                    username = item["username"].ToString(),
-                    password = item["password"].ToString(),
-                    nombre = item["user_nombre"].ToString(),
-                    apellidos = item["user_apellidos"].ToString(),
-                    tipo = Convert.ToInt32(item["user_tipo"]),
-                });
+                    ParameterName = "tipo",
+                    NpgsqlDbType = NpgsqlDbType.Integer,
+                    NpgsqlValue = tipo
+                }
+            };
+            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(
+                "select username, user_nombre, user_apellidos, user_tipo from usuarios where user_tipo = @tipo",
+                parametros);
+
+            if (HasRows(odatos))
+            {
+                foreach (DataRow item in odatos.Tables[0].Rows)
+                {
+                    usuarios.Add(MapPublicUsuario(item));
+                }
             }
             return usuarios;
         }
-        #endregion
 
-        #region cargarUsuario
         public Usuario cargarUsuario(string username)
         {
-            username = username.ToLower();
-            var sql = new StringBuilder();
-            sql.AppendLine("select * from usuarios where username=@username");
             Usuario usuario = new Usuario();
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                return usuario;
+            }
+
+            string normalized = username.Trim().ToLowerInvariant();
             var parametros = new List<NpgsqlParameter>
             {
-                new NpgsqlParameter{
-                    ParameterName="username",
-                    NpgsqlDbType=NpgsqlDbType.Varchar,
-                    NpgsqlValue=username
-                },
+                new NpgsqlParameter
+                {
+                    ParameterName = "username",
+                    NpgsqlDbType = NpgsqlDbType.Varchar,
+                    NpgsqlValue = normalized
+                }
             };
-            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(), parametros);
-            foreach (DataRow item in odatos.Tables[0].Rows)
+
+            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(
+                "select username, user_nombre, user_apellidos, user_tipo from usuarios where username = @username",
+                parametros);
+
+            if (HasRows(odatos))
             {
-                usuario.username = item["username"].ToString();
-                usuario.password = item["password"].ToString();
-                usuario.nombre = item["user_nombre"].ToString();
-                usuario.apellidos = item["user_apellidos"].ToString();
-                usuario.tipo = Convert.ToInt32(item["user_tipo"]);
+                return MapPublicUsuario(odatos.Tables[0].Rows[0]);
             }
             return usuario;
         }
-        #endregion
 
-        #region guardarUsuario
         public void guardarUsuario(string username, string password, string user_nombre, string user_apellidos, int user_tipo)
         {
-            username = username.ToLower();
-            password = password.ToLower();
-            password = encriptacion(password);
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            {
+                IsError = true;
+                ErrorDescripcion = "El nombre de usuario y la contraseña son obligatorios.";
+                return;
+            }
 
-            var sql = new StringBuilder();
-            sql.AppendLine("insert into usuarios(username,password,user_nombre,user_apellidos,user_tipo) values (@username,@password,@user_nombre,@user_apellidos,@user_tipo)");
+            string normalizedUser = username.Trim().ToLowerInvariant();
+            string hashedPass = encriptacion(password.ToLowerInvariant());
+
             var parametros = new List<NpgsqlParameter>
             {
-                new NpgsqlParameter{
-                    ParameterName="username",
-                    NpgsqlDbType=NpgsqlDbType.Varchar,
-                    NpgsqlValue =  username
-                },
-                new NpgsqlParameter{
-                    ParameterName ="password",
-                    NpgsqlDbType=NpgsqlDbType.Varchar,
-                    NpgsqlValue=password
-                },
-                 new NpgsqlParameter{
-                    ParameterName ="user_nombre",
-                    NpgsqlDbType=NpgsqlDbType.Varchar,
-                    NpgsqlValue=user_nombre
-                },
-                 new NpgsqlParameter{
-                    ParameterName ="user_apellidos",
-                    NpgsqlDbType=NpgsqlDbType.Varchar,
-                    NpgsqlValue=user_apellidos
-                },
-                 new NpgsqlParameter{
-                    ParameterName ="user_tipo",
-                    NpgsqlDbType=NpgsqlDbType.Integer,
-                    NpgsqlValue=user_tipo
-                }
+                new NpgsqlParameter { ParameterName = "username", NpgsqlDbType = NpgsqlDbType.Varchar, NpgsqlValue = normalizedUser },
+                new NpgsqlParameter { ParameterName = "password", NpgsqlDbType = NpgsqlDbType.Varchar, NpgsqlValue = hashedPass },
+                new NpgsqlParameter { ParameterName = "user_nombre", NpgsqlDbType = NpgsqlDbType.Varchar, NpgsqlValue = (user_nombre ?? string.Empty).Trim() },
+                new NpgsqlParameter { ParameterName = "user_apellidos", NpgsqlDbType = NpgsqlDbType.Varchar, NpgsqlValue = (user_apellidos ?? string.Empty).Trim() },
+                new NpgsqlParameter { ParameterName = "user_tipo", NpgsqlDbType = NpgsqlDbType.Integer, NpgsqlValue = user_tipo }
             };
-            AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(), parametros);
+
+            AccesoDatosPost.Instance.accesodatos.EjecutarSQL(
+                "insert into usuarios(username,password,user_nombre,user_apellidos,user_tipo) values (@username,@password,@user_nombre,@user_apellidos,@user_tipo)",
+                parametros);
+
             if (AccesoDatosPost.Instance.accesodatos.IsError)
             {
-                this.IsError = AccesoDatosPost.Instance.accesodatos.IsError;
+                this.IsError = true;
                 this.ErrorDescripcion = AccesoDatosPost.Instance.accesodatos.ErrorDescripcion;
             }
         }
-        #endregion
 
-        #region eliminarUsuario
         public void eliminarUsuario(string username)
         {
-            username = username.ToLower();
-            var sql = new StringBuilder();
-            sql.Append("update usuarios set user_tipo='2' where username=@username");
+            if (string.IsNullOrWhiteSpace(username)) return;
             var parametros = new List<NpgsqlParameter>
             {
-                new NpgsqlParameter{
-                    ParameterName="username",
-                    NpgsqlDbType=NpgsqlDbType.Varchar,
-                    NpgsqlValue=username
-                },
+                new NpgsqlParameter { ParameterName = "username", NpgsqlDbType = NpgsqlDbType.Varchar, NpgsqlValue = username.Trim().ToLowerInvariant() }
             };
-            AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(), parametros);
+
+            AccesoDatosPost.Instance.accesodatos.EjecutarSQL("update usuarios set user_tipo = 2 where username = @username", parametros);
             if (AccesoDatosPost.Instance.accesodatos.IsError)
             {
-                this.IsError = AccesoDatosPost.Instance.accesodatos.IsError;
+                this.IsError = true;
                 this.ErrorDescripcion = AccesoDatosPost.Instance.accesodatos.ErrorDescripcion;
             }
         }
-        #endregion
 
-        #region habilitarUsuario
         public void habilitarUsuario(string username, int tipo)
         {
-            username = username.ToLower();
-            var sql = new StringBuilder();
-            sql.Append("update usuarios set user_tipo='" + tipo + "' where username=@username");
+            if (string.IsNullOrWhiteSpace(username)) return;
             var parametros = new List<NpgsqlParameter>
             {
-                new NpgsqlParameter{
-                    ParameterName="username",
-                    NpgsqlDbType=NpgsqlDbType.Varchar,
-                    NpgsqlValue=username
-                },
+                new NpgsqlParameter { ParameterName = "tipo", NpgsqlDbType = NpgsqlDbType.Integer, NpgsqlValue = tipo },
+                new NpgsqlParameter { ParameterName = "username", NpgsqlDbType = NpgsqlDbType.Varchar, NpgsqlValue = username.Trim().ToLowerInvariant() }
             };
-            AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(), parametros);
+
+            AccesoDatosPost.Instance.accesodatos.EjecutarSQL("update usuarios set user_tipo = @tipo where username = @username", parametros);
             if (AccesoDatosPost.Instance.accesodatos.IsError)
             {
-                this.IsError = AccesoDatosPost.Instance.accesodatos.IsError;
+                this.IsError = true;
                 this.ErrorDescripcion = AccesoDatosPost.Instance.accesodatos.ErrorDescripcion;
             }
         }
-        #endregion
 
-        #region cambiarContraseña
         public void cambiarContraseña(string username, string password)
         {
-            username = username.ToLower();
-            password = password.ToLower();
-            password = encriptacion(password);
-            var sql = new StringBuilder();
-            sql.Append("update usuarios set password=@password where username=@username");
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            {
+                this.IsError = true;
+                this.ErrorDescripcion = "El usuario y la nueva contraseña son obligatorios.";
+                return;
+            }
+
             var parametros = new List<NpgsqlParameter>
             {
-                new NpgsqlParameter{
-                    ParameterName="username",
-                    NpgsqlDbType=NpgsqlDbType.Varchar,
-                    NpgsqlValue=username
-                },
-                new NpgsqlParameter{
-                    ParameterName="password",
-                    NpgsqlDbType=NpgsqlDbType.Varchar,
-                    NpgsqlValue=password
-                },
+                new NpgsqlParameter { ParameterName = "username", NpgsqlDbType = NpgsqlDbType.Varchar, NpgsqlValue = username.Trim().ToLowerInvariant() },
+                new NpgsqlParameter { ParameterName = "password", NpgsqlDbType = NpgsqlDbType.Varchar, NpgsqlValue = encriptacion(password.ToLowerInvariant()) }
             };
-            AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString(), parametros);
+
+            AccesoDatosPost.Instance.accesodatos.EjecutarSQL("update usuarios set password = @password where username = @username", parametros);
             if (AccesoDatosPost.Instance.accesodatos.IsError)
             {
-                this.IsError = AccesoDatosPost.Instance.accesodatos.IsError;
+                this.IsError = true;
                 this.ErrorDescripcion = AccesoDatosPost.Instance.accesodatos.ErrorDescripcion;
             }
         }
-        #endregion
 
-        #region UsernameRepetido
         public bool UsernameRepetido(string username)
         {
-            username = username.ToLower();
-            bool result = false;
-            List<Usuario> Usuarios = cargarUsuarios();
-            for (int i = 0; i < Usuarios.Count; i++)
+            if (string.IsNullOrWhiteSpace(username)) return false;
+            var parametros = new List<NpgsqlParameter>
             {
-                if (Usuarios[i].username.Equals(username))
-                {
-                    result = true;
-                    break;
-                }
-            }
-            return result;
+                new NpgsqlParameter { ParameterName = "username", NpgsqlDbType = NpgsqlDbType.Varchar, NpgsqlValue = username.Trim().ToLowerInvariant() }
+            };
+            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(
+                "select username from usuarios where user_tipo < 2 and username = @username",
+                parametros);
+            return HasRows(odatos);
         }
-        #endregion
 
-        #region Login
         public bool Login(string username, string password)
         {
-            bool loginOk = false;
-            username = username.ToLower();
-            password = password.ToLower();
-            password = encriptacion(password);
-
-            List<Usuario> Usuarios = cargarUsuarios();
-
-            for (int i = 0; i < Usuarios.Count; i++)
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
-                if (Usuarios[i].username.Equals(username) &&
-                   Usuarios[i].password.Equals(password))
-                {
-                    loginOk = true;
-                    break;
-                }
+                return false;
             }
-            return loginOk;
+
+            string normalizedUser = username.Trim().ToLowerInvariant();
+            var parametros = new List<NpgsqlParameter>
+            {
+                new NpgsqlParameter { ParameterName = "username", NpgsqlDbType = NpgsqlDbType.Varchar, NpgsqlValue = normalizedUser }
+            };
+            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(
+                "select password from usuarios where user_tipo < 2 and username = @username",
+                parametros);
+
+            if (!HasRows(odatos))
+            {
+                return false;
+            }
+
+            string storedHash = odatos.Tables[0].Rows[0]["password"].ToString();
+            return VerificarPassword(password, storedHash);
         }
-        #endregion
 
-
-
-
-        #region User Ajax
         public List<Usuario> user_Ajax(string character)
         {
-            var sql = new StringBuilder();
-            sql.AppendLine("select * from usuarios where user_tipo < '2' and username LIKE '%" + character + "%' ");
-            List<Usuario> usuarios = new List<Usuario>();
-            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(sql.ToString());
-            foreach (DataRow item in odatos.Tables[0].Rows)
+            var usuarios = new List<Usuario>();
+            string pattern = "%" + (character ?? string.Empty).Trim().ToLowerInvariant() + "%";
+            var parametros = new List<NpgsqlParameter>
             {
-                usuarios.Add(new Usuario()
+                new NpgsqlParameter
                 {
-                    username = item["username"].ToString(),
+                    ParameterName = "pattern",
+                    NpgsqlDbType = NpgsqlDbType.Varchar,
+                    NpgsqlValue = pattern
+                }
+            };
 
-                    nombre = item["user_nombre"].ToString(),
-                    apellidos = item["user_apellidos"].ToString(),
-                    tipo = Convert.ToInt32(item["user_tipo"]),
-                });
+            var odatos = AccesoDatosPost.Instance.accesodatos.EjecutarConsultaSQL(
+                "select username, user_nombre, user_apellidos, user_tipo from usuarios where user_tipo < 2 and lower(username) like @pattern",
+                parametros);
+
+            if (HasRows(odatos))
+            {
+                foreach (DataRow item in odatos.Tables[0].Rows)
+                {
+                    usuarios.Add(MapPublicUsuario(item));
+                }
             }
             return usuarios;
         }
-        #endregion
+
         public string encriptacion(string password)
         {
-            MD5CryptoServiceProvider provider = new MD5CryptoServiceProvider();
-            byte[] data = System.Text.Encoding.ASCII.GetBytes(password);
-            data = provider.ComputeHash(data);
-            string md5 = string.Empty;
-            for (int i = 0; i < data.Length; i++)
+            return HashSha256(password ?? string.Empty);
+        }
+
+        public static string HashSha256(string input)
+        {
+            using (SHA256 sha = SHA256.Create())
             {
-                md5 += data[i].ToString("x2").ToLower();
+                byte[] bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(input ?? string.Empty));
+                StringBuilder sb = new StringBuilder("sha256:", bytes.Length * 2 + 7);
+                foreach (byte b in bytes)
+                {
+                    sb.Append(b.ToString("x2"));
+                }
+                return sb.ToString();
             }
-            password = md5;
-            return password;
+        }
+
+        public static string HashLegacyMd5(string input)
+        {
+            using (MD5 md5 = MD5.Create())
+            {
+                byte[] data = md5.ComputeHash(Encoding.ASCII.GetBytes(input ?? string.Empty));
+                StringBuilder sb = new StringBuilder(data.Length * 2);
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sb.Append(data[i].ToString("x2"));
+                }
+                return sb.ToString();
+            }
+        }
+
+        public static bool VerificarPassword(string plainPassword, string storedHash)
+        {
+            if (string.IsNullOrEmpty(plainPassword) || string.IsNullOrEmpty(storedHash))
+            {
+                return false;
+            }
+
+            string normalized = plainPassword.ToLowerInvariant();
+            if (storedHash.StartsWith("sha256:", StringComparison.OrdinalIgnoreCase))
+            {
+                return FixedTimeEquals(HashSha256(normalized), storedHash)
+                    || FixedTimeEquals(HashSha256(plainPassword), storedHash);
+            }
+
+            return FixedTimeEquals(HashLegacyMd5(normalized), storedHash.ToLowerInvariant());
+        }
+
+        private static bool FixedTimeEquals(string a, string b)
+        {
+            if (a == null || b == null || a.Length != b.Length)
+            {
+                return false;
+            }
+
+            int diff = 0;
+            for (int i = 0; i < a.Length; i++)
+            {
+                diff |= a[i] ^ b[i];
+            }
+            return diff == 0;
         }
     }
 }

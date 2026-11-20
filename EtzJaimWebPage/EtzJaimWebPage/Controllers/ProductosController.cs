@@ -1,8 +1,5 @@
 ﻿using EtzJaimWebPage.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 
@@ -10,197 +7,188 @@ namespace EtzJaimWebPage.Controllers
 {
     public class ProductosController : Controller
     {
-        // GET: Productos
+        private bool HasAdminAccess()
+        {
+            return service.IsAdminSession(Session);
+        }
 
-        #region index
+        private ActionResult RedirectToHome()
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        private Producto FetchProductSafe(int pro_id)
+        {
+            string raw = service.CallSoap(client => client.product_cargarProducto(pro_id), null);
+            if (string.IsNullOrWhiteSpace(raw))
+            {
+                return null;
+            }
+
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            Producto datos = js.Deserialize<Producto>(raw);
+            if (datos == null)
+            {
+                return null;
+            }
+
+            return new Producto
+            {
+                pro_id = datos.pro_id,
+                pro_nombre = datos.pro_nombre,
+                pro_precio = datos.pro_precio,
+                pro_estado = datos.pro_estado,
+                pro_foto = datos.pro_foto
+            };
+        }
+
         public ActionResult Index()
         {
-            if (Session["user"] == null)
+            if (!HasAdminAccess())
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToHome();
             }
-            else
-            {
-                Usuario user = (Usuario)Session["user"];
-                if (user.tipo == 0)
-                {
-                    var service = new WebService.WebServiceSoapClient();
-                    JavaScriptSerializer js = new JavaScriptSerializer();
-                    var datos = js.Deserialize<List<Producto>>(service.product_cargarProductos());
 
-                    return View(datos);
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Home");
+            string raw = service.CallSoap(client => client.product_cargarProductos(), null);
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            var datos = string.IsNullOrWhiteSpace(raw)
+                ? new List<Producto>()
+                : (js.Deserialize<List<Producto>>(raw) ?? new List<Producto>());
 
-                }
-            }
+            return View(datos);
         }
-        #endregion
 
-
-        #region CreateView
         public ActionResult Create()
         {
-            if (Session["user"] == null)
+            if (!HasAdminAccess())
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToHome();
             }
-            else
-            {
-                Usuario user = (Usuario)Session["user"];
-                if (user.tipo == 0)
-                {
-                    return View();
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Home");
 
-                }
-            }
+            return View();
         }
-        #endregion
 
-        #region CreateFunciont
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "pro_nombre,pro_precio,pro_estado")] Producto product)
         {
-            if (ModelState.IsValid)
+            if (!HasAdminAccess())
             {
-                var service = new WebService.WebServiceSoapClient();
-                JavaScriptSerializer js = new JavaScriptSerializer();
-                var datos = js.Deserialize<Respuesta>(service.product_guardarProducto(product.pro_nombre, product.pro_precio, product.pro_estado, product.pro_foto));
-                ViewBag.Message = datos.response;
+                return RedirectToHome();
+            }
 
+            if (ModelState.IsValid && product != null && !string.IsNullOrWhiteSpace(product.pro_nombre))
+            {
+                string raw = service.CallSoap(
+                    client => client.product_guardarProducto(product.pro_nombre.Trim(), product.pro_precio, product.pro_estado, product.pro_foto),
+                    null);
+                if (!string.IsNullOrWhiteSpace(raw))
+                {
+                    JavaScriptSerializer js = new JavaScriptSerializer();
+                    Respuesta datos = js.Deserialize<Respuesta>(raw);
+                    ViewBag.Message = datos != null ? datos.response : "Producto procesado.";
+                }
+                else
+                {
+                    ViewBag.Message = "No se pudo conectar con el servicio de productos.";
+                }
             }
             else
             {
                 ViewBag.Message = "Llena los datos correctamente";
             }
-            return View();
+            return View(product);
         }
-        #endregion
 
-        #region BorrarView
         public ActionResult Borrar(int pro_id)
         {
-            if (Session["user"] == null)
+            if (!HasAdminAccess())
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToHome();
             }
-            else
-            {
-                Usuario user = (Usuario)Session["user"];
-                if (user.tipo == 0)
-                {
-                    var service = new WebService.WebServiceSoapClient();
-                    JavaScriptSerializer js = new JavaScriptSerializer();
-                    var datos = js.Deserialize<Producto>(service.product_cargarProducto(pro_id));
-                    Producto product = new Producto();
-                    product.pro_nombre = datos.pro_nombre;
-                    product.pro_precio = datos.pro_precio;
-                    product.pro_estado = product.pro_estado;
-                    product.pro_id = datos.pro_id;
-                    return View(product);
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Home");
 
-                }
+            Producto product = FetchProductSafe(pro_id);
+            if (product == null)
+            {
+                return RedirectToAction("Index");
             }
+            return View(product);
         }
-        #endregion
-
 
         [HttpPost, ActionName("Borrar")]
         [ValidateAntiForgeryToken]
         public ActionResult BorradoConfirmed(int pro_id)
         {
+            if (!HasAdminAccess())
+            {
+                return RedirectToHome();
+            }
+
             if (ModelState.IsValid)
             {
-                var service = new WebService.WebServiceSoapClient();
-                JavaScriptSerializer js = new JavaScriptSerializer();
-                var datos = js.Deserialize<Respuesta>(service.product_eliminarCliente(pro_id));
-                ViewBag.Message = datos.response;
+                string raw = service.CallSoap(client => client.product_eliminarCliente(pro_id), null);
+                if (!string.IsNullOrWhiteSpace(raw))
+                {
+                    JavaScriptSerializer js = new JavaScriptSerializer();
+                    Respuesta datos = js.Deserialize<Respuesta>(raw);
+                    ViewBag.Message = datos != null ? datos.response : string.Empty;
+                }
             }
             return RedirectToAction("Index");
         }
+
         public ActionResult Atras()
         {
             return RedirectToAction("Index");
         }
 
-
         public ActionResult Product(int pro_id)
         {
-            if (Session["user"] == null)
+            if (!HasAdminAccess())
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToHome();
             }
-            else
-            {
-                Usuario user = (Usuario)Session["user"];
-                if (user.tipo == 0)
-                {
-                    var service = new WebService.WebServiceSoapClient();
-                    JavaScriptSerializer js = new JavaScriptSerializer();
-                    var datos = js.Deserialize<Producto>(service.product_cargarProducto(pro_id));
-                    Producto product = new Producto();
-                    product.pro_nombre = datos.pro_nombre;
-                    product.pro_precio = datos.pro_precio;
-                    product.pro_estado = product.pro_estado;
-                    product.pro_id = datos.pro_id;
-                    return View(product);
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Home");
 
-                }
+            Producto product = FetchProductSafe(pro_id);
+            if (product == null)
+            {
+                return RedirectToAction("Index");
             }
+            return View(product);
         }
 
         public ActionResult Edit(int pro_id)
         {
-            if (Session["user"] == null)
+            if (!HasAdminAccess())
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToHome();
             }
-            else
-            {
-                Usuario user = (Usuario)Session["user"];
-                if (user.tipo == 0)
-                {
-                    var service = new WebService.WebServiceSoapClient();
-                    JavaScriptSerializer js = new JavaScriptSerializer();
-                    var datos = js.Deserialize<Producto>(service.product_cargarProducto(pro_id));
-                    Producto product = new Producto();
-                    product.pro_nombre = datos.pro_nombre;
-                    product.pro_precio = datos.pro_precio;
-                    product.pro_estado = product.pro_estado;
-                    product.pro_id = datos.pro_id;
-                    return View(product);
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Home");
 
-                }
+            Producto product = FetchProductSafe(pro_id);
+            if (product == null)
+            {
+                return RedirectToAction("Index");
             }
+            return View(product);
         }
+
         [HttpPost]
         public JsonResult EditProduct(int pro_id, string pro_nombre, int pro_precio, int pro_estado)
         {
+            if (!HasAdminAccess())
+            {
+                return Json(new { response = "unauthorized" });
+            }
 
-            var service = new WebService.WebServiceSoapClient();
-            return Json(service.product_editarProducto(pro_id, pro_nombre, pro_precio, pro_estado, null));
+            if (string.IsNullOrWhiteSpace(pro_nombre) || pro_precio < 0)
+            {
+                return Json(new { response = "invalid" });
+            }
+
+            string result = service.CallSoap(
+                client => client.product_editarProducto(pro_id, pro_nombre.Trim(), pro_precio, pro_estado, null),
+                "{\"response\":\"error\"}");
+            return Json(result);
         }
-
-
     }
-
 }

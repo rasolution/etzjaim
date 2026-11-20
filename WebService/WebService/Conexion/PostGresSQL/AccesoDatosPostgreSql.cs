@@ -1,23 +1,25 @@
 ﻿using System;
 using System.Collections;
 using System.Data;
-using System.Data.SqlClient;
 using Npgsql;
 
 namespace WebService.Conexion.PostGresSQL
 {
     public class AccesoDatosPostgreSql : IAccesoDatos
     {
-        // Constructor
-        public AccesoDatosPostgreSql(String servidor, String puerto, String usuario, String contrasena, String baseDatos)
+        public AccesoDatosPostgreSql(string servidor, string puerto, string usuario, string contrasena, string baseDatos)
         {
             this.LimpiarEstado();
-            ConexionPost = new NpgsqlConnection("Server=" + servidor + ";Port=" + puerto + ";Database=" + baseDatos + ";User Id=" + usuario + ";Password=" + contrasena);
+            string connStr = string.Format("Server={0};Port={1};Database={2};User Id={3};Password={4}",
+                servidor ?? "localhost",
+                puerto ?? "5432",
+                baseDatos ?? "etzjaim",
+                usuario ?? "etzjaim",
+                contrasena ?? string.Empty);
 
+            ConexionPost = new NpgsqlConnection(connStr);
             Instancias += 1;
-            // no puede haber + de una instancia de la clase
-            if (Instancias > 1)
-                return;
+
             try
             {
                 ConexionPost.Open();
@@ -25,214 +27,233 @@ namespace WebService.Conexion.PostGresSQL
             catch (Exception error)
             {
                 IsError = true;
-                ErrorDescripcion = "Error de Conexión \n";
-                ErrorDescripcion += error.Message;
-                Instancias = 0;
+                ErrorDescripcion = "Error de Conexión \n" + error.Message;
             }
         }
 
-        // destructor
         ~AccesoDatosPostgreSql()
         {
             try
             {
-                ConexionPost.Close();
+                if (ConexionPost != null && ConexionPost.State != ConnectionState.Closed)
+                {
+                    ConexionPost.Close();
+                }
+            }
+            catch
+            {
+                // Ignore finalizer disposal issues.
+            }
+        }
+
+        private bool EnsureOpen()
+        {
+            if (ConexionPost == null)
+            {
+                IsError = true;
+                ErrorDescripcion = "Conexión PostgreSQL no inicializada.";
+                return false;
+            }
+
+            if (ConexionPost.State == ConnectionState.Open)
+            {
+                return true;
+            }
+
+            try
+            {
+                if (ConexionPost.State == ConnectionState.Broken)
+                {
+                    ConexionPost.Close();
+                }
+                ConexionPost.Open();
+                return true;
             }
             catch (Exception error)
             {
                 IsError = true;
-                ErrorDescripcion = "Error de Desconexión \n";
-                ErrorDescripcion += error.Message;
+                ErrorDescripcion = "Error de Conexión \n" + error.Message;
+                return false;
             }
         }
 
-        #region Métodos de conexion
-
-        // Indica el estado de la persistencia
         public bool Estado()
         {
-            string mensaje = "";
-            bool result = false;
             this.LimpiarEstado();
-            // estado dela conexión
-            switch (ConexionPost.State)
+            if (ConexionPost == null)
             {
-                case System.Data.ConnectionState.Broken:
-                    mensaje = "Quebrada";
-                    break;
-                case System.Data.ConnectionState.Closed:
-                    mensaje = "Cerrada";
-                    break;
-                case System.Data.ConnectionState.Connecting:
-                    mensaje = "Conectandose";
-                    break;
-                case System.Data.ConnectionState.Executing:
-                    mensaje = "Ejecutando";
-                    break;
-                case System.Data.ConnectionState.Fetching:
-                    mensaje = "Extrayendo";
-                    break;
-                case System.Data.ConnectionState.Open:
-                    mensaje = "Abierta";
-                    break;
+                return false;
             }
-            if (mensaje.Equals("Ejecutando") || mensaje.Equals("Extrayendo") || mensaje.Equals("Abierta"))
-            {
-                result = true;
-            }
-            // cargar la propiedad con el estado de la conexion
 
-
-            return result;
+            return ConexionPost.State == ConnectionState.Open
+                || ConexionPost.State == ConnectionState.Executing
+                || ConexionPost.State == ConnectionState.Fetching;
         }
 
-        public DataSet EjecutarConsultaSQL(String sql)
+        public DataSet EjecutarConsultaSQL(string sql)
         {
             this.LimpiarEstado();
             var oDataSet = new DataSet();
+            if (!EnsureOpen())
+            {
+                return oDataSet;
+            }
+
             try
             {
-                var oDataAdapter = new NpgsqlDataAdapter(sql, ConexionPost);
-                if (this.HayTransaccion)
+                using (var cmd = new NpgsqlCommand(sql, ConexionPost))
+                using (var oDataAdapter = new NpgsqlDataAdapter(cmd))
                 {
-                    oDataAdapter.SelectCommand.Transaction = this.Transaccion;
+                    if (this.HayTransaccion)
+                    {
+                        cmd.Transaction = this.Transaccion;
+                    }
+                    oDataAdapter.Fill(oDataSet);
                 }
-                oDataAdapter.Fill(oDataSet);
             }
             catch (Exception error)
             {
                 IsError = true;
-                ErrorDescripcion = "Error en ejecutarConsultaSQL \n";
-                ErrorDescripcion += error.Message;
+                ErrorDescripcion = "Error en ejecutarConsultaSQL \n" + error.Message;
             }
             return oDataSet;
         }
 
-        public DataSet EjecutarConsultaSQL(String sql, IEnumerable parametros)
+        public DataSet EjecutarConsultaSQL(string sql, IEnumerable parametros)
         {
             this.LimpiarEstado();
             var oDataSet = new DataSet();
+            if (!EnsureOpen())
+            {
+                return oDataSet;
+            }
+
             try
             {
-                var oDataAdapter = new NpgsqlDataAdapter(sql, ConexionPost);
-                var cmd = new NpgsqlCommand(sql, ConexionPost);
-                foreach (NpgsqlParameter parametro in parametros)
+                using (var cmd = new NpgsqlCommand(sql, ConexionPost))
+                using (var oDataAdapter = new NpgsqlDataAdapter(cmd))
                 {
-                    cmd.Parameters.Add(parametro);
-                }
-                oDataAdapter.SelectCommand = cmd;
+                    if (parametros != null)
+                    {
+                        foreach (NpgsqlParameter parametro in parametros)
+                        {
+                            cmd.Parameters.Add(parametro);
+                        }
+                    }
 
-                if (this.HayTransaccion)
-                {
-                    oDataAdapter.SelectCommand.Transaction = this.Transaccion;
+                    if (this.HayTransaccion)
+                    {
+                        cmd.Transaction = this.Transaccion;
+                    }
+                    oDataAdapter.Fill(oDataSet);
                 }
-                oDataAdapter.Fill(oDataSet);
             }
             catch (Exception error)
             {
                 IsError = true;
-                ErrorDescripcion = "Error en ejecutarConsultaSQL \n";
-                ErrorDescripcion += error.Message;
+                ErrorDescripcion = "Error en ejecutarConsultaSQL \n" + error.Message;
             }
             return oDataSet;
         }
 
         public void EjecutarSQL(string sql, IEnumerable parametros)
         {
+            this.LimpiarEstado();
+            if (!EnsureOpen())
+            {
+                return;
+            }
+
             try
             {
-                this.LimpiarEstado();
-                var cmd = new NpgsqlCommand(sql, ConexionPost);
-                foreach (NpgsqlParameter parametro in parametros)
+                using (var cmd = new NpgsqlCommand(sql, ConexionPost))
                 {
-                    cmd.Parameters.Add(parametro);
+                    if (parametros != null)
+                    {
+                        foreach (NpgsqlParameter parametro in parametros)
+                        {
+                            cmd.Parameters.Add(parametro);
+                        }
+                    }
+
+                    if (this.HayTransaccion)
+                    {
+                        cmd.Transaction = this.Transaccion;
+                    }
+                    cmd.ExecuteNonQuery();
                 }
-                if (this.HayTransaccion)
-                {
-                    cmd.Transaction = this.Transaccion;
-                }
-                cmd.ExecuteNonQuery();
             }
             catch (Exception error)
             {
                 IsError = true;
-                ErrorDescripcion = "Error en ejecutarSQL \n";
-                ErrorDescripcion += error.Message;
+                ErrorDescripcion = "Error en ejecutarSQL \n" + error.Message;
             }
         }
 
-        // Método para manipular DQL (Select) Para busquedas escalares SUM(), Count(), Etc.
-        public Int32 EjecutarScalarSQL(String pSql)
+        public int EjecutarScalarSQL(string pSql)
         {
-            int resultado = 0;
-            var cmd = new NpgsqlCommand(pSql, ConexionPost);
-            this.IsError = false;
+            this.LimpiarEstado();
+            if (!EnsureOpen())
+            {
+                return 0;
+            }
 
-            // capturar la excepción
             try
             {
-                resultado = (Int32)cmd.ExecuteScalar();
+                using (var cmd = new NpgsqlCommand(pSql, ConexionPost))
+                {
+                    object val = cmd.ExecuteScalar();
+                    return val == null || val == DBNull.Value ? 0 : Convert.ToInt32(val);
+                }
             }
             catch (Exception error)
             {
                 IsError = true;
-                ErrorDescripcion = "Error en ejecutarConsultaSQL \n";
-                ErrorDescripcion += error.Message;
+                ErrorDescripcion = "Error en ejecutarConsultaSQL \n" + error.Message;
+                return 0;
             }
-            return resultado;
         }
 
-        // Método para manipular DQL (Select) Exclusivo para carga de listas y combos
-        public DataSet EjecutarSQLListas(String sql, String tabla)
+        public DataSet EjecutarSQLListas(string sql, string tabla)
         {
-            var vDatos = new NpgsqlDataAdapter(sql, ConexionPost);
+            this.LimpiarEstado();
             var dsTabla = new DataSet();
-            this.IsError = false;
+            if (!EnsureOpen())
+            {
+                return dsTabla;
+            }
 
-            // capturar la excepción
             try
             {
-                vDatos.Fill(dsTabla, tabla);
-
+                using (var vDatos = new NpgsqlDataAdapter(sql, ConexionPost))
+                {
+                    vDatos.Fill(dsTabla, tabla);
+                }
             }
             catch (Exception error)
             {
                 IsError = true;
-                ErrorDescripcion = "Error en ejecutarConsultaSQL \n";
-                ErrorDescripcion += error.Message;
+                ErrorDescripcion = "Error en ejecutarConsultaSQL \n" + error.Message;
             }
             return dsTabla;
         }
 
-        #endregion
-
-        #region Set & Gets
-
-        public Boolean IsError { set; get; }
-
-        public String ErrorDescripcion { set; get; }
-
+        public bool IsError { set; get; }
+        public string ErrorDescripcion { set; get; }
         public static int Instancias { set; get; }
-
         public bool HayTransaccion { set; get; }
-
         public NpgsqlTransaction Transaccion { set; get; }
-
         public NpgsqlConnection ConexionPost { set; get; }
-
-        #endregion
-
-        #region Métodos de la clase
 
         public void LimpiarEstado()
         {
-            this.ErrorDescripcion = "";
+            this.ErrorDescripcion = string.Empty;
             this.IsError = false;
         }
 
         public void IniciarTransaccion()
         {
-            if (this.HayTransaccion == false)
+            if (!this.HayTransaccion && EnsureOpen())
             {
                 this.Transaccion = this.ConexionPost.BeginTransaction();
                 this.HayTransaccion = true;
@@ -241,7 +262,7 @@ namespace WebService.Conexion.PostGresSQL
 
         public void CommitTransaccion()
         {
-            if (this.HayTransaccion)
+            if (this.HayTransaccion && this.Transaccion != null)
             {
                 this.Transaccion.Commit();
                 this.HayTransaccion = false;
@@ -250,13 +271,11 @@ namespace WebService.Conexion.PostGresSQL
 
         public void RollbackTransaccion()
         {
-            if (this.HayTransaccion)
+            if (this.HayTransaccion && this.Transaccion != null)
             {
                 this.Transaccion.Rollback();
                 this.HayTransaccion = false;
             }
         }
-
-        #endregion
     }
 }
